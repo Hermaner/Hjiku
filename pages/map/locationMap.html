@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>百度地图</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oGqg1KTzgZ2FVs4dhxGroj8X"></script>
+	</head>
+
+	<body class="Bai-bc" id="mapPage">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">百度地图</h1>
+		</header>
+		<div class="search-con">
+			<div class="switchBox">
+				<div class="flexCon">
+					<div class="flexOne">
+						<input type="search" v-model="searchtext" class="" placeholder="" v-on:keyup.13="searchItem()"/>
+						<span class="mui-icon mui-icon-search"></span>
+					</div>
+					<button class="" @click="searchItem()">搜索</button>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content paddingtop85">
+			<div id="maps" style="position:absolute.height:300px;top:-1000px"></div>
+			<div id="map" style="height:300px;top:0"></div>
+			<ul class="mui-table-view" id="addressList">
+				<li class="mui-table-view-cell flexCon" v-bind:address="address">
+					<span class="mui-icon iconfont icon-ditu1 now"></span>
+					<div class="flexOne">
+						<p class="fontEll now">[当前]{{address}}</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell flexCon" v-for="item in items" v-bind:address="item.split(',')[1]">
+					<span class="mui-icon iconfont icon-ditu1"></span>
+					<div class="flexOne">
+						<p class="fontEll">{{item.split(",")[0]}}</p>
+						<p>{{item.split(",")[1]}}</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+	</body>
+
+</html>
+<script src="../../js/mui.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/app.js"></script>
+<script src="locationMap.js"></script>

@@ -1,0 +1,175 @@
+.mui-bg-primary {
+	background-color: #b9222f
+}
+.mui-btn-blue,
+.mui-btn-primary,
+input[type=submit] {
+	color: #fff;
+	border: 1px solid #b9222f;
+	background-color: #b9222f
+}
+.mui-btn-blue.mui-active:enabled,
+.mui-btn-blue:enabled:active,
+.mui-btn-primary.mui-active:enabled,
+.mui-btn-primary:enabled:active,
+input[type=submit].mui-active:enabled,
+input[type=submit]:enabled:active {
+	color: #fff;
+	border: 1px solid #B92253;
+	background-color: #B92253
+}
+.mui-btn-outlined.mui-btn-blue,
+.mui-btn-outlined.mui-btn-primary {
+	color: #b9222f
+}
+.mui-btn-link {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	color: #b9222f;
+	border: 0;
+	background-color: transparent
+}
+
+.mui-btn-link.mui-active:enabled,
+.mui-btn-link:enabled:active {
+	color: #B92253;
+	background-color: transparent
+}
+.mui-bar-tab .mui-tab-item.mui-active {
+	color: #b9222f
+}
+.mui-bar .mui-btn-link {
+	font-size: 16px;
+	line-height: 44px;
+	top: 0;
+	padding: 0;
+	color: #b9222f;
+	border: 0
+}
+.mui-badge-blue,
+.mui-badge-primary {
+	color: #fff;
+	background-color: #b9222f
+}
+
+.mui-badge-blue.mui-badge-inverted,
+.mui-badge-primary.mui-badge-inverted {
+	color: #b9222f;
+	background-color: transparent
+}
+.mui-table-view-radio .mui-table-view-cell .mui-navigate-right:after {
+	font-size: 30px;
+	font-weight: 600;
+	right: 9px;
+	content: '';
+	color: #b9222f
+}
+.mui-checkbox input[type=checkbox]:checked:before,
+.mui-radio input[type=radio]:checked:before {
+	color: #b9222f
+}
+.mui-input-range input[type=range]::-webkit-slider-thumb {
+	width: 28px;
+	height: 28px;
+	border-color: #B92253;
+	border-radius: 50%;
+	background-color: #b9222f;
+	background-clip: padding-box;
+	-webkit-appearance: none!important
+}
+.mui-segmented-control {
+	font-size: 15px;
+	font-weight: 400;
+	position: relative;
+	display: table;
+	overflow: hidden;
+	width: 100%;
+	table-layout: fixed;
+	border: 1px solid #b9222f;
+	border-radius: 3px;
+	background-color: transparent;
+	-webkit-touch-callout: none
+}
+.mui-segmented-control .mui-control-item {
+	line-height: 38px;
+	display: table-cell;
+	overflow: hidden;
+	width: 1%;
+	-webkit-transition: background-color .1s linear;
+	transition: background-color .1s linear;
+	text-align: center;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #b9222f;
+	border-color: #b9222f;
+	border-left: 1px solid #b9222f
+}
+.mui-segmented-control .mui-control-item.mui-active {
+	color: #fff;
+	background-color: #b9222f
+}
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+	color: #b9222f;
+	border-bottom: 2px solid #b9222f;
+	background: 0 0
+}
+
+.mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar {
+	background-color: #b9222f
+}
+.mui-popover.mui-popover-action .mui-table-view {
+	margin: 8px;
+	text-align: center;
+	color: #b9222f;
+	border-radius: 4px
+}
+.mui-pagination>li>a,
+.mui-pagination>li>span {
+	line-height: 1.428571429;
+	position: relative;
+	float: left;
+	margin-left: -1px;
+	padding: 6px 12px;
+	text-decoration: none;
+	color: #b9222f;
+	border: 1px solid #ddd;
+	background-color: #fff
+}
+.mui-pagination>li.mui-active>a,
+.mui-pagination>li.mui-active>a:active,
+.mui-pagination>li.mui-active>span,
+.mui-pagination>li.mui-active>span:active,
+.mui-pagination>li:active>a,
+.mui-pagination>li:active>a:active,
+.mui-pagination>li:active>span,
+.mui-pagination>li:active>span:active {
+	z-index: 2;
+	cursor: default;
+	color: #fff;
+	border-color: #b9222f;
+	background-color: #b9222f
+}
+.mui-pager li.mui-active>a,
+.mui-pager li.mui-active>span,
+.mui-pager li:active>a,
+.mui-pager li:active>span {
+	cursor: default;
+	text-decoration: none;
+	color: #fff;
+	border-color: #b9222f;
+	background-color: #b9222f
+}
+.mui-switch-blue.mui-active {
+	border: 2px solid #b9222f;
+	background-color: #b9222f
+}
+
+.mui-input-range input[type=range]::-webkit-slider-thumb {
+	width: 28px;
+	height: 28px;
+	border-color: #B92253;
+	border-radius: 50%;
+	background-color: #b9222f;
+	background-clip: padding-box;
+	-webkit-appearance: none!important
+}

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>订单详情</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="detail-bc bodyBottom" id="orderDetail">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">订单详情</h1>
+			<!--<a href="#" class="mui-icon iconfont icon-ditu2 orderMap"></a>-->
+		</header>
+		<div class="mem-keep-out" v-if="showCardpay">
+			<div class="mem-con">
+				<h3>请输入卡号和密码</h3>
+				<button class="layermend" @click="closeCardpay()"></button>
+				<div class="mem-text">
+					<ul class="mui-table mui-table-view">
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label>会员卡</label>
+								<input type="number" v-model="memberCardNumber" placeholder="请输入会员卡号">
+							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label>密码</label>
+								<input type="password" v-model="password" placeholder="请输入密码">
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="mem-btn flexCon">
+					<button class="flexOne" @click="closeCardpay()">取消</button>
+					<button class="flexOne" @click="cardPay()">保存</button>
+				</div>
+			</div>
+		</div>
+		<div class="mem-keep-out memBlack" v-if="goodsDetail">
+			<div class="closeHade" @click="closeGoods()">
+				<span class="mui-icon mui-icon-closeempty"></span>
+			</div>
+			<ul>
+				<li v-for="(index,product) in items.products">
+					<p class="padLeft">{{index+1}}.商品名称：</p>
+					<p>{{product.productName}}</p>
+					<p>规格名称：</p>
+					<p>{{product.skuName}}</p>
+					<p>数量：</p>
+					<p>*{{product.count}}</p>
+					<p v-if="product.memo">备注：</p>
+					<p>{{product.memo}}</p>
+				</li>
+			</ul>
+		</div>
+		<div class="mem-keep-out" v-if="kickReasons.length>0">
+			<div class="mem-con">
+				<h3>踢回原因选择</h3>
+				<button class="layermend" @click="closeMask()"></button>
+				<div class="mem-text">
+					<div class="mui-input-row mui-radio mui-left supplierDiv" v-for="kickReason in kickReasons">
+						<label v-cloak>{{kickReason.reasonInfo}}</label>
+						<input name="radio" v-bind:vid="kickReason.reasonId" type="radio">
+					</div>
+				</div>
+				<div class="mem-btn flexCon">
+					<button class="flexOne" @click="closeMask()">取消</button>
+					<button class="flexOne" @click="kickConfirm()">保存</button>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content" v-show="!showData" id="goodsDetail">
+			<div class="detail-head">
+				<div class="flexCon">
+					<div class="flexOne fontEll " v-cloak>订单号：<span class="longtab">{{orderNumber}}</span></div>
+					<div class="flex-width120 mui-text-right fontEll" v-if="items.orderPayStatus=='打印快递单'||items.isApplyForRefund=='1'||orderStatus=='IN_STORE'||items.orderPayStatus=='途中订单'||items.platName=='门店订单'">
+						<span>{{items.isApplyForRefund=='1'?"退货订单":items.orderPayStatus}}</span>
+					</div>
+					<div class="flex-width120 mui-text-right fontEll" v-else v-if="parseFloat(items.distance)>0">
+						<span class="mui-icon iconfont icon-ditu1 fontOrange"></span><span>约{{items.distance}}km</span>
+					</div>
+				</div>
+				<div class="flexCon">
+					<div class="flexOne fontEll" v-cloak>{{items.orderDate}}</div>
+				</div>
+				<div class="detail-msg phone flexCon">
+					<div class="flexOne">
+						<img src="../../images/icontu/{{items.platId}}.jpg" /> {{items.shopName}}
+					</div>
+					<div class="phoneBtn mui-text-right">
+						<span class="mui-icon iconfont icon-dianhuahaoma1"></span>
+						<a href="tel:{{items.sellerPhone}}">联系网店</a>
+					</div>
+				</div>
+			</div>
+			<div class="detail-name">商品信息</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell ListTag" v-for="product in items.products">
+					<div class="mui-input-group">
+						<div class="flexCon">
+							<div class="flexOne">
+								<a class="flexCon">
+									<img class="goodsImg" v-bind:src="product.productPic || '../../images/cbd.jpg'">
+									<div class="flexOne lineheight7 flexellipsis">
+										<span v-cloak>
+											{{product.productName}}
+										</span>
+										<span v-cloak>
+											{{product.skuName}}
+										</span>
+									</div>
+									<div class="flex-width120 lineheight7 mui-text-right">
+										<span v-cloak>
+											￥{{product.price}}
+										</span>
+										<span>
+											&nbsp;
+										</span>
+										<span v-cloak>
+											*{{product.count}}
+										</span>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<span class="detail-seeAll" @click="showGoods()">查看全部</span>
+				</li>
+				<li class="mui-table-view-cell" @click="changePay()">
+					<p><span style="display: inline-block;width:100px">运费：{{items.postFee}}元</span><span class="fontOrange" v-show="orderStatus=='SINCE'"><font color="#999">自提时间：</font>{{items.sinceTime||''}}</span></p>
+					<div class="flexCon">
+						<div class="flex-width100 fontEll">共{{items.productNum}}件商品</div>
+						<div class="flexOne fontEll">
+							应付：<span class="fontOrange">￥{{items.totalAmount}}元&nbsp;&nbsp;已付：￥{{items.initialTotalAmount}}元</span>
+							<span class="mui-navigate-right rightIcon"  v-show="orderStatus=='IN_STORE'&&items.orderPayStatus !='未付款订单'"></span>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="detail-name" v-show="items.logisticInfo.consignee!='-1'">买家信息</div>
+			<div class="buyer-text" v-show="items.logisticInfo.consignee!='-1'">
+				<p>{{items.logisticInfo.consignee}} <span class="longtab">{{items.logisticInfo.mobile||items.logisticInfo.phone}}</span></p>
+				<p>{{items.logisticInfo.province}},{{items.logisticInfo.city}},{{items.logisticInfo.cityArea}}</p>
+				<p class="longtab">{{items.logisticInfo.address}}</p>
+			</div>
+			<div class="detail-name" v-if="items.buyerMessage">买家留言</div>
+			<div class="buyer-text" v-if="items.buyerMessage">
+				{{items.buyerMessage}}
+			</div>
+			<div class="detail-name" v-if="items.systemMemo">系统备注</div>
+			<div class="buyer-text" v-if="items.systemMemo">
+				{{items.systemMemo}}
+			</div>
+			<div class="detail-name" v-if="items.erpMemo">Erp内部备注</div>
+			<div class="buyer-text" v-if="items.erpMemo">
+				{{items.erpMemo}}
+			</div>
+
+			<ul class="mui-table-view fillCode">
+				<li class="mui-table-view-cell" v-if="orderStatus=='WAIT_GOOD'">
+					<input type="number" v-model="waitCode" placeholder="请输入收货码" />
+					<button class="mui-btn-mini mui-pull-right" @click="getwaitGoods()">确认收货</button>
+					<button class="mui-btn-mini btnBlack sendwaitBtn" pid="wait" @click="sendCode('[pid=wait]')">发送收货码</button>
+				</li>
+				<li class="mui-table-view-cell" v-if="orderStatus=='SINCE'">
+					<input type="number" v-model="sinceCode" placeholder="请输入自提码" />
+					<div style="clear: both;">
+					<button class="mui-btn-mini mui-pull-right" @click="scanGetGoods()">扫描确认</button>
+					<button class="mui-btn-mini mui-pull-right" @click="getsinceGoods()" style="margin-right:12px">自提确认</button>
+					<button class="mui-btn-mini btnBlack sendsinceBtn" pid="since" @click="sendCode('[pid=since]')">发送自提码</button>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="bottomMenu" v-if="orderStatus=='ACCPET'">
+			<div class="mui-pull-left phoneBtn">
+				<a class="" href="tel:{{items.logisticInfo.mobile||items.logisticInfo.phone}}">联系买家</a>
+			</div>
+			<div class="mui-pull-right">
+				<button class="mui-btn-mini btnBlack" @click="coorDinate()">申请协调</button>
+				<button class="mui-btn-mini btnBlack" @click="printObj()">打印订单</button>
+				<button class="mui-btn-mini" @click="sendGoods()">发货</button>
+			</div>
+		</div>
+		<div class="bottomMenu" v-if="orderStatus=='UN_ACCPET'">
+			<div class="mui-pull-left phoneBtn">
+				<a class="" href="tel:{{items.logisticInfo.mobile||items.logisticInfo.phone}}">联系买家</a>
+			</div>
+			<div class="mui-pull-right">
+				<button class="mui-btn-mini btnBlack" @click="goToMap()">地图显示</button>
+				<button class="mui-btn-mini btnBlack" @click="getKick()">踢回订单</button>
+				<button class="mui-btn-mini" @click="getOrder()">接单</button>
+			</div>
+		</div>
+		<div class="bottomMenu" v-if="orderStatus=='SINCE'">
+			<div class="mui-pull-left phoneBtn">
+				<a class="" href="tel:{{items.logisticInfo.mobile||items.logisticInfo.phone}}">联系买家</a>
+			</div>
+			<div class="mui-pull-right">
+				<button class="mui-btn-mini btnBlack" @click="coorDinate()">申请协调</button>
+				<button class="mui-btn-mini" @click="printObj()">打印订单</button>
+			</div>
+		</div>
+		<div class="bottomMenu" v-if="orderStatus=='WAIT_GOOD'">
+			<div class="mui-pull-left phoneBtn">
+				<a class="" href="tel:{{items.logisticInfo.mobile||items.logisticInfo.phone}}">联系买家</a>
+			</div>
+			<div class="mui-pull-right">
+				<button class="mui-btn-mini btnBlack" @click="printObj()">补打订单</button>
+			</div>
+		</div>
+		<div class="bottomMenu" v-if='orderStatus=="IN_STORE"'>
+			<div class="mui-pull-left phoneBtn">
+				<a class="" href="tel:{{items.logisticInfo.mobile||items.logisticInfo.phone}}">联系买家</a>
+			</div>
+			<div class="mui-pull-right" v-if='items.orderPayStatus == "未付款订单"'>
+				<a href="#payPopover" v-show="!mixTrue">
+					<button class="mui-btn-mini btnBlack">确定支付</button>
+				</a>
+				<button class="mui-btn-mini btnBlack" @click="mixPay()" v-show="mixTrue">确定支付</button>
+			</div>
+		</div>
+		<div class="bottomMenu" v-if="items.isApplyForRefund=='1'">
+			<div class="mui-pull-left phoneBtn">
+				<a class="" href="tel:{{items.logisticInfo.mobile||items.logisticInfo.phone}}">联系买家</a>
+			</div>
+			<div class="mui-pull-right">
+				<button class="mui-btn-mini" @click="changeOrder('re')">创建退货单</button>
+				<button class="mui-btn-mini" @click="changeOrder('ex')">创建换货单</button>
+			</div>
+		</div>
+		<div id="payPopover" class="mui-popover mui-bar-popover detail-pop scroll">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" pid="{{payment.paymentType}}" v-for="payment in payments">
+							{{payment.paymentName}}
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<div class="noData" v-if='showData'>数据加载中</div>
+	<div class="personPay-content" v-show="showPersonpay" transition="expand">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-icon mui-icon-left-nav mui-pull-left" @click='closePersonpay()'></a>
+				<h1 class="mui-title">{{paymentType=="19"?"支付宝":"微信"}}支付</h1>
+			</header>
+
+			<div class="mui-content whiteBackground">
+				<div class="caserin-content">
+					<div class="caserin-payamount">￥{{totalPrice}}</div>
+					<div class="caserIn-perImg">
+						<img :src="payimg" />
+						<p>扫描{{paymentType=="19"?"支付宝":"微信"}}二维码向我付钱</p>
+					</div>
+					<div class="mui-margin-20"><button type="button" class="mui-btn mui-btn-primary mui-btn-full" @click="personPay()">
+					确认收款
+				</button></div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="orderDetail.js"></script>
+
+</html>

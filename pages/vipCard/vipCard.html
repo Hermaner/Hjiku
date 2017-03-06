@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>会员发卡</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="vipCard-bc" id="vipCard">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">会员发卡</h1>
+		</header>
+		<div class="mui-content paddingtop85 paddingbom20">
+			<div class="search-con">
+				<div class="switchBox">
+					<div class="flexCon">
+						<div class="flexOne">
+							<input type="search" v-model="searchtext"  class="" placeholder="请输入手机号码" v-on:keyup.13="searchItem()"/>
+							<span class="mui-icon mui-icon-search"></span>
+						</div>
+						<button class="" @click="searchItem()">搜索</button>
+					</div>
+				</div>
+			</div>
+			<ul class="mui-table mui-table-view">
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>联系方式</label>
+						<p class="noedit">{{tel}}</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>买家姓名</label>
+						<p class="noedit">{{name}}</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>会员等级</label>
+						<p class="noedit">{{level}}</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>会员折扣</label>
+						<p class="noedit">{{discount}}</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>会员卡号</label>
+						<input type="text" v-model="cardNum" placeholder="请输入会员卡号">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>密码</label>
+						<input type="password" v-model="password" placeholder="请输入密码">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>确认密码</label>
+						<input type="password" v-model="cpassword" placeholder="请确认密码">
+					</div>
+				</li>
+			</ul>
+		</div>
+		<button class="mui-btn-block mui-btn-primary moreBtn" @click="saveCard()">确定</button>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="vipCard.js"></script>
+
+</html>

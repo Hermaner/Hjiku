@@ -1,0 +1,64 @@
+#storeFinanceList{
+  background-color: #fff;
+}
+.store_list_box{
+  width: 100%;
+  position: relative;
+  height: 70px;
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+}
+.number,.postdate,.paymentTypeName{
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  display: block;
+}
+.number,.postdate{
+  font-size: 14px;
+}
+
+.orderTypeName,.amount{
+  position: absolute;
+}
+.amount{
+  top: 0px;
+  right: 10px;
+  height: 70px;
+  line-height: 60px;
+  font-size: 18px;
+}
+
+.incomebox .amount{
+  color:green;
+}
+
+.outlaybox .amount{
+  color:red;
+}
+.orderTypeName{
+  right: 10px;
+  bottom: 5px;
+}
+
+.noData{
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  top:0px;
+  left: 0px;
+  text-align: center;
+  position: absolute;;;
+}
+.noData span{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+  height: 20px;
+}

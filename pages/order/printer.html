@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="MobileOptimized" content="320" />
+<title>Hello H5+</title>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+
+if(window.plus){
+	plusReady();
+}else{
+	document.addEventListener("plusready",plusReady,false);
+}
+
+function plusReady(){
+	//注册监听打印回调广播
+	registerReceiver();
+}
+function registerReceiver(){
+	
+	var main = plus.android.runtimeMainActivity();//获取activity
+	//创建关闭示例
+	var receiver = plus.android.implements('io.dcloud.feature.internal.reflect.BroadcastReceiver',{
+        onReceive : function(context,intent){//实现onReceiver回调函数
+        plus.android.importClass(intent);//通过intent实例引入intent类，方便以后的‘.’操作
+        var isSuccess = intent.getExtra("isSuccess");
+        var msg = intent.getExtra("msg");
+        alert("isSuccess = "+isSuccess+" , msg = "+msg);
+    }});
+	
+	var IntentFilter = plus.android.importClass('android.content.IntentFilter');
+    var filter = new IntentFilter();
+   
+    filter.addAction("io.dcloud.printer.printcallback");//监听打印回调
+    
+    main.registerReceiver(receiver,filter); //注册监听
+}
+    
+<!-- 打印示例 -->
+function printerContent(){
+	printerHeader();
+	printerOneCode();
+	printerDesc();
+}
+function printerHeader(){
+	if ( 'Android' == plus.os.name ) {
+		
+		var main_act = plus.android.runtimeMainActivity();
+		var Intent = plus.android.importClass('android.content.Intent');
+		var intent = new Intent();
+		intent.setClassName(main_act,"io.dcloud.printer.PrintService");
+		var printContent = "这里是标题";
+		intent.putExtra("printContent",printContent); //打印内容，可用\n表示换行
+		intent.putExtra("fontSize",2); //字体大小，0：小号，1：中号，2：大号  默认1中号
+		intent.putExtra("gravity",1); //布局方式，0：居左，1：居中，2：居右 默认0居左
+		intent.putExtra("type",0); //打印类型，0:文本内容；1：二维码；2：条码（content必须为数字字符串）
+		intent.putExtra("isLast",false);//是否是最后一条打印
+		
+		main_act.startService(intent); 
+		
+	}else{
+		plus.nativeUI.alert( "此平台不支持！" );
+	}
+}	
+function printerDesc(){
+	if ( 'Android' == plus.os.name ) {
+		
+		var main_act = plus.android.runtimeMainActivity();
+		var Intent = plus.android.importClass('android.content.Intent');
+		var intent = new Intent();
+		intent.setClassName(main_act,"io.dcloud.printer.PrintService");
+		var printContent = "旺POS店铺\n订单号：123456789\n金额：99元\n时间：2016-06-24 13::44\n\n\n\n\n\n";
+		intent.putExtra("printContent",printContent); //打印内容，可用\n表示换行
+		intent.putExtra("fontSize",1); //字体大小，0：小号，1：中号，2：大号  默认1中号
+		intent.putExtra("gravity",0); //布局方式，0：居左，1：居中，2：居右 默认0居左
+		intent.putExtra("type",0); //打印类型，0:文本内容；1：二维码；2：条码（content必须为数字字符串）
+		intent.putExtra("isLast",true);//是否是最后一条打印
+		main_act.startService(intent); 
+		
+	}else{
+		plus.nativeUI.alert( "此平台不支持！" );
+	}
+}	
+function printerOneCode(){
+	if ( 'Android' == plus.os.name ) {
+		
+		var main_act = plus.android.runtimeMainActivity();
+		var Intent = plus.android.importClass('android.content.Intent');
+		var intent = new Intent();
+		intent.setClassName(main_act,"io.dcloud.printer.PrintService");
+		var printContent = "1234567890";
+		intent.putExtra("printContent",printContent); //打印内容，可用\n表示换行
+		intent.putExtra("fontSize",1); //字体大小，0：小号，1：中号，2：大号  默认1中号
+		intent.putExtra("gravity",1); //布局方式，0：居左，1：居中，2：居右 默认0居左
+		intent.putExtra("type",2); //打印类型，0:文本内容；1：二维码；2：条码（content必须为数字字符串）
+		intent.putExtra("isLast",false);//是否是最后一条打印
+		
+		main_act.startService(intent); 
+		
+	}else{
+		plus.nativeUI.alert( "此平台不支持！" );
+	}
+}	
+
+		</script>
+<link rel="stylesheet" href="../css/common.css" type="text/css"
+	charset="utf-8" />
+<style type="text/css">
+</style>
+</head>
+<body>
+	<header id="header">
+		<div class="nvbt iback" onclick="back(true);"></div>
+		<div class="nvtt">JS调用打印机打印</div>
+
+	</header>
+	<div id="dcontent" class="dcontent">
+		<!--div class="button" onclick="gamecenter()">Game Center</div>
+			<div class="button" onclick="shortcut()">Shortcut</div>
+			<br/-->
+		<div class="button button-waring" onclick="printerContent();">打印小票示例</div>
+	</div>
+	<div id="output">打印功能是使用旺POS
+		SDK(WeiposSDKII-bin-2.0.jar)调用POS打印机打印，具体打印效果可查询sdk帮助文档</div>
+</body>
+<script type="text/javascript" src="../js/immersed.js"></script>
+</html>

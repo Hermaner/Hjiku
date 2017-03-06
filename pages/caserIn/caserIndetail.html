@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>收款记录</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="" id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">收款记录</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" v-show='!showData'>
+			<ul class="mui-table-view caser-node-detail">
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon ">
+						<div class="mui-meb-one flexOne">收款金额</div>
+						<div class="mui-meb-one  flexOne"><b>￥{{receivableHistory.receivableAmount||0}}</b></div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon">
+						<div class="mui-meb-one flexOne">优惠金额</div>
+						<div class="mui-meb-one  flexOne"><b>￥{{receivableHistory.noneAmount||0}}</b></div>
+					</div>
+				</li>
+				
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon">
+						<div class="mui-meb-one flexOne">付款人</div>
+						<div class="mui-meb-one  flexOne">{{receivableHistory.payer}}</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon">
+						<div class="mui-meb-one flexOne">收款人</div>
+						<div class="mui-meb-one  flexOne">{{receivableHistory.payee}}</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon">
+						<div class="mui-meb-one flexOne">时间</div>
+						<div class="mui-meb-one  flexOne">{{receivableHistory.payTime}}</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon">
+						<div class="mui-meb-one flexOne">支付方式</div>
+						<div class="mui-meb-one  flexOne">{{receivableHistory.payType}}</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-caser-node">
+					<div class="flexCon">
+						<div class="mui-meb-one flexOne">收款编号</div>
+						<div class="mui-meb-one  flexOne">{{receivableHistory.paymentNo}}</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-caser-node">
+						<div class="mui-meb-one">备注信息:<div>{{receivableHistory.memo||'无'}}</div></div>
+						
+				</li>
+			</ul>
+		</div>
+		<div class="noData" v-show='showData'>数据加载中</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="caserIndetail.js"></script>
+
+</html>

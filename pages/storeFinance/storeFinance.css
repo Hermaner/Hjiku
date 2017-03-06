@@ -1,0 +1,141 @@
+.mui-card .mui-control-content {
+  padding: 10px;
+}
+.mui-content {
+  /*height: 450px;*/
+  background-color: #fff;
+}
+.store-finace-checkbar{
+  width: 100%;
+  height: 44px;
+  /*background-color: #000;*/
+}
+.weui_cell_bd p{
+  margin-bottom: 0;
+}
+.store-finace-price{
+  color: green;
+  position: absolute;
+  right: 30px;
+}
+.store_finace_tab{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fff;
+  height: 44px;
+  position: relative;
+}
+.store_finace_tab .store_finace_tab_item.store_finace_tab_selected {
+    color: #d9002f;
+    border-bottom: 2px solid #d9002f;
+    background: none;
+}
+.store_finace_tab .store_finace_tab_item {
+    display: block;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background: -webkit-linear-gradient(top,#e5e5e5,#e5e5e5,hsla(0,0%,90%,0)) 0 100% no-repeat;
+    background: linear-gradient(180deg,#e5e5e5,#e5e5e5,hsla(0,0%,90%,0)) 0 100% no-repeat;
+    background-size: 100% 1px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 44px;
+    color: #666;
+}
+.store_finace_center, .store_finace_center-h {
+    justify-content: center;
+}
+.store_finace_center, .store_finace_center-v {
+    align-items: center;
+}
+.store_finace_center, .store_finace_center-h, .store_finace_center-v {
+    display: flex;
+}
+
+
+.store-finace-checkbar>.datetime_checkbox{
+  width: 25%;
+}
+.datetime_checkbox_text{
+  float: left;
+  line-height: 44px;
+  font-size: 12px;
+}
+.store-finace-checkbar>.checkbar{
+  width: 35%;
+  float: left;
+  line-height: 44px;
+  height: 44px;
+  text-align: center;
+  position: relative;
+  padding-right: 20px;
+}
+.store-finace-checkbar>.checkbar>.downIcon:after{
+  right:5px;
+}
+.store-finace-checkbar>.selectcheckbar{
+  width: 25%;
+  float: left;
+  padding-left: 5px;
+}
+.store-finace-checkbar>.selectcheckbar>select{
+  padding: 0px;
+}
+.store_finace_totalamount{
+  animation-duration: 0.5s !important;
+  position: absolute;
+  width: 100%;
+  top: 132px;
+  left: 0px;
+}
+.store_finace_scroll{
+  width: 100%;
+  position: absolute;
+  top: 44px;
+  left: 0px;
+  background-color: #fff;
+}
+.store_finace_scroll2{
+  width: 100%;
+  top: 44px;
+  background-color: #fff;
+}
+.store_finace_total_box{
+  width: 100%;
+  height: 44px;
+  padding: 0 10px;
+  line-height: 44px;
+}
+.store_finace_total_box .store_finace_text{
+  float: left;
+}
+.store_finace_total_box .store_finace_value{
+  float: right;
+  font-size: 20px;
+  /*color: red;*/
+}
+.noData{
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  text-align: center;
+  top: 0px !important;
+  left:0px;
+  position: absolute;
+}
+.noData span{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+  height: 20px;
+}

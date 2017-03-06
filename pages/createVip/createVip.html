@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>新建会员</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="creat-bc" id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">新建会员</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table mui-table-view">
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>联系方式</label>
+						<input type="text" v-model="tel" placeholder="请输入手机号码" v-on:blur="checkTel()">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>买家姓名</label>
+						<input type="text" v-model="name" placeholder="请输入买家姓名">
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>平台</label>
+						<p class="noedit">门店</p>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-input-row">
+						<label>会员等级</label>
+						<select class="mui-buyer-select" v-model="level">
+							<option value="">请选择会员等级</option>
+							<option value="{{level.memberLevelId}}" v-for="level in levels">{{level.memberLevelName}}</option>
+						</select>
+						<span class="mui-navigate-right downIcon"></span>
+					</div>
+				</li>
+			</ul>
+			<ul class="mui-table mui-table-view addressFrom" id="addressList">
+				<li class="mui-table-view-cell fontBlack" v-for="(index,a) in addressAr" dex="{{index}}" style="padding-left:10px">
+					<div class="flexCon">
+						<div class="flexOne">{{a.consignee}}&nbsp;&nbsp;{{tel}}</div>
+					</div>
+					<p><span>地址</span>{{a.address}}</p>
+				</li>
+			</ul>
+			<button class="mui-btn mui-btn-block addBtn" @click="goAddress()">
+				<span class="mui-icon iconfont icon-jia"></span> 添加收货地址
+			</button>
+			<nav class="mui-bar mui-bar-tab dis-nav-bar">
+				<button type="button" class="mui-btn" @click="cancleCreate()">
+					取消
+				</button>
+				<button type="button" class="mui-btn mui-btn-primary" @click='saveCreate()'>
+					确认
+				</button>
+			</nav>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="createVip.js"></script>
+
+</html>

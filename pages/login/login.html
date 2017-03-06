@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>登录</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+
+	</head>
+
+	<body class="login-bc" id="login">
+		<div class="mui-content conColor">
+			<div class="logoCon">
+				<img class="loginLogo" src="../../images/hwlogo.png" />
+			</div>
+			<div class="loginFrom">
+				<form>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-jinggao"></span></label>
+						<input v-model="orgCode" type="text" class="mui-input-clear mui-input"  placeholder="商家编码">
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-111"></span></label>
+						<input v-model="store" type="text" class="mui-input-clear mui-input" placeholder="门店编码">
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-gongsiyuangong"></span></label>
+						<input v-model="userName" type="text" class="mui-input-clear mui-input" placeholder="员工帐号">
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon iconfont icon-mima"></span></label>
+						<input v-model="password" type="password" class="mui-input-clear mui-input" placeholder="请输入密码" >
+					</div>
+				</form>
+			</div>
+			<button @click="loginEvent" class="mui-btn mui-btn-block loginBtn">登录</button>
+			<a class="toGuide">点击此处获取帐号使用></a>
+			<div class="login-guide">
+				<img class="guideEsc" src="../../images/close.png" />
+				<a class="guidePhone"></a>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="login.js"></script>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>支付明细</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="change-bc" id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">支付明细</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table mui-table-view">
+				<li class="mui-table-view-cell flexCon mui-text-center bigFont">
+					<div class="seizeDiv"></div>
+					<div class="flexOne">支付方式</div>
+					<div class="flexOne">金额</div>
+				</li>
+				<li class="mui-table-view-cell flexCon mui-text-center Paylist lineheight28" v-for="(index,item) in items" index="{{index}}">
+					<div class="mui-input-row mui-checkbox flex-checkwidth">
+						<input name="checkbox" v-bind:address="" v-bind:orderNumber="" class="changeinput" type="checkbox">
+					</div>
+					<div class="flexOne">
+						<div class="disIn">
+							<select class="mui-buyer-select" v-model="item.paymentType||''">
+								<option value="">请选择支付方式</option>
+								<option value="{{payment.paymentType}}" v-for="payment in payments">{{payment.paymentName}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="flexOne">
+						<input class="payInput" type="number" value="{{item.amount||''}}" placeholder="请输入金额" v-on:change="computedAmount()">
+					</div>
+				</li>
+				<li class="mui-table-view-cell flexCon mui-text-center">
+					<div class="flexOne">未付</div>
+					<div class="flexOne" style="color:#ff0000">{{unpayAmout}}</div>
+				</li>
+				<li class="mui-table-view-cell flexCon mui-text-center">
+					<div class="flexOne">已付</div>
+					<div class="flexOne" style="color:#4CD964">{{payAmout}}</div>
+				</li>
+				<li class="mui-table-view-cell flexCon mui-text-center">
+					<div class="flexOne">总计</div>
+					<div class="flexOne">{{initialTotalAmount}}</div>
+				</li>
+			</ul>
+		</div>
+		<div class="bottomMenu">
+			<div class="mui-text-center">
+				<button class="mui-btn-mini cpBtn" @click="add()">添加</button>
+				<button class="mui-btn-mini cpBtn" @click="delete()">删除</button>
+				<button class="mui-btn-mini cpBtn" @click="save">保存</button>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="changePayType.js"></script>
+	
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>生成退换货单</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="change-bc" id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">生成{{type=="ex"?"换":"退"}}货单</h1>
+		</header>
+		<div class="mui-content">
+			<div class="padding10 wareName">
+				仓库名称：
+				<span>{{store}}</span>
+			</div>
+			<div class="padding10 wareName exchangeCon" v-show='type=="ex"'>
+				<span>换货方式：</span>
+				<div class="exchangeBtn">
+					<button class="mui-btn mui-btn-mini active" @click="cexType('STORE_SINCE')">门店自提</button>
+					<button class="mui-btn mui-btn-mini" @click="cexType('ONLINE_DELIVER')">线上发货</button>
+				</div>
+			</div>
+			<div class="padding10 wareName" else>
+				<span>确认{{type=="ex"?"换":"退"}}货商品</span>
+			</div>
+			<ul class="mui-table-view noMargin" id="tolistdetail">
+				<li class="mui-table-view-cell" v-for="(index,item) in items" v-if="type=='ex'">
+					<div class="flexCon">
+						<div class="flexOne">
+							<div class="flexCon">
+								<img class="goodsImg" v-bind:src="item.productPic || '../../images/cbd.jpg'">
+								<div class="flexOne lineheight7">
+									<span v-cloak>
+									{{item.productName}}
+									</span>
+									<span>
+									&nbsp;
+									</span>
+									<div class="mui-input-row">
+										<select class="mui-buyer-select">
+											<option value="">请选择sku</option>
+											<option value="{{skuData.productItemId}}" v-for="skuData in skuDatas[index]">{{skuData.skuName}}</option>
+										</select>
+										<span class="mui-navigate-right downIcon overlay"></span>
+									</div>
+								</div>
+								<div class="flex-width90 lineheight7">
+									<div class="mui-numbox mui-flex-numbox" data-numbox-min="1" data-numbox-max="{{item.count}}">
+										<button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+										<input class="mui-numbox-input" type="number" value="{{item.count}}" v-model="item.count">
+										<button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+									</div>
+								</div>
+								<div class="delBtnCon">
+									<button class="mui-btn mui-btn-mini" @click="deleteItem(index)">移除</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell" v-if="type=='re'" v-for="(index,item) in items">
+					<div class="flexCon">
+						<div class="flexOne">
+							<div class="flexCon">
+								<img class="goodsImg" v-bind:src="item.productPic || '../../images/cbd.jpg'">
+								<div class="flexOne lineheight7">
+									<span v-cloak>
+										{{item.productName}}
+									</span>
+									<span>
+									&nbsp;
+									</span>
+									<div class="mui-input-row">
+										{{item.skuName}}
+									</div>
+								</div>
+								<div class="flex-width90 lineheight7">
+									<div class="mui-numbox mui-flex-numbox" data-numbox-min="1" data-numbox-max="{{item.count}}">
+										<button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+										<input class="mui-numbox-input" type="number" value="{{item.count}}" v-model="item.count">
+										<button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+									</div>
+								</div>
+								<div class="delBtnCon">
+									<button class="mui-btn mui-btn-mini" @click="deleteItem(index)">移除</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<button class="mui-btn mui-btn-block addBtn two" v-show='type=="re"' @click="returnGoods()">
+			提交退货单
+		</button>
+		<button class="mui-btn mui-btn-block addBtn two" v-show='type=="ex"' @click="exchangeGoods()">
+			提交换货单
+		</button>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="changeGoods.js"></script>
+
+</html>

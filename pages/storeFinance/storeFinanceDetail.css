@@ -1,0 +1,24 @@
+#storeFinanceDetail,.mui-content{
+  background-color: #fff;
+}
+.store_finace_detail_topbox{
+  padding: 10px;
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px solid #ccc;
+  line-height: 40px;
+}
+.store_finace_detail_topbox .lefttext{
+  float: left;
+}
+
+.store_finace_detail_topbox .rightvalue{
+  float: right;
+  font-size: 20px;
+}
+.outlaybox .amount{
+  color: red;
+}
+.incomebox .amount{
+  color: green;
+}

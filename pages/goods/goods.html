@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>商品列表</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+		<link href="../../styles/bigStyle.css" rel="stylesheet" media="screen and (min-width:480px)"/>
+  <style>
+
+  </style>
+	</head>
+
+	<body class="goods-bc" id="goods">
+		<header class="mui-bar mui-bar-nav">
+			<h1 id="title" class="mui-title">商品列表</h1>
+			<a class="mui-icon iconfont icon-saomiao orderScan" @click="goItemScan"></a>
+		</header>
+		<div class="search-con">
+			<div class="switchBox">
+				<div class="flexCon">
+					<div class="flexOne">
+						<input type="search" v-model="searchtextShadow" class="" placeholder=""  v-on:keyup.13="searchItem()"/>
+						<span class="mui-icon mui-icon-search"></span>
+					</div>
+					<button class="" @click="searchItem()">搜索</button>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content mui-scroll-wrapper paddingtop85" id="tochange">
+			<div class="mui-scroll fontsize12">
+				<ul class="mui-table-view" id="itemList">
+					<li class="mui-table-view-cell" v-for="(index, item)  in items" dex="{{index}}">
+						<div class="mui-input-group">
+							<div class="flexCon">
+								<div class="flexOne">
+									<a class="flexCon">
+										<img class="goodsImg" v-bind:src="item.productPic || '../../images/cbd.jpg'">
+										<div class="flexOne lineheight7">
+											<span v-cloak>
+												{{item.productName}}
+											</span>
+											<span v-cloak>
+												{{item.productNumber}}
+											</span>
+											<span v-cloak>
+												{{item.skuName}}
+											</span>
+										</div>
+										<div class="flex-width120 lineheight7">
+											<span v-cloak>
+												NO：{{index+1}}
+											</span>
+											<span v-cloak>
+												本店库存：{{item.stock||0}}
+											</span>
+											<span v-cloak>
+												预警库存：{{item.warnStock||0}}
+											</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="goods.js"></script>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>商品详情</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+
+	</head>
+
+	<body class="goods-bc" id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">商品详情</h1>
+		</header>
+		<div class="mui-content">
+			<div class="imgCon">
+				<img src="{{items.productPic|| '../../images/cbd.jpg'}}"  style="width:100%;height:300px"/>
+			</div>
+			<ul class="mui-table-view changeUl">
+				<li class="mui-table-view-cell">
+					<p class="color444">商品名称：</p>
+					<p class="color222">{{items.productName}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">商品编码：</p>
+					<p class="color222">{{items.productNumber}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">规格名称：</p>
+					<p class="color222">{{items.skuName}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">规格编码：</p>
+					<p class="color222">{{items.skuNumber}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">条形码：</p>
+					<p class="color222">{{items.barcode}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">本店库存：</p>
+					<p class="color222">{{items.stock}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">预警库存：</p>
+					<p class="color222">{{items.warnStock||0}}</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p class="color444">商品价格：</p>
+					<p class="color222">{{items.price}}</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="goodsDetail.js"></script>
+
+</html>

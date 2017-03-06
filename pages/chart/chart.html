@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>统计表单</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+
+	</head>
+
+	<body class="" id="chart">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">{{title}}</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<div class="flexCon chartCard">
+					<button class="flexOne mui-active" @click="changeDate(0)">昨日</button>
+					<button class="flexOne" @click="changeDate(1)">近7天</button>
+					<button class="flexOne" @click="changeDate(2)">近30天</button>
+					<button class="flexOne" @click="changeDate(3)">近60天</button>
+
+				</div>
+			</div>
+			<div id="main" class="main" style="margin-right:30px;height:200px;">
+
+			</div>
+			<div class="mui-text-center chartList" v-if="!showpie">
+				<div class="flexCon">
+					<div class="flexOne">时间</div>
+					<div class="flexOne">{{name}}</div>
+				</div>
+				<ul class="mui-table-view mui-grid-view mui-grid-9 chartBtmList">
+					<li class="mui-media mui-col-xs-12" v-for="item in datas"><span>{{item[0]}}</span><span class="fontOrange">{{item[1]}}</span></li>
+					<li class="mui-media mui-col-xs-12" v-if="type=='sale'||type=='fenrun'||type=='selfSale'||type=='selfBonus'">
+						<span>&nbsp;</span><span>共计{{totalCount}}</span>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="../../js/echarts-all.js"></script>
+	<script src="chart.js"></script>
+
+</html>

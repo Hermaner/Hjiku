@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>收银台</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+	</head>
+
+	<body class="" id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">收银台</h1>
+			<a class="mui-pull-right whiteText caser-node-btn" @click='gocaserNode()'>收款记录</a>
+		</header>
+		<div class="mui-content mui-scroll-wrapper ">
+			<div class="caserin-content">
+				<div class="mui-input-row mui-caserIn-row">
+					<label>收款金额</label>
+					<input type="number" id="amount" placeholder="请输入金额" class="mui-text-right" v-model="amount">
+				</div>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" @click='writeScan()'>
+
+						<a class="mui-navigate-right mui-margin-zero">
+							优惠核销<span v-show="coupon&&coupon>0" style="color:#4CD964;padding-left:30px">￥{{coupon}}</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						实际应付<span style="color:#D9002F;padding-left:30px">￥{{actual}}</span>
+					</li>
+				</ul>
+ 
+				<div class="mui-caserIn-memo">
+					<div class="mui-input-row mui-checkbox  mui-left">
+						<label style="line-height:14px;padding-left:50px"><span class="mui-pull-left">备注</span></label>
+						<input name="checkbox" type="checkbox"  v-model="memoStatus">
+					</div>
+					<div class="mui-input-row mui-margin-20" v-show="memoStatus">
+					<textarea  rows="5" placeholder="收款备注" v-model="memo"></textarea>
+				</div>
+				</div>
+				<div  class="mui-margin-20"><button type="button" class="mui-btn mui-btn-primary mui-btn-full" :disabled="!actual||actual=='0'" v-bind:class="{ 'mui-disabled': !actual||actual=='0'}"  @click="goPay()">
+					收款
+				</button></div>
+				
+
+			</div>
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="index.js"></script>
+
+</html>
