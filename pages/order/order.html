@@ -13,18 +13,18 @@
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
 		<link href="../../styles/styleAll.css" rel="stylesheet" />
 	</head>
-	<body  id="order" v-bind:class="orderStatus=='ACCPET'||orderStatus=='UN_ACCPET'?'order-bc bodyBottom':'order-bc'">
+	<body id="vue">
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-title" class="mui-action-menu" href="#bottomPopover" v-cloak>
-				{{statusName||"全部订单"}}
-				<span class="mui-icon mui-icon-arrowdown"></span>
-			</a>
+			<h1 class="mui-title">{{statusName||"全部订单"}}</h1>
 			<a href="#" class="mui-icon iconfont icon-ditu2 orderMap" v-if="(orderStatus=='ACCPET'&&items.length>0)||(orderStatus=='UN_ACCPET'&&items.length>0)"  @click="goToMap()"></a>
 			<a class="mui-icon iconfont icon-saomiao orderScan" @click="goOrderScan()" v-show="orderStatus=='SINCE'||orderStatus=='WAIT_GOOD'"></a>
 		</header>
 		<div class="search-con">
 			<div class="switchBox">
 				<div class="flexCon">
+					<a href="#listPopover">
+						<span  class="mui-icon mui-icon-list"></span>
+					</a>
 					<div class="flexOne">
 						<input type="search" v-model="searchtext" class="" placeholder="" v-on:keyup.13="searchItem()"/>
 						<span class="mui-icon mui-icon-search"></span>
@@ -39,27 +39,13 @@
 					<li class="mui-table-view-cell ListTag" v-for="(index, item)  in items">
 						<div class="mui-input-group">
 							<div class="flexCon">
-								<div class="mui-input-row mui-checkbox flex-checkwidth">
-									<input name="checkbox" v-bind:address="item.address" v-bind:orderNumber="item.orderNumber" class="changeinput" type="checkbox" v-if="orderStatus=='UN_ACCPET'||orderStatus=='ACCPET'">
-								</div>
 								<div class="flexOne">
 									<div class="flexCon lineheight25">
 										<span class="flexOne" v-cloak>
 											{{item.orderNumber}}
 										</span>
-										<span class="flex-width75" v-if="!orderStatus" v-cloak>
-											{{item.orderStatus}}
-										</span>
-										<div class="flex-width90 mui-text-right">
-											
-											<span v-cloak  v-if="orderStatus!='SINCE'">
-												<i class="mui-icon iconfont icon-ditu1 fontOrange"></i>
-												约:{{item.distance}}km
-											</span>
-											
-										</div>
 									</div>
-									<a class="flexCon" v-bind:address="item.address" v-bind:orderNumber="item.orderNumber" v-for="product  in item.products">
+									<div class="flexCon" v-for="product  in item.products">
 										<img class="goodsImg" v-bind:src="product.productPic || '../../images/cbd.jpg'">
 										<div class="flexOne lineheight7 flexellipsis">
 											<span v-cloak>
@@ -76,14 +62,11 @@
 											<span v-cloak>
 												￥{{product.price}}
 											</span>
-											<span>
-												&nbsp;
-											</span>
 											<span v-cloak>
 												*{{product.count}}
 											</span>
 										</div>
-									</a>
+									</div>
 								</div>
 							</div>
 							<div class="mui-text-right">
@@ -102,97 +85,35 @@
 				</ul>
 			</div>
 		</div>
-		
-		<div class="bottomMenu" v-if="orderStatus=='UN_ACCPET'&&items.length>0">
-			<div class="mui-pull-left">
-				<div class="mui-input-row mui-checkbox mui-left" @click="selectAll()">
-					<div class="mui-input-row mui-checkbox flex-checkwidth">
-						<input name="checkbox" class="changeinput" type="checkbox">
-					</div>
-				</div>
-				<span>全选</span>
-			</div>
-			<div class="mui-pull-right">
-				<button class="mui-btn-mini" @click="getOrder()">接单</button>
-			</div>
-		</div>
-		<div class="bottomMenu" v-if="orderStatus=='ACCPET'&&items.length>0">
-			<div class="mui-pull-left">
-				<div class="mui-input-row mui-checkbox mui-left" @click="selectAll()">
-					<div class="mui-input-row mui-checkbox flex-checkwidth">
-						<input name="checkbox" class="changeinput" type="checkbox">
-					</div>
-				</div>
-				<span>全选</span>
-			</div>
-			<div class="mui-pull-right">
-				<button class="mui-btn-mini" @click="sendGoods()">发货</button>
-			</div>
-		</div>
-		<div id="bottomPopover" class="mui-popover">
+		<div id="listPopover" class="mui-popover mui-bar-popover detail-pop">
 			<div class="mui-popover-arrow"></div>
-			<div class="mui-scroll-wrapper">
-				<div class="mui-scroll">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell" pid="">
-							<a href="#">
-								<div>
-									全部订单
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell" pid="UN_ACCPET">
-							<a href="#">
-								<div>
-									未接订单
-
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell" pid="ACCPET">
-							<a href="#">
-								<div>
-									已接订单
-
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell" pid="SINCE">
-							<a href="#">
-								<div>
-									自提订单
-
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell" pid="WAIT_GOOD">
-							<a href="#">
-								<div>
-									待收货订单
-
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell" pid="END_ORDER">
-							<a href="#">
-								<div>
-									已完结订单
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell" pid="IN_STORE">
-							<a href="#">
-								<div>
-									门店订单
-								</div>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" pid="productSN" >
+					SN码
+				</li>
+				<li class="mui-table-view-cell" pid="productName">
+					商品名称
+				</li>
+				<li class="mui-table-view-cell" pid="productNumber">
+					商品编码
+				</li>
+				<li class="mui-table-view-cell" pid="skuName">
+					规格名称
+				</li>
+				<li class="mui-table-view-cell" pid="skuNumber" >
+					规格编码
+				</li>
+				<li class="mui-table-view-cell" pid="barcode" >
+					商品条码
+				</li>
+				<li class="mui-table-view-cell"  pid="ourPrice">
+					商品自增长ID
+				</li>
+				<li class="mui-table-view-cell"  pid="ourPrice">
+					价格
+				</li>
+			</ul>
 		</div>
-		<input type="hidden" id="orderStatus">
-		<div id="divios"></div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>

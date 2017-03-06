@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>租金订单</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+		<link href="../../styles/jiku.css" rel="stylesheet" />
+	</head>
+
+	<body id="vue">
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">{{statusName||"退租金订单"}}</h1>
+			<a href="#" class="mui-icon iconfont icon-ditu2 orderMap" v-if="(orderStatus=='ACCPET'&&items.length>0)||(orderStatus=='UN_ACCPET'&&items.length>0)" @click="goToMap()"></a>
+			<a class="mui-icon iconfont icon-saomiao orderScan" @click="goOrderScan()" v-show="orderStatus=='SINCE'||orderStatus=='WAIT_GOOD'"></a>
+		</header>
+		<div class="search-con">
+			<div class="switchBox">
+				<div class="flexCon">
+					<div class="flexOne">
+						<input type="search" v-model="searchtext" class="" placeholder="" v-on:keyup.13="searchItem()" />
+						<span class="mui-icon mui-icon-search"></span>
+					</div>
+					<button class="" @click="searchItem()">搜索</button>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content mui-scroll-wrapper paddingtop85" id="tochange">
+			<div class="mui-scroll fontsize12">
+				<div class="rentlist">
+					<div class="rentNumber">订单编号：SO-170221-92120</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">实退金额:</div>
+						<div class="flexOne rentchildright">￥555.00</div>
+					</div>
+					<div class="rentDetail">
+						<div class="rentNumber ">租金明细</div>
+						<div class="rentchild flexCon">
+							<div class="rentchildleft">实退金额:</div>
+							<div class="flexOne rentchildright">￥555.00</div>
+						</div>
+					</div>
+
+				</div><div class="rentlist">
+					<div class="rentNumber">订单编号：SO-170221-92120</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">实退金额:</div>
+						<div class="flexOne rentchildright">￥555.00</div>
+					</div>
+					<div class="rentDetail">
+						<div class="rentNumber ">租金明细</div>
+						<div class="rentchild flexCon">
+							<div class="rentchildleft">实退金额:</div>
+							<div class="flexOne rentchildright">￥555.00</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="rentlist">
+					<div class="rentNumber">订单编号：SO-170221-92120</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">实退金额:</div>
+						<div class="flexOne rentchildright">￥555.00</div>
+					</div>
+					<div class="rentDetail">
+						<div class="rentNumber ">租金明细</div>
+						<div class="rentchild flexCon">
+							<div class="rentchildleft">实退金额:</div>
+							<div class="flexOne rentchildright">￥555.00</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="rentOrder.js"></script>
+
+</html>

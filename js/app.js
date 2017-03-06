@@ -1,28 +1,18 @@
 window.E = {
-//		apiUrl: 'http://sandbox.swapi.hongware.com/openApi/dyncHongware/mobile/',
-//		  apiUrl: 'http://sandbox.o2o.swapi.hongware.com/openApi/dyncHongware/mobile/',
-		 nick: "O2Omobile",
-		apiUrl: 'http://o2oswapi.hongware.com/openApi/dyncHongware/mobile/',  
-//		 apiUrl: 'http://192.168.50.215:8089/openApi/dyncHongware/mobile/',
-//		nick: "欧少辉", 
-//		apiUrl: 'http://192.168.50.216:8089/openApi/dyncHongware/mobile/',
+		//		apiUrl: 'http://sandbox.swapi.hongware.com/openApi/dyncHongware/mobile/',
+		//		  apiUrl: 'http://sandbox.o2o.swapi.hongware.com/openApi/dyncHongware/mobile/',
+		nick: "O2Omobile",
+		apiUrl: 'http://o2oswapi.hongware.com/openApi/dyncHongware/mobile/',
+		//		 apiUrl: 'http://192.168.50.215:8089/openApi/dyncHongware/mobile/',
+		//		nick: "欧少辉", 
+		//		apiUrl: 'http://192.168.50.216:8089/openApi/dyncHongware/mobile/',
 		// apiUrl: 'http://192.168.51.103:8089/openApi/dyncHongware/mobile/',
-		subpages: ['../home/home.html', '../goods/goods.html', '../order/order.html', '../more/more.html'],
-		preloadPages: ["orderDetail", "pushSet", "pages/tab/tab.html"]
+
 	},
 	function(a, b) {
 		a.extend(b, {
 			vue: function(e) {
 				return new Vue(e)
-			},
-			initDataurl: function(url, callback) {
-				var elements = [].slice.call(document.body.querySelectorAll('[' + url + ']'));
-				elements.forEach(function(element) {
-					var href = element.getAttribute(url)
-					element.addEventListener("tap", function() {
-						callback(href, this)
-					}, false);
-				});
 			},
 			fireData: function(page, evt, data) {
 				a.fire(this.getWebview(page), evt || 'detailShow', data);
@@ -108,24 +98,6 @@ window.E = {
 			removeStorage: function(a) {
 				plus.storage.removeItem(a);
 			},
-			IsNum: function(num) {
-				var reNum = /^\d*$/;
-				if(!reNum.test(num.value)) {
-					if(num.value < 0.01) {
-						num.value = "";
-					}
-					return false;
-				}
-			},
-			IsNumer: function(num, c, b) {
-				var reNum = /^\d*$/;
-				if(!reNum.test(num)) {
-					b ? b() : (E.toast("请输入正确价格"))
-					return false;
-				}
-				c()
-			}
-
 		})
 	}(mui, E),
 	function(a, b, p) {
@@ -188,102 +160,12 @@ window.E = {
 					}
 				});
 			},
-			itemGet: function(barcode, callback) {
-				var param = b.systemParam("V5.mobile.item.get");
-				param.barcode = barcode;
-				b.getData('itemGet', param, function(data) {
-					if(!data.isSuccess) {
-						b.alert(data.map.errorMsg)
-						return
-					}
-					callback()
-				}, "get")
-			},
-			scanGet: function(ScanTxt, callback) {
-				var scanAr = [];
-				!ScanTxt.indexOf("*") ? (scanAr.push(ScanTxt)) : (scanAr = ScanTxt.split("*"));
-				callback(scanAr);
-			},
-			getNumber: function(obj, int) {
-				var judge = null,
-					count = 0,
-					getModel = [],
-					items = a(".ListTag")
-				for(var i = 0, len = items.length; i < len; i++) {
-					var status = items[i].querySelector("[type=checkbox]").checked;
-					getModel.push(status)
-				}
-				for(item in getModel) {
-					if(getModel[item]) {
-						count++;
-						judge = item;
-					}
-				}
-				if(judge == null) {
-					b.toast("请选择你要操作的对象")
-					return
-				}
-				if(count > 1 && !int) {
-					b.toast("一次只能操作一个对象")
-					return
-				}
-
-				if(!int) {
-					var orderNumber = items[judge].querySelector("[type=checkbox]").getAttribute("orderNumber");
-					obj(orderNumber)
-				} else {
-					var product = [],
-						barcodeArray = [];
-					items.each(function() {
-						if(this.querySelector("[type=checkbox]").checked) {
-							var barcode = this.querySelector("[type=checkbox]").getAttribute("barcode")
-							if(int == 1) {
-								product.push({
-									barcode: barcode,
-									stock: this.querySelector("[type=number]").value
-								})
-								barcodeArray.push(barcode)
-							} else if(int == 2) {
-								product.push(this.getAttribute("dex"))
-								barcodeArray.push(barcode)
-							}
-
-						}
-					})
-					obj.products = product
-					return {
-						products: obj,
-						barcodeArray: barcodeArray
-					}
-				}
-			},
-			selectAll: function(o) {
-				a(".ListTag").each(function() {
-					this.querySelector("[type=checkbox]").checked = o;
-				})
-			},
 			showLayer: function(c) {
 				var memCon = mui(".mem-con")[c];
 				var memText = memCon.getElementsByClassName("mem-text")[0];
 				var height = memText.offsetHeight + 80;
 				memCon.style.marginTop = -(height / 2) + "px";
 				memCon.style.left = "50%";
-			},
-			getNewArray: function(e, c) {
-				var newItem = [];
-				for(var j = 0, jlen = e.length; j < jlen; j++) {
-					var canpush = false;
-					for(var i = 0, len = c.length; i < len; i++) {
-						if(e[j].barcode == c[i]) {
-							canpush = true;
-							break;
-						}
-					}
-					if(!canpush) {
-						newItem.push(e[j]);
-					}
-				}
-				return newItem
 			},
 			numBtn: function() {
 				(function($) {

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="">
+		<meta http-equiv="content-security-policy">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>创建订单</title>
+		<link href="../../styles/mui.css" rel="stylesheet" />
+		<link href="../../styles/iconfont.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+		<link href="../../styles/jiku.css" rel="stylesheet" />
+	</head>
+
+	<body class="detail-bc" id="cashrCart">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">创建订单</h1>
+		</header>
+		<div class="mui-content paddingtop44">
+			<div class="jkdetailtop">
+				<div class="jkdetailstatus flexCon">
+					<div class="jk_ds_text">订单</div>
+					<div class="flexOne jk_ds_status">状态<br><span>下单中</span></div>
+				</div>
+				<div class="jkdetailcontent flexCon">
+					<div class="jk_dc_text">dadad<br>押金</div>
+					<div class="flexOne jk_dc_c">1 x 3天<br>1</div>
+					<div class="jk_dc_r">￥2.44<br>￥2.44</div>
+				</div>
+				<div class="jkdetailtbom">￥2.44</div>
+			</div>
+			<div class="jk_d_ht flexCon">
+				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
+				<div class="flexOne jk_d_ht_c">设置SN码</div>
+				<div class="jk_d_ht_r">0</div>
+			</div>
+			<div class="jk_d_bgc">
+				<div class="flexCon jk_d_snc">
+					<div class="flexOne">SN码</div>
+					<div>状态</div>
+				</div>
+				<div class="jk_sn_div">
+					<div class="jk_sn_nodata">无数据</div>
+					<ul class="mui-table-view afterNoborder">
+						<li class="mui-table-view-cell afterNoborder padding0">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">取消</a>
+								<a class="mui-btn mui-btn-red">删除</a>
+							</div>
+							<div class="mui-slider-handle">
+								<div class="flexCon jk_d_sncdata">
+									<div class="flexOne">SN码</div>
+									<div class="jk_d_sncr" style="color:red">未查找</div>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell afterNoborder padding0">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">取消</a>
+								<a class="mui-btn mui-btn-red">删除</a>
+							</div>
+							<div class="mui-slider-handle">
+								<div class="flexCon jk_d_sncdata">
+									<div class="flexOne">SN码</div>
+									<div class="jk_d_sncr" style="color:red">未查找</div>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell afterNoborder padding0">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-grey">取消</a>
+								<a class="mui-btn mui-btn-red">删除</a>
+							</div>
+							<div class="mui-slider-handle">
+								<div class="flexCon jk_d_sncdata">
+									<div class="flexOne">SN码</div>
+									<div class="jk_d_sncr" style="color:red">未查找</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="jk_sn_btn">
+					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined">直接输入</button>
+					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined">扫码录入</button>
+				</div>
+			</div>
+			<div class="jk_d_ht flexCon">
+				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
+				<div class="flexOne jk_d_ht_c">基础信息</div>
+			</div>
+			<div class="jk_d_bgc">
+				<div class="jk_d_user flexCon hasbomborder">
+					<span class="mui-icon iconfont icon-gongsiyuangong"></span><div>取货人</div>
+					<input v-model="userName" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名" v-on:keyup.13="loginEvent()">
+				</div>
+				<div class="jk_d_user flexCon">
+					<span class="mui-icon iconfont icon-gongsiyuangong"></span><div>手机</div>
+					<input v-model="userName" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机" v-on:keyup.13="loginEvent()">
+				</div>
+			</div>
+			<div class="jk_d_ht flexCon">
+				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
+				<div class="flexOne jk_d_ht_c">设备租用时间</div>
+			</div>
+			<div class="jk_d_bgc">
+				<div class="renttime" >
+					<div class="flexCon hasbomborder" style="padding-bottom: 6px ;">
+						<div class="renttimelabel">出国日期</div>
+						<button data-options='{"type":"date","beginYear":2000,"endYear":2030}' class="btn mui-btn mui-btn-block flexOne">选择日期</button>
+					</div>
+					<div class="flexCon" style="padding-top: 6px ;">
+						<div class="renttimelabel">回国日期</div>
+						<button data-options='{"type":"date","beginYear":2000,"endYear":2030}' class="btn mui-btn mui-btn-block flexOne">选择日期</button>
+					</div>
+				</div>
+			</div>
+			<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="save()">确定</button>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/app.js"></script>
+	<script src="cashrCart.js"></script>
+	<script>
+	</script>
+
+</html>

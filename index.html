@@ -12,8 +12,8 @@
 		<link href="styles/mui.css" rel="stylesheet" />
 		<link href="styles/iconfont.css" rel="stylesheet" />
 		<script src="http://at.alicdn.com/t/font_f77yo6cztxfxbt9.js"></script>
-		<link href="styles/styleAll.css" rel="stylesheet" />
-
+		<!--<link href="styles/styleAll.css" rel="stylesheet" />-->
+		<link href="styles/jiku.css" rel="stylesheet" />
 	</head> 
 
 	<body class="login-bc" id="vue"> 
@@ -23,21 +23,17 @@
 			</div>
 			<div class="loginFrom">
 				<form>
-					<div class="mui-input-row">
-						<label><span class="mui-icon iconfont icon-jinggao"></span></label>
-						<input v-model="orgCode" type="text" class="mui-input-clear mui-input" placeholder="商家名称" v-on:keyup.13="loginEvent()">
-					</div>
-					<div class="mui-input-row">
+					<div class="mui-input-row flexCon">
 						<label><span class="mui-icon iconfont icon-111"></span></label>
-						<input v-model="store" type="text" class="mui-input-clear mui-input" placeholder="门店编码" v-on:keyup.13="loginEvent()">
+						<input v-model="store" type="text" class="mui-input-clear mui-input flexOne" placeholder="门店编码" v-on:keyup.13="loginEvent()">
 					</div>
-					<div class="mui-input-row">
+					<div class="mui-input-row flexCon">
 						<label><span class="mui-icon iconfont icon-gongsiyuangong"></span></label>
-						<input v-model="userName" type="text" class="mui-input-clear mui-input" placeholder="员工帐号" v-on:keyup.13="loginEvent()">
+						<input v-model="userName" type="text" class="mui-input-clear mui-input flexOne" placeholder="员工帐号" v-on:keyup.13="loginEvent()">
 					</div>
-					<div class="mui-input-row">
+					<div class="mui-input-row flexCon">
 						<label><span class="mui-icon iconfont icon-mima"></span></label>
-						<input v-model="password" type="password" class="mui-input-clear mui-input" placeholder="密码" v-on:keyup.13="loginEvent()">
+						<input v-model="password" type="password" class="mui-input-clear mui-input flexOne" placeholder="密码" v-on:keyup.13="loginEvent()">
 					</div>
 				</form>
 			</div>
