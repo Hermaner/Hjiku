@@ -48,44 +48,6 @@ var Page = {
 			mui('#dismore').popover('hide');
 		}
 	},
-	muiEvent: function() {
-		var self = this
-		mui("#payPopover").on('tap', "li", function() {
-			var pid = this.getAttribute("pid");
-			mui("#payPopover")[0].removeAttribute("style")
-			mui('#payPopover').popover('hide');
-			self.vue.paymentName = this.innerText.trim();
-			self.vue.paymentType = pid;
-			self.vue.createOrder(pid)
-
-		})
-		mui("#dismore").on('tap', "li", function() {
-
-			var pid = this.getAttribute("pid");
-			mui("#dismore")[0].removeAttribute("style")
-			mui('#dismore').popover('hide');
-			if(pid == 'cp') {
-				E.prompt('原订单金额：' + self.vue.totalPrice, '请输入修改金额', function(c) {
-					if(!c) {
-						E.alert("请输入修改金额");
-						return
-					}
-					var reNum = /^\d+(.\d{1,2})?$/;
-					if(!reNum.test(c)) {
-						E.alert('请输入正确金额')
-						return
-					}
-					var price = parseFloat(self.vue.allPrice) - parseFloat(self.vue.coudisPrice) - parseFloat(self.vue.memdisPrice)
-					self.vue.entryPrice = c;
-					self.vue.entryCoupon = parseFloat(price) - parseFloat(c)
-				})
-			} else if(pid == 'vp') {
-				self.vue.goVipinfo()
-			}
-
-		})
-
-	},
 	getFee: function(c) {
 		var self = this
 		var params = E.systemParam("V5.mobile.freight.get");

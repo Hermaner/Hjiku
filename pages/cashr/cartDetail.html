@@ -28,11 +28,11 @@
 					<div class="flexOne jk_ds_status">状态<br><span>下单中</span></div>
 				</div>
 				<div class="jkdetailcontent flexCon">
-					<div class="jk_dc_text">dadad<br>押金</div>
-					<div class="flexOne jk_dc_c">1 x 3天<br>1</div>
-					<div class="jk_dc_r">￥2.44<br>￥2.44</div>
+					<div class="jk_dc_text">{{submitData.items[0].pdname}}<br>{{submitData.items[1].pdname}}</div>
+					<div class="flexOne jk_dc_c">{{submitData.items[0].quantity}} x {{hiredays}}天<br>{{submitData.items[1].quantity}} x {{hiredays}}天</div>
+					<div class="jk_dc_r">￥{{spAmount}}<br>￥{{yjAmount}}</div>
 				</div>
-				<div class="jkdetailtbom">￥2.44</div>
+				<div class="jkdetailtbom">￥{{totalAmount}}</div>
 			</div>
 			<div class="jk_d_ht flexCon">
 				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
@@ -47,39 +47,14 @@
 				<div class="jk_sn_div">
 					<div class="jk_sn_nodata">无数据</div>
 					<ul class="mui-table-view afterNoborder">
-						<li class="mui-table-view-cell afterNoborder padding0">
+						<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, sn) in sndata">
 							<div class="mui-slider-right mui-disabled">
-								<a class="mui-btn mui-btn-grey">取消</a>
-								<a class="mui-btn mui-btn-red">删除</a>
+								<a class="mui-btn mui-btn-red" @click="deleteSn(index)">删除</a>
 							</div>
 							<div class="mui-slider-handle">
 								<div class="flexCon jk_d_sncdata">
-									<div class="flexOne">SN码</div>
-									<div class="jk_d_sncr" style="color:red">未查找</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell afterNoborder padding0">
-							<div class="mui-slider-right mui-disabled">
-								<a class="mui-btn mui-btn-grey">取消</a>
-								<a class="mui-btn mui-btn-red">删除</a>
-							</div>
-							<div class="mui-slider-handle">
-								<div class="flexCon jk_d_sncdata">
-									<div class="flexOne">SN码</div>
-									<div class="jk_d_sncr" style="color:red">未查找</div>
-								</div>
-							</div>
-						</li>
-						<li class="mui-table-view-cell afterNoborder padding0">
-							<div class="mui-slider-right mui-disabled">
-								<a class="mui-btn mui-btn-grey">取消</a>
-								<a class="mui-btn mui-btn-red">删除</a>
-							</div>
-							<div class="mui-slider-handle">
-								<div class="flexCon jk_d_sncdata">
-									<div class="flexOne">SN码</div>
-									<div class="jk_d_sncr" style="color:red">未查找</div>
+									<div class="flexOne">{{sn.sn}}</div>
+									<div class="jk_d_sncr" style="color:red">{{sn.status=="1"?"可使用":sn.status=="3"?"已售出":"不可用"}}</div>
 								</div>
 							</div>
 						</li>
@@ -96,23 +71,32 @@
 			</div>
 			<div class="jk_d_bgc">
 				<div class="jk_d_user flexCon hasbomborder">
-					<span class="mui-icon iconfont icon-gongsiyuangong"></span><div>取货人</div>
+					<span class="mui-icon iconfont icon-gongsiyuangong"></span>
+					<div>取货人</div>
 					<input v-model="submitData.consignee" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名" v-on:keyup.13="loginEvent()">
 				</div>
 				<div class="jk_d_user flexCon">
-					<span class="mui-icon iconfont icon-gongsiyuangong"></span><div>手机</div>
+					<span class="mui-icon iconfont icon-gongsiyuangong"></span>
+					<div>手机</div>
 					<input v-model="submitData.mobilephone" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机" v-on:keyup.13="loginEvent()">
 				</div>
+			</div>
+			<div class="jk_d_ht flexCon">
+				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
+				<div class="flexOne jk_d_ht_c">ERP内部备注</div>
+			</div>
+			<div class="jk_d_bgc">
+				<textarea v-model="submitData.mome"></textarea>
 			</div>
 			<div class="jk_d_ht flexCon">
 				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
 				<div class="flexOne jk_d_ht_c">设备租用时间</div>
 			</div>
 			<div class="jk_d_bgc">
-				<div class="renttime" >
+				<div class="renttime">
 					<div class="flexCon hasbomborder" style="padding-bottom: 6px ;">
 						<div class="renttimelabel">出国日期</div>
-						<button  @click='optionTime(1)' class="btn mui-btn mui-btn-block flexOne">{{beginFont}}</button>
+						<button @click='optionTime(1)' class="btn mui-btn mui-btn-block flexOne">{{beginFont}}</button>
 					</div>
 					<div class="flexCon" style="padding-top: 6px ;">
 						<div class="renttimelabel">回国日期</div>
