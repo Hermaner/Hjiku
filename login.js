@@ -8,6 +8,18 @@ var Page = {
 			preloadPages: [{
 				"id": "home",
 				"url": "pages/home/home.html",
+			}, {
+				"id": "orderTop",
+				"url": "pages/order/orderTop.html",
+			}, {
+				"id": "rentTop",
+				"url": "pages/order/rentTop.html",
+			}, {
+				"id": "cashrCart",
+				"url": "pages/cashr/cashrCart.html",
+			}, {
+				"id": "cartDetail",
+				"url": "pages/cashr/cartDetail.html",
 			}]
 		});
 		mui.plusReady(function() {
@@ -22,10 +34,9 @@ var Page = {
 	vueObj: {
 		el: '#vue',
 		data: {
-			store: '',
-			userName: '',
-			password: '',
-			showguide: false,
+			store: '上海乐名旅游专营店',
+			userName: 'admin',
+			password: 'admin',
 		},
 		methods: {
 			loginEvent: function() {
@@ -33,19 +44,16 @@ var Page = {
 					E.toast("信息不全！");
 					return
 				}
-				var params = E.paramFn("V5.mobile.user.login")
+				var params = E.paramFn("V5.mobile.project.jiku.user.login")
 				params = mui.extend(params, {
-					orgCode: this.orgCode,
 					store: this.store,
 					userName: this.userName,
 					password: this.password,
-					phoneType: Page.phoneType,
-					appId: plus.runtime.appid,
-					cid: cid
+					orgCode: 'jiku-devel',
 				})
 				E.showLoading();
 				var self = this;
-				E.getData('userLogin', params, function(data) {
+				E.getData('jikuUserLogin', params, function(data) {
 					if(!data.isSuccess) {
 						E.alert(data.map.errorMsg), E.closeLoading()
 						return
@@ -53,10 +61,11 @@ var Page = {
 					E.setStorage("store", self.store);
 					E.setStorage("userName", self.userName);
 					E.setStorage("password", self.password);
-					E.setStorage("op", data.op);
-					E.openWindow(E.preloadPages[2])
-					E.getWebview(E.preloadPages[2]).evalJS("Page.loadChild('" + pageType + "')")
-				}, "get", this.errorFN())
+					E.setStorage("op", self.userName);
+					E.fireData("home")
+				}, "", function() {
+					E.closeLoading()
+				})
 			}
 		}
 	}

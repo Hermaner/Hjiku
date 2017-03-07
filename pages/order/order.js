@@ -18,90 +18,105 @@ var Page = {
 					callback: self.pullRefreshUp
 				}
 			},
-			swipeBack: false,
 			keyEventBind: {
 				backbutton: false
 			}
 
 		});
+		mui.plusReady(function() {
+			window.addEventListener('pageshow', function(event) {
+				self.vue.type = event.detail.type;
+				self.vue.loadData();
+			})
+			window.addEventListener('reset', function(event) {
+				self.vue.resetData();
+			})
+		})
 		mui("#listPopover").on("tap", "li", function() {
-			var pid = this.getAttribute("pid");
-			self.vue.type = pid;
-			switch(pid) {
-				case "productName":
-					self.vue.searchType = "商品名称";
+			var sincepup = this.getAttribute("pid");
+			self.vue.sincepup = sincepup;
+			switch(sincepup) {
+				case "1":
+					self.vue.searchType = "手机号码";
 					break;
-				case "productNumber":
-					self.vue.searchType = "商品编码";
+				case "2":
+					self.vue.searchType = "收货人姓名";
 					break;
-				case "skuName":
-					self.vue.searchType = "规格名称";
-					break;
-				case "skuNumber":
-					self.vue.searchType = "规格编码";
-					break;
-				case "barcode":
-					self.vue.searchType = "商品条码";
-					break;
-				case "ourPrice":
-					self.vue.searchType = "销售价";
-					break;
-				case "productSN":
-					self.vue.searchType = "SN码";
+				case "3":
+					self.vue.searchType = "订单编号";
 					break;
 				default:
 					break;
 			}
 			mui('#listPopover').popover('hide');
 		});
-		mui.plusReady(function() {
-
-		})
 	},
 	pullRefreshDown: function() {
 		mui('#tochange').pullRefresh().endPulldownToRefresh();
-		Page.vue.loadData(Page.vue.orderStatus, "", 1)
+		Page.vue.loadData("", 1)
 	},
 	pullRefreshUp: function() {
-		Page.vue.loadData(Page.vue.orderStatus)
+		Page.vue.loadData()
 	},
 	vueObj: {
 		el: '#vue',
 		data: {
 			items: [],
+			searchType:"手机号码",
 			searchtext: "",
-			orderStatus: "",
-			statusName: "",
-			hasImei: false,
-			isSelect: false
+			showData: true,
+			deliveryStatus: "",
+			sincepup: "1",
+			status:'1',
+			type:'2',
 		},
 		methods: {
-			loadData: function(status, val, c) {
+			loadData: function(val, c) {
 				var self = this;
-				c && (Page.ItemId = null)
-				var params, urlPath;
-				if (status == "IN_STORE") {
-					params = E.systemParam("V5.mobile.order.store.search");
-					urlPath = "orderStoreSearch";
-				} else {
-					params = E.systemParam('V5.mobile.order.info.search');
-					urlPath = "orderInfoSearch"
+				var type = this.type;
+				var condition = {};
+				switch(type) {
+					case "1":
+						condition.mobilePhone = val;
+						break;
+					case "2":
+						condition.mobilePhone = val;
+						break;
+					case "3":
+						condition.deliveryStatus = this.deliveryStatus;
+						switch(this.sincepup) {
+							case "1":
+								condition.mobilePhone = val;
+								break;
+							case "2":
+								condition.consignee = val;
+								break;
+							case "3":
+								condition.orderNumber = val;
+								break;
+							default:
+								break;
+						}
+						break;
+					default:
+						break;
 				}
+				c && (Page.ItemId = null)
+				var params = E.systemParam('V5.mobile.project.jiku.orders.get');
 				params = mui.extend(params, {
-					orderStatus: status || "",
-					orderNumber: val || "",
+					condition: JSON.stringify(condition),
 					orderId: Page.ItemId || "",
 					pageSize: 15,
-					optype: "up"
+					optype: "up",
+					type: type,
+					status:this.status,
 				})
-				this.isSelect = false
-				E.getData(urlPath, params, function(data) {
+				E.getData("jikuOrdesGet", params, function(data) {
 					console.log(JSON.stringify(data))
-					self.orderStatus = status
+					self.showData = false;
 					E.closeLoading();
 					c && (self.items = [])
-					self.statusName = status == "UN_ACCPET" ? "未接订单" : status == "ACCPET" ? "已接订单" : status == "SINCE" ? "自提订单" : status == "WAIT_GOOD" ? "待收货订单" : status == "END_ORDER" ? "已完结订单" : status == "IN_STORE" ? "门店订单" : "全部订单"
-					if (!data.isSuccess) {
+					if(!data.isSuccess) {
 						mui('#tochange').pullRefresh().endPullupToRefresh(true);
 						(val || !Page.ItemId) && (self.items = []);
 						E.alert(data.map.errorMsg);
@@ -121,11 +136,21 @@ var Page = {
 				E.showLoading()
 				mui('#tochange').pullRefresh().enablePullupToRefresh();
 				Page.ItemId = null
+				this.showData = true;
 				this.loadData(this.orderStatus, val, 1);
 				this.searchtext = ""
 			},
 			goOrderScan: function() {
 				E.openWindow("../barcode/orderScan.html")
+			},
+			resetData: function() {
+				var self = this;
+				setTimeout(function() {
+					self.items = [];
+					self.searchtext = "";
+					self.showData = true;
+					Page.ItemId = null
+				}, 250)
 			}
 		}
 	}

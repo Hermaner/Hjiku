@@ -21,11 +21,11 @@
 			<li class="flexOne home-text flexellipsis">
 				<div class="flexCon">
 					<p v-cloak>
-						{{homeData.storeName}}asdasdasd
+						{{shop.shopName}}
 					</p>
 				</div>
-				<p v-cloak @click="goToloc()">
-					{{homeData.address}}asdadad
+				<p v-cloak>
+					{{shop.shopName || shop.address}}
 				</p>
 				<button class="mui-btn-primary home-esc" @click="exitLogin()">注销</button>
 			</li>
@@ -33,8 +33,8 @@
 		<div class="mui-content home_maincontent">
 		<div class="home_group_box">
 				<ul class="mui-table-view flexCon flexWrap homeOneList">
-					<li class="flexoneFour mui-table-view-cell" v-for="item in listData" @click='goPage(item.page)'>
-						<span class="mui-icon ifont icon-accept mui-home-iconsize" v-bind:class="{item.icon}"><font>0</font></span>
+					<li class="flexoneFour mui-table-view-cell" v-for="item in listData" @click='goPage(item.type)'>
+						<span class="mui-icon ifont mui-home-iconsize" v-bind:class="item.icon"><font v-show="item.count!='0'">{{parseInt(item.count) > 99 ? '99+': item.count}}</font></span>
 						<h6 class="mui-media-body mui-home-spancolor">{{item.name}}</h6>
 					</li>
 				</ul>

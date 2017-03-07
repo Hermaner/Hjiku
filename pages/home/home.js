@@ -6,92 +6,99 @@ var Page = {
 		var self = this;
 		mui.plusReady(function() {
 			self.ws = plus.webview.currentWebview();
+			window.addEventListener('pageshow', function(event) {
+				self.vue.loadData();
+			})
 		});
 	},
 	vueObj: {
 		el: '#vue',
 		data: {
-			homeData: {},
-			accAr: [],
 			listData: [],
-			op: "",
-
+			shop: {}
 		},
 		ready: function() {
 			this.listData = [{
 				name: '下单',
 				icon: "icon-accept",
 				page: "page",
-				type: "1",
+				type: "4",
+				count: '0'
 			}, {
 				name: '所有订单',
 				icon: "icon-accept",
 				page: "page",
 				type: "1",
+				count: '0'
 			}, {
 				name: '现场订单',
 				icon: "icon-accept",
 				page: "page",
-				type: "1",
+				type: "2",
+				count: '0'
 			}, {
 				name: '自提订单',
 				icon: "icon-accept",
 				page: "page",
-				type: "1",
+				type: "3",
+				count: '0'
 			}, {
 				name: '退押金单',
 				icon: "icon-accept",
-				page: "page",
-				type: "1",
+				page: "rentorder",
+				type: "5",
+				count: '0'
 			}, {
 				name: '退租金单',
 				icon: "icon-accept",
-				page: "page",
-				type: "1",
-			}, ]
+				page: "rentorder",
+				type: "6",
+				count: '0'
+			}]
 		},
 		methods: {
 			loadData: function() {
 				var self = this;
-				mui.plusReady(function() {
-					var params = E.systemParam("V5.mobile.order.status.count");
-					E.getData('orderStatusCount', params, function(data) {
-						console.log(JSON.stringify(data))
-						if(!data.isSuccess) {
-							E.closeLoading()
-							E.alert(data.map.errorMsg)
-							return
-						}
-						self.homeData = data;
-						self.op = E.getStorage("op");
-						E.setStorage("address", data.address);
-						(data.unAccpetCount > 0 || data.acceptCount > 0) ? (Page.openr.evalJS("Page.addNavIcon(true)")) : (Page.openr.evalJS("Page.addNavIcon(false)"))
-
-					}, "get");
-				})
+				var params = E.systemParam("V5.mobile.project.jiku.statistics.get");
+				E.getData('jikuStatisticsGet', params, function(data) {
+					console.log(data)
+					E.closeLoading()
+					if(!data.isSuccess) {
+						E.alert(data.map.errorMsg)
+						return
+					}
+					self.listData[1].count = data.statistics.orderCount;
+					self.listData[2].count = data.statistics.siteCount;
+					self.listData[3].count = data.statistics.fetchCount;
+					self.listData[4].count = data.statistics.depositCount;
+					self.listData[5].count = data.statistics.rentCount;
+					self.shop = data.shop;
+				});
 			},
-			goPage: function(url, type) {
-				switch(url) {
-					case '../createVip/createVip.html':
-						E.openPreWindow('createVip')
+			goPage: function(type) {
+				switch(type) {
+					case '1':
+						E.fireData('cashrCart')
 						break;
-					case 'caserIn':
-						E.openPreWindow('caserIn')
+					case '5':
+						E.fireData('rentTop', "", {
+							type: type
+						})
 						break;
-					case 'moreList.html':
-						E.openWindow('moreList.html', {
-							moreList: this.moreList
+					case '6':
+						E.fireData('rentTop', "", {
+							type: type
 						})
 						break;
 					default:
-						E.openWindow(url, {
-							type: type ? type : ''
+						E.fireData('orderTop', "", {
+							type: type
 						})
 						break;
 				}
 			},
 			exitLogin: function() {
-				Page.openr.hide("pop-out");
+				Page.ws.hide("pop-out");
 			},
 		}
 	}

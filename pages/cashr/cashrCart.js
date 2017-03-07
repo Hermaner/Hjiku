@@ -6,10 +6,6 @@ var Page = {
 		var self = this;
 		mui.plusReady(function() {
 			mui('.mui-scroll-wrapper').scroll();
-			self.cashrChart = mui.preload({
-				id: 'cashrDetail.html',
-				url: 'cashrDetail.html',
-			});
 		})
 		mui("#listPopover").on("tap", "li", function() {
 			var pid = this.getAttribute("pid");
@@ -33,6 +29,9 @@ var Page = {
 				case "ourPrice":
 					self.vue.searchType = "销售价";
 					break;
+				case "productId":
+					self.vue.searchType = "商品自增长ID";
+					break;
 				case "productSN":
 					self.vue.searchType = "SN码";
 					break;
@@ -48,12 +47,9 @@ var Page = {
 			items: [],
 			snItems: [],
 			unsnItems: [],
-			type: "productSN",
-			searchType: "SN码",
-			title: "",
+			type: "productName",
+			searchType: "商品名称",
 			searchtext: "",
-			hasImei: false,
-			selectListData: {},
 			fuzzyData: [],
 			snAr: []
 		},
@@ -69,20 +65,20 @@ var Page = {
 						}
 					}
 				}
-				var params = E.systemParam('V5.mobile.cart.item.search');
+				var params = E.systemParam('V5.mobile.project.jiku.items.get');
 				params = mui.extend(params, {
 					condition: val,
 					type: d ? "productSN" : this.type
 				})
 				E.showLoading()
-				E.getData('cartItemSearch', params, function(data) {
+				E.getData('jikuItemsGet', params, function(data) {
 					E.closeLoading()
-					console.log(JSON.stringify(data))
+					console.log(data)
 					if(!data.isSuccess) {
 						E.alert(data.map.errorMsg)
 						return
 					}
-					var products = data.productSkus;
+					var products = data.products;
 					var exit = 0;
 					var snItems = 0;
 					var unsnItems = 0;

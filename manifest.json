@@ -5,9 +5,9 @@
 		"iPad"
 	],
 	"id": "H5094096F",
-	"name": "HONG +   全渠道O2O新零售用红+",
+	"name": "极库O2O",
 	"version": {
-		"name": "1.0.29",
+		"name": "1.0.1",
 		"code": "225"
 	},
 	"description": "",
@@ -297,7 +297,9 @@
 					"styles/bigStyle.css",
 					"images/redloginbg.jpg",
 					"images/redlogo.png",
-					"images/guide-banner.png"
+					"images/guide-banner.png",
+					"styles/jiku.css",
+					"fonts/ifont.ttf"
 				],
 				"refer": [
 					"list/listdetail.html",
@@ -317,7 +319,12 @@
 					"pages/cashr/cashrDetail.html",
 					"pages/map/map.html",
 					"pages/tab/tab.html",
-					"pages/trial/index.html"
+					"pages/trial/index.html",
+					"pages/order/rentOrder.html",
+					"pages/order/orderTop.html",
+					"pages/cashr/cashrCart.html",
+					"pages/cashr/cartDetail.html",
+					"pages/order/rentTop.html"
 				],
 				"priority": 0
 			},
@@ -891,7 +898,8 @@
 					"styles/styleAll.css",
 					"fonts/ifont.ttf",
 					"styles/bigStyle.css",
-					"images/redlogo.png"
+					"images/redlogo.png",
+					"styles/jiku.css"
 				],
 				"refer": [
 					"pages/goodsAction/goodsAction.html",
@@ -1279,7 +1287,8 @@
 					"styles/mui.css",
 					"styles/styleAll.css",
 					"images/logo.png",
-					"images/cbd.jpg"
+					"images/cbd.jpg",
+					"fonts/ifont.ttf"
 				],
 				"refer": [
 					"pages/cashr/cashrDetail.html",
@@ -2265,6 +2274,55 @@
 					"pages/vipRecharge/rechangeNode.js",
 					"styles/mui.css",
 					"styles/styleAll.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"pages/order/rentOrder.html": {
+				"resources": [
+					"fonts/mui.ttf",
+					"pages/order/rentOrder.js",
+					"styles/styleAll.css",
+					"js/vue.js",
+					"styles/jiku.css",
+					"js/mui.min.js",
+					"styles/mui.css",
+					"fonts/ifont.ttf",
+					"js/app.js",
+					"styles/iconfont.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"pages/order/orderTop.html": {
+				"resources": [
+					"fonts/mui.ttf",
+					"styles/mui.min.css",
+					"styles/styleAll.css",
+					"js/mui.min.js",
+					"pages/order/rentOrder.html",
+					"pages/order/order.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"pages/cashr/cartDetail.html": {
+				"resources": [
+					"styles/jiku.css",
+					"js/mui.min.js",
+					"pages/cashr/cashrCart.js",
+					"styles/mui.css",
+					"styles/styleAll.css",
+					"fonts/mui.ttf",
+					"fonts/ifont.ttf"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"pages/order/rentTop.html": {
+				"resources": [
+					"pages/order/rentOrder.html",
+					"fonts/mui.ttf"
 				],
 				"refer": [],
 				"priority": 0

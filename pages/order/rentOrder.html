@@ -16,12 +16,7 @@
 	</head>
 
 	<body id="vue">
-		<header class="mui-bar mui-bar-nav">
-			<h1 class="mui-title">{{statusName||"退租金订单"}}</h1>
-			<a href="#" class="mui-icon iconfont icon-ditu2 orderMap" v-if="(orderStatus=='ACCPET'&&items.length>0)||(orderStatus=='UN_ACCPET'&&items.length>0)" @click="goToMap()"></a>
-			<a class="mui-icon iconfont icon-saomiao orderScan" @click="goOrderScan()" v-show="orderStatus=='SINCE'||orderStatus=='WAIT_GOOD'"></a>
-		</header>
-		<div class="search-con">
+		<div class="search-con sub-con">
 			<div class="switchBox">
 				<div class="flexCon">
 					<div class="flexOne">
@@ -32,54 +27,86 @@
 				</div>
 			</div>
 		</div>
-		<div class="mui-content mui-scroll-wrapper paddingtop85" id="tochange">
+		<div class="mui-content mui-scroll-wrapper paddingtop41" id="tochange" v-show="!showData">
 			<div class="mui-scroll fontsize12">
-				<div class="rentlist">
-					<div class="rentNumber">订单编号：SO-170221-92120</div>
+				<div class="rentlist" v-for="item in items">
+					<div class="rentNumber">退{{type=="5"?"押":"租"}}金单单号：{{item.depositNumber}}</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">订单编号:</div>
+						<div class="flexOne rentchildright">{{item.orderNumber}}</div>
+					</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">会员昵称:</div>
+						<div class="flexOne rentchildright">{{item.memberName}}</div>
+					</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">会员手机:</div>
+						<div class="flexOne rentchildright">{{item.mobilePhone}}</div>
+					</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">退{{type=="5"?"押":"租"}}金状态:</div>
+						<div class="flexOne rentchildright">{{item.returnPurahaseState}}</div>
+					</div>
+					<div class="rentchild flexCon">
+						<div class="rentchildleft">打款方式:</div>
+						<div class="flexOne rentchildright">{{item.paymentWayId}}</div>
+					</div>
 					<div class="rentchild flexCon">
 						<div class="rentchildleft">实退金额:</div>
-						<div class="flexOne rentchildright">￥555.00</div>
+						<div class="flexOne rentchildright">{{item.refundAmount}}</div>
 					</div>
-					<div class="rentDetail">
-						<div class="rentNumber ">租金明细</div>
-						<div class="rentchild flexCon">
-							<div class="rentchildleft">实退金额:</div>
-							<div class="flexOne rentchildright">￥555.00</div>
-						</div>
-					</div>
-
-				</div><div class="rentlist">
-					<div class="rentNumber">订单编号：SO-170221-92120</div>
 					<div class="rentchild flexCon">
-						<div class="rentchildleft">实退金额:</div>
-						<div class="flexOne rentchildright">￥555.00</div>
+						<div class="rentchildleft">创建时间:</div>
+						<div class="flexOne rentchildright">{{item.postDate}}</div>
+					</div>
+					<div class="rentchild flexCon" v-show="item.memo.length>0">
+						<div class="rentchildleft">备注:</div>
+						<div class="flexOne rentchildright">{{item.memo}}</div>
 					</div>
 					<div class="rentDetail">
-						<div class="rentNumber ">租金明细</div>
-						<div class="rentchild flexCon">
-							<div class="rentchildleft">实退金额:</div>
-							<div class="flexOne rentchildright">￥555.00</div>
+						<div class="rentNumber">{{type=="5"?"押":"租"}}金明细</div>
+						<div v-for="rentdetail in item.items" v-show="item.items.length>0">
+							<div class="rentchild flexCon" v-if="rentdetail.snCode.length>0">
+								<div class="rentchildleft">SN码:</div>
+								<div class="flexOne rentchildright">{{rentdetail.snCode}}</div>
+							</div>
+							<div class="rentchild flexCon" v-if="rentdetail.productNumber.length>0">
+								<div class="rentchildleft">商品编码:</div>
+								<div class="flexOne rentchildright">{{rentdetail.productNumber}}</div>
+							</div>
+							<div class="rentchild flexCon" v-if="rentdetail.productName.length>0">
+								<div class="rentchildleft">商品名称:</div>
+								<div class="flexOne rentchildright">{{rentdetail.productName}}</div>
+							</div>
+							<div class="rentchild flexCon" v-if="rentdetail.useDays.length>0">
+								<div class="rentchildleft">使用天数:</div>
+								<div class="flexOne rentchildright">{{rentdetail.useDays}}</div>
+							</div>
+							<div class="rentchild flexCon" v-if="rentdetail.price.length>0">
+								<div class="rentchildleft">单价:</div>
+								<div class="flexOne rentchildright">{{rentdetail.price}}</div>
+							</div><div class="rentchild flexCon" v-if="rentdetail.actualReturnPrice.length>0">
+								<div class="rentchildleft">实退单价:</div>
+								<div class="flexOne rentchildright">{{rentdetail.actualReturnPrice}}</div>
+							</div>
+							<div class="rentchild flexCon" v-if="rentdetail.actualReturnDays.length>0">
+								<div class="rentchildleft">实退天数:</div>
+								<div class="flexOne rentchildright">{{rentdetail.actualReturnDays}}</div>
+							</div>
+							<div class="rentchild flexCon" v-if="rentdetail.memo.length>0">
+								<div class="rentchildleft">原因:</div>
+								<div class="flexOne rentchildright">{{rentdetail.memo}}</div>
+							</div>
+						</div>
+						<div  v-show="item.items.length==0" style="text-align: center;color:#888.font-size:16px;padding-top:10px">
+							没有租金明细
 						</div>
 					</div>
-
-				</div>
-				<div class="rentlist">
-					<div class="rentNumber">订单编号：SO-170221-92120</div>
-					<div class="rentchild flexCon">
-						<div class="rentchildleft">实退金额:</div>
-						<div class="flexOne rentchildright">￥555.00</div>
-					</div>
-					<div class="rentDetail">
-						<div class="rentNumber ">租金明细</div>
-						<div class="rentchild flexCon">
-							<div class="rentchildleft">实退金额:</div>
-							<div class="flexOne rentchildright">￥555.00</div>
-						</div>
-					</div>
-
 				</div>
 			</div>
 		</div>
+		<div class="noData" v-show='noData'>没有相关数据</div>
+		<div class="noData" v-show='showData'>数据加载中</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>

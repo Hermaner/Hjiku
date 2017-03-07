@@ -13,27 +13,28 @@
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
 		<link href="../../styles/styleAll.css" rel="stylesheet" />
 	</head>
+
 	<body id="vue">
-		<header class="mui-bar mui-bar-nav">
-			<h1 class="mui-title">{{statusName||"全部订单"}}</h1>
-			<a href="#" class="mui-icon iconfont icon-ditu2 orderMap" v-if="(orderStatus=='ACCPET'&&items.length>0)||(orderStatus=='UN_ACCPET'&&items.length>0)"  @click="goToMap()"></a>
-			<a class="mui-icon iconfont icon-saomiao orderScan" @click="goOrderScan()" v-show="orderStatus=='SINCE'||orderStatus=='WAIT_GOOD'"></a>
-		</header>
-		<div class="search-con">
+		<div class="search-con sub-con">
 			<div class="switchBox">
 				<div class="flexCon">
-					<a href="#listPopover">
-						<span  class="mui-icon mui-icon-list"></span>
+					<select class="mui-btn" style="width:65px;margin-right: 5px;" v-show="type==2">
+						<option value="">全部</option>
+						<option value="1">已提货</option>
+						<option value="2">未提货</option>
+					</select>
+					<a href="#listPopover" v-show="type==2">
+						<span class="mui-icon mui-icon-list" style="margin-right: 5px;"></span>
 					</a>
 					<div class="flexOne">
-						<input type="search" v-model="searchtext" class="" placeholder="" v-on:keyup.13="searchItem()"/>
+						<input type="search" v-model="searchtext" class="" placeholder="请输入要搜索的{{searchType}}" v-on:keyup.13="searchItem()" />
 						<span class="mui-icon mui-icon-search"></span>
 					</div>
 					<button class="" @click="searchItem()">搜索</button>
 				</div>
 			</div>
 		</div>
-		<div class="mui-content mui-scroll-wrapper paddingtop85" id="tochange">
+		<div class="mui-content mui-scroll-wrapper paddingtop41" id="tochange">
 			<div class="mui-scroll fontsize12">
 				<ul class="mui-table-view" id='orderList'>
 					<li class="mui-table-view-cell ListTag" v-for="(index, item)  in items">
@@ -76,7 +77,7 @@
 										应付￥{{item.totalAmount}}&nbsp;&nbsp;实付￥{{item.initialTotalAmount}}
 									</span>
 								</span><br>
-								<span  class="fontOrange"  v-if="orderStatus=='SINCE'">
+								<span class="fontOrange" v-if="orderStatus=='SINCE'">
 												自提时间：{{item.sinceTime}}
 											</span>
 							</div>
@@ -88,29 +89,14 @@
 		<div id="listPopover" class="mui-popover mui-bar-popover detail-pop">
 			<div class="mui-popover-arrow"></div>
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" pid="productSN" >
-					SN码
+				<li class="mui-table-view-cell" pid="1">
+					手机号码
 				</li>
-				<li class="mui-table-view-cell" pid="productName">
-					商品名称
+				<li class="mui-table-view-cell" pid="2">
+					收货人姓名
 				</li>
-				<li class="mui-table-view-cell" pid="productNumber">
-					商品编码
-				</li>
-				<li class="mui-table-view-cell" pid="skuName">
-					规格名称
-				</li>
-				<li class="mui-table-view-cell" pid="skuNumber" >
-					规格编码
-				</li>
-				<li class="mui-table-view-cell" pid="barcode" >
-					商品条码
-				</li>
-				<li class="mui-table-view-cell"  pid="ourPrice">
-					商品自增长ID
-				</li>
-				<li class="mui-table-view-cell"  pid="ourPrice">
-					价格
+				<li class="mui-table-view-cell" pid="3">
+					订单编号
 				</li>
 			</ul>
 		</div>

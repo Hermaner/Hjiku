@@ -1,0 +1,132 @@
+{
+	"index.html": {
+		"resources": [
+			"styles/iconfont.css",
+			"js/app.js",
+			"js/vue.js",
+			"styles/jiku.css",
+			"login.js",
+			"js/mui.min.js",
+			"fonts/iconfont.ttf",
+			"images/redloginbg.jpg",
+			"styles/mui.css",
+			"images/redlogo.png",
+			"fonts/mui.ttf",
+			"fonts/ifont.ttf"
+		],
+		"refer": [
+			"pages/home/home.html",
+			"pages/order/rentOrder.html",
+			"pages/order/orderTop.html",
+			"pages/cashr/cashrCart.html",
+			"pages/cashr/cartDetail.html",
+			"pages/order/rentTop.html"
+		]
+	},
+	"pages/home/home.html": {
+		"resources": [
+			"styles/iconfont.css",
+			"fonts/ifont.ttf",
+			"images/about-logo.png",
+			"styles/jiku.css",
+			"pages/home/home.js",
+			"styles/mui.css",
+			"js/vue.js",
+			"js/mui.min.js"
+		]
+	},
+	"pages/order/rentOrder.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"pages/order/rentOrder.js",
+			"styles/styleAll.css",
+			"js/vue.js",
+			"styles/jiku.css",
+			"js/mui.min.js",
+			"styles/mui.css",
+			"fonts/ifont.ttf",
+			"js/app.js",
+			"styles/iconfont.css"
+		]
+	},
+	"pages/order/orderTop.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"styles/mui.min.css",
+			"styles/styleAll.css",
+			"js/mui.min.js",
+			"pages/order/rentOrder.html",
+			"pages/order/order.html"
+		],
+		"refer": [
+			"pages/order/rentOrder.html",
+			"pages/order/order.html"
+		]
+	},
+	"pages/cashr/cashrCart.html": {
+		"resources": [
+			"fonts/mui.ttf",
+			"pages/cashr/cashrCart.js",
+			"js/vue.js",
+			"styles/mui.css",
+			"styles/styleAll.css",
+			"images/cbd.jpg",
+			"fonts/ifont.ttf"
+		],
+		"refer": [
+			"pages/cashr/cashrDetail.html",
+			"pages/barcode/orderScan.html"
+		]
+	},
+	"pages/cashr/cashrDetail.html": {
+		"resources": [
+			"images/cbd.jpg",
+			"js/vue.js",
+			"js/mui.js",
+			"pages/cashr/cashrDetail.js",
+			"styles/mui.css",
+			"styles/styleAll.css"
+		]
+	},
+	"pages/cashr/cartDetail.html": {
+		"resources": [
+			"styles/jiku.css",
+			"js/mui.min.js",
+			"pages/cashr/cashrCart.js",
+			"styles/mui.css",
+			"styles/styleAll.css",
+			"fonts/mui.ttf",
+			"fonts/ifont.ttf"
+		]
+	},
+	"pages/barcode/orderScan.html": {
+		"resources": [
+			"js/app.js",
+			"js/vue.js",
+			"js/mui.min.js",
+			"pages/barcode/orderScan.js",
+			"styles/mui.css",
+			"styles/styleAll.css"
+		]
+	},
+	"pages/order/rentTop.html": {
+		"resources": [
+			"pages/order/rentOrder.html",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"pages/order/rentOrder.html"
+		]
+	},
+	"pages/order/order.html": {
+		"resources": [
+			"pages/order/order.js",
+			"styles/mui.css",
+			"styles/styleAll.css",
+			"images/cbd.jpg",
+			"js/app.js",
+			"js/vue.js",
+			"js/mui.min.js"
+		]
+	}
+}

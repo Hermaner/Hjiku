@@ -50,26 +50,6 @@ var Page = {
 	},
 	muiEvent: function() {
 		var self = this
-		E.initDataurl("sendId", function(sendId) {
-			mui('#dispatchPopover').popover('hide');
-			mui("#dispatchPopover")[0].removeAttribute("style")
-			if(sendId == "SINCE") {
-				self.vue.fee = 0;
-				self.vue.sendType = sendId;
-				self.vue.addressObj = null
-			} else if(sendId == "STORE_DELIVER") {
-				E.openWindow("getAddress.html", {
-					sendId: sendId,
-					tel: self.vue.memberMsg ? self.vue.memberMsg.mobilePhone : ""
-				})
-			} else {
-				E.openWindow("getAddress.html", {
-					sendId: sendId,
-					tel: self.vue.memberMsg ? self.vue.memberMsg.mobilePhone : ""
-				})
-			}
-
-		})
 		mui("#payPopover").on('tap', "li", function() {
 			var pid = this.getAttribute("pid");
 			mui("#payPopover")[0].removeAttribute("style")

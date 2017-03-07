@@ -1,13 +1,8 @@
 window.E = {
-		//		apiUrl: 'http://sandbox.swapi.hongware.com/openApi/dyncHongware/mobile/',
-		//		  apiUrl: 'http://sandbox.o2o.swapi.hongware.com/openApi/dyncHongware/mobile/',
-		nick: "O2Omobile",
-		apiUrl: 'http://o2oswapi.hongware.com/openApi/dyncHongware/mobile/',
+		nick: "V5mobile",
+		apiUrl: 'http://sandbox.o2o.swapi.hongware.com/openApi/dyncHongware/project/',
 		//		 apiUrl: 'http://192.168.50.215:8089/openApi/dyncHongware/mobile/',
 		//		nick: "欧少辉", 
-		//		apiUrl: 'http://192.168.50.216:8089/openApi/dyncHongware/mobile/',
-		// apiUrl: 'http://192.168.51.103:8089/openApi/dyncHongware/mobile/',
-
 	},
 	function(a, b) {
 		a.extend(b, {
@@ -15,8 +10,11 @@ window.E = {
 				return new Vue(e)
 			},
 			fireData: function(page, evt, data) {
-				a.fire(this.getWebview(page), evt || 'detailShow', data);
+				a.fire(this.getWebview(page), evt || 'pageshow', data);
 				this.openPreWindow(page)
+			},
+			firesubData: function(page, evt, data) {
+				a.fire(this.getWebview(page), evt || 'pageshow', data);
 			},
 			openPreWindow: function(page) {
 				a.openWindow({
@@ -133,7 +131,7 @@ window.E = {
 			},
 			systemParam: function(e) {
 				var param = b.paramFn(e);
-				param.orgCode = b.getStorage("orgCode");
+				param.orgCode = 'jiku-devel';
 				param.store = b.getStorage("store");
 				param.op = b.getStorage("op");
 				return param;
@@ -142,7 +140,7 @@ window.E = {
 				return b.md5()(b.base64().encoder(b.getStorage("op")) + b.base64().encoder(parseInt((new Date()).getTime() / 1000).toString()));
 			},
 			getData: function(obj, data, callback, type, error, timeout) {
-				type = type ? type : "post";
+				type = type ? type : "get";
 				var url = b.apiUrl + obj;
 				mui.ajax(url, {
 					data: data,

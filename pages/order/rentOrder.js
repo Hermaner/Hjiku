@@ -18,114 +18,93 @@ var Page = {
 					callback: self.pullRefreshUp
 				}
 			},
-			swipeBack: false,
 			keyEventBind: {
-				backbutton: false
-			}
-
-		});
-		mui("#listPopover").on("tap", "li", function() {
-			var pid = this.getAttribute("pid");
-			self.vue.type = pid;
-			switch(pid) {
-				case "productName":
-					self.vue.searchType = "商品名称";
-					break;
-				case "productNumber":
-					self.vue.searchType = "商品编码";
-					break;
-				case "skuName":
-					self.vue.searchType = "规格名称";
-					break;
-				case "skuNumber":
-					self.vue.searchType = "规格编码";
-					break;
-				case "barcode":
-					self.vue.searchType = "商品条码";
-					break;
-				case "ourPrice":
-					self.vue.searchType = "销售价";
-					break;
-				case "productSN":
-					self.vue.searchType = "SN码";
-					break;
-				default:
-					break;
-			}
-			mui('#listPopover').popover('hide');
+				backbutton: false,
+			},
 		});
 		mui.plusReady(function() {
-
+			window.addEventListener('pageshow', function(event) {
+				self.vue.type = event.detail.type;
+				self.vue.loadData();
+			})
+			window.addEventListener('reset', function(event) {
+				self.vue.resetData();
+			})
 		})
 	},
 	pullRefreshDown: function() {
 		mui('#tochange').pullRefresh().endPulldownToRefresh();
-		Page.vue.loadData(Page.vue.orderStatus, "", 1)
+		Page.vue.loadData("", 1)
 	},
 	pullRefreshUp: function() {
-		Page.vue.loadData(Page.vue.orderStatus)
+		Page.vue.loadData()
 	},
 	vueObj: {
 		el: '#vue',
 		data: {
+			type: "",
 			items: [],
+			noData: false,
+			showData: true,
 			searchtext: "",
-			orderStatus: "",
-			statusName: "",
-			hasImei: false,
-			isSelect: false
 		},
 		methods: {
-			loadData: function(status, val, c) {
+			loadData: function(val, c) {
 				var self = this;
 				c && (Page.ItemId = null)
 				var params, urlPath;
-				if (status == "IN_STORE") {
-					params = E.systemParam("V5.mobile.order.store.search");
-					urlPath = "orderStoreSearch";
+				var type = this.type;
+				if(type == "6") {
+					params = E.systemParam("V5.mobile.project.jiku.return.orders.get");
+					urlPath = "jikuReturnOrdesGet";
 				} else {
-					params = E.systemParam('V5.mobile.order.info.search');
-					urlPath = "orderInfoSearch"
+					params = E.systemParam('V5.mobile.project.jiku.deposit.orders.get');
+					urlPath = "jikuDepositOrdesGet"
 				}
 				params = mui.extend(params, {
-					orderStatus: status || "",
-					orderNumber: val || "",
+					depositNumber: val || "",
 					orderId: Page.ItemId || "",
-					pageSize: 15,
+					pageSize: 5,
 					optype: "up"
 				})
-				this.isSelect = false
 				E.getData(urlPath, params, function(data) {
-					console.log(JSON.stringify(data))
-					self.orderStatus = status
+					console.log(data)
 					E.closeLoading();
 					c && (self.items = [])
-					self.statusName = status == "UN_ACCPET" ? "未接订单" : status == "ACCPET" ? "已接订单" : status == "SINCE" ? "自提订单" : status == "WAIT_GOOD" ? "待收货订单" : status == "END_ORDER" ? "已完结订单" : status == "IN_STORE" ? "门店订单" : "全部订单"
-					if (!data.isSuccess) {
+					if(!data.isSuccess) {
 						mui('#tochange').pullRefresh().endPullupToRefresh(true);
 						(val || !Page.ItemId) && (self.items = []);
 						E.alert(data.map.errorMsg);
 						return
 					}
+					self.showData = false;
 					c && (plus.os.name == "Android" ? (window.scrollTo(0, 0)) : (mui('#tochange').pullRefresh().scrollTo(0, 0)));
 					var orders = data.orders;
 					Page.ItemId == null && (self.items = [])
 					self.items = self.items.concat(orders);
 					Page.ItemId = val ? 1 : orders[orders.length - 1].orderId;
 					mui('#tochange').pullRefresh().endPullupToRefresh(false);
-					(orders.length < 15) && (mui('#tochange').pullRefresh().endPullupToRefresh(true))
-				}, "get")
+					(orders.length < 5) && (mui('#tochange').pullRefresh().endPullupToRefresh(true))
+				})
 			},
 			searchItem: function() {
 				var val = this.searchtext;
 				E.showLoading()
 				mui('#tochange').pullRefresh().enablePullupToRefresh();
 				Page.ItemId = null
-				this.loadData(this.orderStatus, val, 1);
+				this.showData = true;
+				this.loadData(val, 1);
 				this.searchtext = ""
 			},
-			goOrderScan: function() {
-				E.openWindow("../barcode/orderScan.html")
+			resetData: function() {
+				var self = this;
+				setTimeout(function() {
+					self.items = [];
+					self.title = "";
+					self.searchtext = "";
+					self.showData=true;
+					Page.ItemId = null
+				}, 250)
 			}
 		}
 	}

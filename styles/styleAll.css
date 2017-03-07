@@ -248,6 +248,9 @@ ul li.active p {
 .mui-content.paddingtop41 {
 	padding-top: 41px;
 }
+.mui-content.margintop41 {
+	margin-top: 41px;
+}
 .mui-input-group .mui-input-row:after {
 	height: 0;
 }
