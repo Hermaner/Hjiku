@@ -18,7 +18,7 @@
 		<div class="search-con sub-con">
 			<div class="switchBox">
 				<div class="flexCon">
-					<select class="mui-btn" style="width:65px;margin-right: 5px;" v-show="type==2">
+					<select class="mui-btn" style="width:65px;margin-right: 5px;" v-model="deliveryStatus" v-show="type==2" v-on:change="loadData('',1)">
 						<option value="">全部</option>
 						<option value="1">已提货</option>
 						<option value="2">未提货</option>
@@ -37,7 +37,7 @@
 		<div class="mui-content mui-scroll-wrapper paddingtop41" id="tochange" v-show="!showData">
 			<div class="mui-scroll fontsize12">
 				<ul class="mui-table-view" id='orderList'>
-					<li class="mui-table-view-cell ListTag" v-for="(index, item)  in items">
+					<li class="mui-table-view-cell ListTag" v-for="(index, item)  in items" @click="goDetail(item.orderNumber)">
 						<div class="mui-input-group">
 							<div class="flexCon">
 								<div class="flexOne">
@@ -64,7 +64,7 @@
 												￥{{product.price}}
 											</span>
 											<span v-cloak>
-												*{{product.count}}
+												*{{product.quantity}}
 											</span>
 										</div>
 									</div>
@@ -72,14 +72,11 @@
 							</div>
 							<div class="mui-text-right">
 								<span v-cloak>
-									共{{item.productNum}}件商品&nbsp;&nbsp;
+									<!--共{{item.productNum}}件商品&nbsp;&nbsp;-->
 									<span class="fontOrange" v-cloak>
-										应付￥{{item.totalAmount}}&nbsp;&nbsp;实付￥{{item.initialTotalAmount}}
+										应付￥{{item.totalAmount}}&nbsp;&nbsp;实付￥{{item.initialTotalAmount||0}}
 									</span>
-								</span><br>
-								<span class="fontOrange" v-if="orderStatus=='SINCE'">
-												自提时间：{{item.sinceTime}}
-											</span>
+								</span>
 							</div>
 						</div>
 					</li>

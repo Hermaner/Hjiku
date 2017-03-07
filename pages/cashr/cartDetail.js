@@ -27,7 +27,7 @@ var Page = {
 					self.vue.submitData.items = [{
 							pdname: mainPd.productName,
 							isDeposits: 0,
-							quantity: mainPd.count,
+							quantity: mainPd.snAr.length || mainPd.count,
 							price: mainPd.price,
 							productItemId: mainPd.productItemId,
 							sn: mainPd.snAr ? mainPd.snAr.toString() : '',
@@ -40,9 +40,10 @@ var Page = {
 							price: depositPd.price,
 							productItemId: depositPd.productItemId,
 							days: 1,
-						},
+						}
 					];
-					if(mainPd.snAr && mainPd.snAr > 0) {
+					if(mainPd.snAr && mainPd.snAr.length > 0) {
+						self.vue.hasSNsearch = true;
 						mainPd.snAr.forEach((sn) => {
 							self.vue.checkSN(sn);
 						});
@@ -50,17 +51,22 @@ var Page = {
 				}
 			})
 		})
+		mui.back = function() {
+			plus.webview.currentWebview().hide("pop-out");
+			setTimeout(function() {
+				self.vue.resetData()
+			}, 250)
+		}
 	},
 	vueObj: {
 		el: '#vue',
 		data: {
-			searchtext: "",
-			items: null,
 			defaultdays: 3,
 			hiredays: 3,
 			sndata: [],
 			spAmount: 0,
 			yjAmount: 0,
+			hasSNsearch: false,
 			submitData: {
 				consignee: '',
 				mobilePhone: '',
@@ -79,8 +85,8 @@ var Page = {
 			var date1 = new Date();
 			var date2 = new Date(date1);
 			date2.setDate(date1.getDate() + this.defaultdays);
-			this.beginText=date1.getTime();
-			this.endText=date2.getTime();
+			this.beginText = date1.getTime();
+			this.endText = date2.getTime();
 			this.beginFont = date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate()
 			this.endFont = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate()
 		},
@@ -90,11 +96,6 @@ var Page = {
 			},
 			checkSN: function(sncode) {
 				var self = this;
-				this.sndata.push({
-					sn: sncode,
-					status: 0,
-				});
-				this.submitData.items[0].sn = sndata.map(item => item.sn).toString();
 				var params = E.systemParam('V5.mobile.project.jiku.items.get');
 				params = mui.extend(params, {
 					condition: sncode + ',' + this.submitData.items[0].productItemId,
@@ -102,21 +103,20 @@ var Page = {
 				})
 				E.showLoading()
 				E.getData('jikuItemsGet', params, function(data) {
-					console.log(data);
-					self.sndata.map((sn) => {
-						var newsn = sn;
-						if(newsn.sn === sncode) {
-							if(data.isSuccess) {
-								newsn.status = 1;
-							} else {
-								newsn.status = 4;
-								if(data.map.errorMsg.match('状态为售出')) {
-									newsn.status = 3;
-								}
-							}
+					E.closeLoading()
+					if(!data.isSuccess) {
+						if(data.map.errorMsg.match('状态为售出')) {
+							E.alert('SN码' + sncode + "已售出，不能使用")
+						} else if(data.map.errorMsg.match('不存在')) {
+							E.alert('SN码' + sncode + "不存在")
+						} else {
+							E.alert(data.map.errorMsg)
 						}
-						return newsn;
-					});
+						return
+					}
+					self.sndata.push(sncode);
+					self.submitData.items[0].sn = self.sndata.join(',');
+					self.submitData.items[0].quantity= self.sndata.length;
 				})
 			},
 			gosnScan: function() {
@@ -125,12 +125,13 @@ var Page = {
 				})
 			},
 			enterSn: function() {
+				var self = this;
 				E.prompt("请输入SN码", "请输入SN码", function(v) {
-					alert(v);
+					self.checkSN(v);
 				})
 			},
-			deleteSn:function(){
-				
+			deleteSn: function(index) {
+				this.sndata.splice(index, 1);
 			},
 			createOrder: function() {
 				if(!this.submitData.mobilephone || !this.submitData.consignee || this.beginFont == '选择日期' || this.endFont == '选择日期') {
@@ -156,32 +157,20 @@ var Page = {
 				} else if(mainProduct.sn.split(',').length != mainProduct.quantity) {
 					alert('下单失败，备SN码数量不正确');
 					return;
-				} else if(mainProduct.sn.split(',').length == mainProduct.quantity) {
-					let alldone = true;
-					sndata.forEach((sn) => {
-						if(sn.status != 1) {
-							alldone = false;
-						}
-					});
-					if(!alldone) {
-						alert('下单失败，有不可用的设备SN码');
-						return;
-					}
 				}
 				var params = E.systemParam('V5.mobile.project.jiku.order.create');
 				params.orderData = JSON.stringify(this.submitData);
 				E.showLoading()
-
 				E.getData('jikuOrderCreate', params, function(data) {
 					if(!data.isSuccess) {
-						alert(json.map.errorMsg);
+						alert(data.map.errorMsg);
 						return;
 					}
-					e.fireData('pay', {
-						orderId: json.orderNumber,
-						orderData,
-					});
-				})
+					//					e.fireData('pay', {
+					//						orderId: json.orderNumber,
+					//						orderData,
+					//					});
+				}, "post")
 
 			},
 			optionTime: function(c) {
@@ -216,6 +205,10 @@ var Page = {
 					picker.dispose();
 				});
 			},
+			resetData: function() {
+				this.sndata = [];
+				this.hasSNsearch = false;
+			}
 		},
 		computed: {
 			totalAmount: function() {

@@ -62,73 +62,22 @@ var Page = {
 		result = result.replace(/\n/g, '');
 		console.log(result);
 		switch(ws.type) {
-			case "caserIn":
-				Page.caserIn(result);
-				break;
-			case "item":
-				Page.checkItem(result);
-				break;
-			case "itemAction":
-				Page.checkItemAction(result)
-				break;
-			case "coupon":
-				Page.checkCoupon(result)
+			case "sn":
+				Page.checkSn(result);
 				break;
 			case "cart":
-				Page.checkCart(result)
-				break;
-			case "transfer":
-				Page.transfer(result)
-				break;
-			case "since":
-				result = JSON.parse(result);
-				Page.sinceCode(result.code)
-				break;
-			case "vip":
-				Page.vip(result)
-				break;
-			case "vipinfo":
-				Page.vipinfo(result)
-				break;
-			case "viprechange":
-				Page.viprechange(result)
-				break;
-		    case "cashcard":
-				Page.cashcard(result)
+				Page.checkCart(result);
 				break;
 			default:
-				if(result.length > 20) {
-					result = JSON.parse(result);
-					if(E.getStorage("isReturns") == '0' && result.type == '2') {
-						alert('不能找到订单')
-						return
-					} else {
-						Page.gotDetail(result.orderNumber, result.code || "")
-					}
-				} else {
-					Page.gotDetail(result)
-				}
 				break;
 		}
 	},
-	checkDetail: function(e) {
-		var self = this;
-		E.fireData(E.preloadPages[0], 'detailShow', {
-			orderNumber: e,
-			address: "",
-			orderStatus: ""
-		})
-		setTimeout(function() {
-			mui.back()
-		}, 1000)
-
-	},
-	checkItem: function(c) {
-		this.openr.evalJS("Page.vue.searchItem('" + c + "')")
+	checkSn: function(c) {
+		this.openr.evalJS("Page.vue.checkSN('" + c + "')")
 		mui.back()
 	},
-	caserIn: function(c) {
-		this.openr.evalJS("Page.vue.loadCoupon('" + c + "')")
+	checkCart: function(c) {
+		this.openr.evalJS("Page.vue.loadData('" + c + "',1)")
 		mui.back()
 	},
 	checkItemAction: function(c) {
@@ -137,10 +86,6 @@ var Page = {
 	},
 	checkCoupon: function(c) {
 		this.openr.evalJS("Page.vue.loadCoupon('" + c + "')")
-		mui.back()
-	},
-	checkCart: function(c) {
-		this.openr.evalJS("goodsActionPage.vue.searchItem('" + c + "',1)")
 		mui.back()
 	},
 	vip: function(c) {

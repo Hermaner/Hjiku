@@ -112,7 +112,7 @@ var Page = {
 					status: this.status,
 				})
 				E.getData("jikuOrdesGet", params, function(data) {
-					console.log(JSON.stringify(data))
+					console.log(data)
 					self.showData = false;
 					E.closeLoading();
 					c && (self.items = [])
@@ -137,11 +137,16 @@ var Page = {
 				mui('#tochange').pullRefresh().enablePullupToRefresh();
 				Page.ItemId = null
 				this.showData = true;
-				this.loadData(this.orderStatus, val, 1);
+				this.loadData(val, 1);
 				this.searchtext = ""
 			},
 			goOrderScan: function() {
 				E.openWindow("../barcode/orderScan.html")
+			},
+			goDetail:function(orderNumber){
+				E.fireData("listDetail","",{
+					orderNumber:orderNumber
+				})
 			},
 			resetData: function() {
 				var self = this;

@@ -20,6 +20,9 @@ var Page = {
 			}, {
 				"id": "cartDetail",
 				"url": "pages/cashr/cartDetail.html",
+			}, {
+				"id": "listDetail",
+				"url": "pages/order/listDetail.html",
 			}]
 		});
 		mui.plusReady(function() {

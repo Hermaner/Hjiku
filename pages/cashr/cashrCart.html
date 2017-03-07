@@ -20,21 +20,19 @@
 			<h1 id="title" class="mui-title">购物篮</h1>
 			<span class="mui-icon iconfont icon-saomiao orderScan" @click="scanItem()"></span>
 		</header>
-		
+
 		<div class="mem-keep-out" v-if="fuzzyData.length>0">
 			<div class="mem-con">
 				<h3>请选择商品</h3>
 				<button class="layermend" @click="closeMask()"></button>
 				<div class="mem-text">
 					<ul class="mui-table-view">
-						<li class="fuzzyTag" v-for="(index,item) in fuzzyData" dex="{{index}}"  barcode="{{item.productItemId}}">
+						<li class="fuzzyTag" v-for="(index,item) in fuzzyData" dex="{{index}}" barcode="{{item.productItemId}}">
 							<div class="mui-input-group">
 								<div class="flexCon">
-									<div class="mui-input-row mui-checkbox flex-checkwidth">
-										<input name="checkbox" class="changeinput" type="checkbox"  barcode="{{item.productItemId}}">
-									</div>
-									<div class="flexOne">
-										<a class="flexCon">
+									<div class="mui-checkbox mui-left">
+										<label style="padding:0 0 0 38px"><div class="flexCon">
+
 											<img class="goodsImg" v-bind:src="item.productPic || '../../images/cbd.jpg'">
 											<div class="flexOne lineheight7 flexellipsis">
 												<span v-cloak>
@@ -49,19 +47,14 @@
 											</div>
 											<div class="flex-width90 lineheight7 mui-text-right">
 												<span>价格：¥{{item.price}}</span>
-												<span>
-													&nbsp;
-												</span>
-												<span>
-													*{{item.stock}}
-												</span>
 											</div>
-										</a>
+									</div></label>
+										<input style="left:0" name="checkbox" class="changeinput" type="checkbox" barcode="{{item.productItemId}}">
 									</div>
 								</div>
 							</div>
 						</li>
-						
+
 					</ul>
 				</div>
 				<div class="mem-btn flexCon">
@@ -74,10 +67,10 @@
 			<div class="switchBox">
 				<div class="flexCon">
 					<a href="#listPopover">
-						<span  class="mui-icon mui-icon-list"></span>
+						<span class="mui-icon mui-icon-list"></span>
 					</a>
 					<div class="flexOne">
-						<input type="search" id="searchTxt" v-model="searchtext" class="" placeholder="请输入要搜索的{{searchType}}" v-on:keyup.13="searchItem()"/>
+						<input type="search" id="searchTxt" v-model="searchtext" class="" placeholder="请输入要搜索的{{searchType}}" v-on:keyup.13="searchItem()" />
 						<span class="mui-icon mui-icon-search"></span>
 					</div>
 					<button class="" @click="searchItem()">搜索</button>
@@ -88,7 +81,9 @@
 			<div class="mui-scroll fontsize12">
 				<ul class="mui-table-view" v-if="items.length>0">
 					<li class="mui-table-view-cell ListTag" v-for="(index,item) in items" dex="{{index}}">
-						<div class="mui-slider-right mui-disabled"><a class="mui-btn swipe-btn mui-btn-red" @click="delete(index,item)">删除</a></div>
+						<div class="mui-slider-right mui-disabled">
+							<a class="mui-btn swipe-btn mui-btn-red" @click="delete(index,item)">删除</a>
+						</div>
 						<div class="mui-input-group mui-slider-handle">
 							<div class="flexCon">
 								<div class="flexOne">
@@ -106,8 +101,8 @@
 											</span>
 										</div>
 										<div class="flex-width90 lineheight7">
-											<span class="mui-text-right">价格：¥{{item.price}}</span> 
-											<div class="mui-numbox mui-flex-numbox" data-numbox-min="0" v-if="!item.sn">
+											<span class="mui-text-right">价格：¥{{item.price}}</span>
+											<div class="mui-numbox mui-flex-numbox" data-numbox-min="0" v-show="!item.sn">
 												<button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
 												<input class="mui-numbox-input" type="number" value="{{item.count||1}}">
 												<button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
@@ -124,7 +119,7 @@
 		<div id="listPopover" class="mui-popover mui-bar-popover detail-pop">
 			<div class="mui-popover-arrow"></div>
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" pid="productSN" >
+				<li class="mui-table-view-cell" pid="productSN">
 					SN码
 				</li>
 				<li class="mui-table-view-cell" pid="productName">
@@ -136,35 +131,34 @@
 				<li class="mui-table-view-cell" pid="skuName">
 					规格名称
 				</li>
-				<li class="mui-table-view-cell" pid="skuNumber" >
+				<li class="mui-table-view-cell" pid="skuNumber">
 					规格编码
 				</li>
-				<li class="mui-table-view-cell" pid="barcode" >
+				<li class="mui-table-view-cell" pid="barcode">
 					商品条码
 				</li>
-				<li class="mui-table-view-cell"  pid="productId">
+				<li class="mui-table-view-cell" pid="productId">
 					商品自增长ID
 				</li>
-				<li class="mui-table-view-cell"  pid="ourPrice">
+				<li class="mui-table-view-cell" pid="ourPrice">
 					价格
 				</li>
 			</ul>
 		</div>
 		<nav class="mui-bar mui-bar-tab dis-nav-bar">
-				<button type="button" class="mui-btn" @click="cancleCreate()">
+			<button type="button" class="mui-btn" @click="cancleCreate()">
 					取消
 				</button>
-				<button type="button" class="mui-btn mui-btn-primary" @click='readyPay()'>
+			<button type="button" class="mui-btn mui-btn-primary" @click='readyPay()'>
 					确认
 				</button>
-			</nav>
+		</nav>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>
 	<script src="../../js/app.js"></script>
 	<script src="cashrCart.js"></script>
 	<script>
-		
 	</script>
 
 </html>

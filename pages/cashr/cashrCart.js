@@ -56,7 +56,7 @@ var Page = {
 		methods: {
 			loadData: function(val, d) {
 				var self = this;
-				if(self.type == 'productSN') {
+				if(self.type == 'productSN'||d) {
 					for(var i = 0; i < self.snAr.length; i++) {
 						if(val == self.snAr[i]) {
 							E.alert('搜索的SN码商品已存在');
@@ -84,7 +84,7 @@ var Page = {
 					var unsnItems = 0;
 					if(products.length == 1) {
 						var barcode = products[0].productItemId;
-						if(self.type == 'productSN') {
+						if(self.type == 'productSN'||d) {
 							for(var i = 0; i < self.unsnItems.length; i++) {
 								if(barcode == self.unsnItems[i].productItemId) {
 									E.alert("购物车中存在普通商品");
@@ -128,9 +128,6 @@ var Page = {
 						}, 0)
 
 					}
-					console.log(self.unsnItems)
-					console.log(self.snItems)
-					console.log(self.items)
 					setTimeout(function() {
 						E.numBtn()
 					}, 0)
@@ -234,25 +231,15 @@ var Page = {
 			},
 			readyPay: function() {
 				var self = this;
-				var stock = [];
 				var unsnItems = [];
+				if(self.items.length == 0) {
+					E.alert("请选择商品")
+					return
+				}
 				for(var i = 0, len = mui(".ListTag").length; i < len; i++) {
 					if(!this.items[i].sn) {
 						this.items[i].count = mui(".ListTag")[i].querySelector("[type='number']").value;
 					}
-				}
-				for(var i = 0; i < this.items.length; i++) {
-					if(parseInt(this.items[i].stock) < parseInt(this.items[i].count)) {
-						stock.push(this.items[i].productName)
-					}
-				}
-				if(stock.length > 0) {
-					E.alert(stock.join(',') + "库存不足")
-					return
-				}
-				if(self.items.length == 0) {
-					E.alert("请选择商品")
-					return
 				}
 				for(var i = 0; i < this.items.length; i++) {
 					if(!this.items[i].sn) {

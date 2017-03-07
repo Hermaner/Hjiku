@@ -19,20 +19,44 @@
 	<body class="detail-bc" id="vue">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 id="title" class="mui-title">创建订单</h1>
+			<h1 id="title" class="mui-title">订单详情</h1>
 		</header>
 		<div class="mui-content paddingtop44">
 			<div class="jkdetailtop">
 				<div class="jkdetailstatus flexCon">
-					<div class="jk_ds_text">订单</div>
-					<div class="flexOne jk_ds_status">状态<br><span>下单中</span></div>
+					<div class="jk_ds_text">订单<br><span>{{order.orderNumber}}</span></div>
+					<div class="flexOne jk_ds_status">状态<br><span>{{order.status}}</span></div>
 				</div>
-				<div class="jkdetailcontent flexCon">
-					<div class="jk_dc_text">{{submitData.items[0].pdname}}<br>{{submitData.items[1].pdname}}</div>
-					<div class="flexOne jk_dc_c">{{submitData.items[0].quantity}} x {{hiredays}}天<br>{{submitData.items[1].quantity}} x {{hiredays}}天</div>
-					<div class="jk_dc_r">￥{{spAmount}}<br>￥{{yjAmount}}</div>
+				<div class="js_detial_con">
+					<div class="flexCon">
+					  <div class="flexOne">下单时间:{{order.orderTime}}</div>
+					</div>
+					<div class="flexCon">
+					  <div class="flexOne">收货人:{{order.consignee}}</div>
+					  <div class="flexOne">手机:{{order.mobilePhone}}</div>
+					</div>
+					<div class="flexCon">
+					  <div class="flexOne">出国时间:{{order.consignee}}</div>
+					  <div class="flexOne">回国时间:{{order.mobilePhone}}</div>
+					</div>
+					<div class="flexCon">
+					  <div class="flexOne">门店:{{order.store}}</div>
+					</div>
 				</div>
-				<div class="jkdetailtbom">￥{{totalAmount}}</div>
+				<div class="jkdetailcontent">
+					<div class="flexCon">
+						<div class="jk_dc_text">123</div>
+						<div class="flexOne jk_dc_c">1 x 3天</div>
+						<div class="jk_dc_r">￥123123</div>
+					</div>
+					<div class="flexCon">
+						<div class="jk_dc_text">123</div>
+						<div class="flexOne jk_dc_c">1 x 3天</div>
+						<div class="jk_dc_r">￥123123</div>
+					</div>
+				</div>
+				<div class="jkdetailtbom">￥{{order.totalAmount}}</div>
+				
 			</div>
 			<div class="jk_d_ht flexCon">
 				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
@@ -65,53 +89,14 @@
 					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="gosnScan()">扫码录入</button>
 				</div>
 			</div>
-			<div class="jk_d_ht flexCon">
-				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
-				<div class="flexOne jk_d_ht_c">基础信息</div>
-			</div>
-			<div class="jk_d_bgc">
-				<div class="jk_d_user flexCon hasbomborder">
-					<span class="mui-icon iconfont icon-gongsiyuangong"></span>
-					<div>取货人</div>
-					<input v-model="submitData.consignee" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名" v-on:keyup.13="loginEvent()">
-				</div>
-				<div class="jk_d_user flexCon">
-					<span class="mui-icon iconfont icon-gongsiyuangong"></span>
-					<div>手机</div>
-					<input v-model="submitData.mobilephone" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机" v-on:keyup.13="loginEvent()">
-				</div>
-			</div>
-			<div class="jk_d_ht flexCon">
-				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
-				<div class="flexOne jk_d_ht_c">ERP内部备注</div>
-			</div>
-			<div class="jk_d_bgc">
-				<textarea v-model="submitData.mome"></textarea>
-			</div>
-			<div class="jk_d_ht flexCon">
-				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
-				<div class="flexOne jk_d_ht_c">设备租用时间</div>
-			</div>
-			<div class="jk_d_bgc">
-				<div class="renttime">
-					<div class="flexCon hasbomborder" style="padding-bottom: 6px ;">
-						<div class="renttimelabel">出国日期</div>
-						<button @click='optionTime(1)' class="btn mui-btn mui-btn-block flexOne">{{beginFont}}</button>
-					</div>
-					<div class="flexCon" style="padding-top: 6px ;">
-						<div class="renttimelabel">回国日期</div>
-						<button @click='optionTime()' class="btn mui-btn mui-btn-block flexOne">{{endFont}}</button>
-					</div>
-				</div>
-			</div>
-			<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="createOrder()">确定</button>
+			<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="createOrder()">确认提货</button>
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>
 	<script src="../../js/app.js"></script>
 	<script src="../../js/mui.picker.min.js"></script>
-	<script src="cartDetail.js"></script>
+	<script src="listDetail.js"></script>
 	<script>
 	</script>
 

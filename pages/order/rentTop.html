@@ -34,9 +34,9 @@
 			});
 			window.addEventListener('pageshow', function(event) {
 				var type = event.detail.type;
-				E.firesubData('rentOrder', "", {
-					type: type
-				})
+//				E.firesubData('rentOrder', "", {
+//					type: type
+//				})
 				if(type == "5") {
 					document.getElementById("title").innerText = "退押金单";
 				} else {

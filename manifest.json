@@ -1015,7 +1015,8 @@
 					"js/vue.js",
 					"fonts/mui.ttf",
 					"styles/styleAll.css",
-					"images/cbd.jpg"
+					"images/cbd.jpg",
+					"fonts/ifont.ttf"
 				],
 				"refer": [
 					"pages/map/map.html",

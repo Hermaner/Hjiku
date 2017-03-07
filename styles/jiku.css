@@ -520,6 +520,7 @@
     margin-top: 12px;
     margin-bottom: 12px;
 }
+.js_detial_con{line-height:20px;color:#fff;font-size:12px;padding:10px 10px 0}
 .jk_sn_nodata{text-align: center;color:#888;font-size:16px;line-height:30px}
 @media screen and (min-width:480px) {
 	body,
@@ -557,5 +558,11 @@
 	}
 	.homeOneList li {
 		height: 120px
+	}
+	.jkdetailtop{
+		font-size: 16px;
+	}
+	.js_detial_con{
+		line-height:32px;
 	}
 }

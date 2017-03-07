@@ -84,14 +84,24 @@ var Page = {
 						E.fireData('rentTop', "", {
 							type: type
 						})
+						E.firesubData('rentOrder', "", {
+							type: type
+						})
 						break;
 					case '6':
 						E.fireData('rentTop', "", {
 							type: type
 						})
+						E.firesubData('rentOrder', "", {
+							type: type
+						})
+
 						break;
 					default:
 						E.fireData('orderTop', "", {
+							type: type
+						})
+						E.firesubData('order', "", {
 							type: type
 						})
 						break;
