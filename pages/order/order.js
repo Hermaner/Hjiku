@@ -62,13 +62,13 @@ var Page = {
 		el: '#vue',
 		data: {
 			items: [],
-			searchType:"手机号码",
+			searchType: "手机号码",
 			searchtext: "",
 			showData: true,
 			deliveryStatus: "",
 			sincepup: "1",
-			status:'1',
-			type:'2',
+			status: '1',
+			type: '1',
 		},
 		methods: {
 			loadData: function(val, c) {
@@ -109,7 +109,7 @@ var Page = {
 					pageSize: 15,
 					optype: "up",
 					type: type,
-					status:this.status,
+					status: this.status,
 				})
 				E.getData("jikuOrdesGet", params, function(data) {
 					console.log(JSON.stringify(data))
@@ -149,7 +149,12 @@ var Page = {
 					self.items = [];
 					self.searchtext = "";
 					self.showData = true;
-					Page.ItemId = null
+					Page.ItemId = null;
+					self.searchType = "手机号码";
+					self.deliveryStatus = "";
+					self.sincepup = "1";
+					self.status = '1';
+					self.type = '1';
 				}, 250)
 			}
 		}

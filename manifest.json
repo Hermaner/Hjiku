@@ -2301,7 +2301,8 @@
 					"styles/styleAll.css",
 					"js/mui.min.js",
 					"pages/order/rentOrder.html",
-					"pages/order/order.html"
+					"pages/order/order.html",
+					"js/app.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -2314,15 +2315,26 @@
 					"styles/mui.css",
 					"styles/styleAll.css",
 					"fonts/mui.ttf",
-					"fonts/ifont.ttf"
+					"fonts/ifont.ttf",
+					"pages/cashr/cartDetail.js",
+					"styles/mui.picker.min.css",
+					"js/mui.picker.min.js",
+					"styles/iconfont.css",
+					"js/app.js",
+					"js/vue.js",
+					"fonts/iconfont.ttf"
 				],
-				"refer": [],
+				"refer": [
+					"pages/barcode/orderScan.html"
+				],
 				"priority": 0
 			},
 			"pages/order/rentTop.html": {
 				"resources": [
 					"pages/order/rentOrder.html",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"styles/mui.min.css",
+					"styles/styleAll.css"
 				],
 				"refer": [],
 				"priority": 0

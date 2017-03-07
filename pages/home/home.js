@@ -34,13 +34,13 @@ var Page = {
 				name: '现场订单',
 				icon: "icon-accept",
 				page: "page",
-				type: "2",
+				type: "3",
 				count: '0'
 			}, {
 				name: '自提订单',
 				icon: "icon-accept",
 				page: "page",
-				type: "3",
+				type: "2",
 				count: '0'
 			}, {
 				name: '退押金单',
@@ -77,7 +77,7 @@ var Page = {
 			},
 			goPage: function(type) {
 				switch(type) {
-					case '1':
+					case '4':
 						E.fireData('cashrCart')
 						break;
 					case '5':

@@ -39,14 +39,14 @@
 				})
 				var title = document.getElementById("title");
 				switch(type) {
-					case "2":
+					case "1":
 						title.innerText = "所有订单";
+						break;
+					case "2":
+						title.innerText = "自提订单";
 						break;
 					case "3":
 						title.innerText = "现场订单";
-						break;
-					case "4":
-						title.innerText = "自提订单";
 						break;
 					default:
 						break;
@@ -54,8 +54,10 @@
 
 			})
 			mui.back = function() {
-				document.getElementById("title").innerText = "";
-				E.firesubData('order', "reset")
+				setTimeout(function() {
+					document.getElementById("title").innerText = "";
+					E.firesubData('order', "reset")
+				}, 250)
 				plus.webview.currentWebview().hide("pop-out");
 			}
 		})

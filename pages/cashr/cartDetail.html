@@ -13,9 +13,10 @@
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
 		<link href="../../styles/styleAll.css" rel="stylesheet" />
 		<link href="../../styles/jiku.css" rel="stylesheet" />
+		<link href="../../styles/mui.picker.min.css" rel="stylesheet" />
 	</head>
 
-	<body class="detail-bc" id="cashrCart">
+	<body class="detail-bc" id="vue">
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title">创建订单</h1>
@@ -85,8 +86,8 @@
 					</ul>
 				</div>
 				<div class="jk_sn_btn">
-					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined">直接输入</button>
-					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined">扫码录入</button>
+					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="enterSn()">直接输入</button>
+					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="gosnScan()">扫码录入</button>
 				</div>
 			</div>
 			<div class="jk_d_ht flexCon">
@@ -96,11 +97,11 @@
 			<div class="jk_d_bgc">
 				<div class="jk_d_user flexCon hasbomborder">
 					<span class="mui-icon iconfont icon-gongsiyuangong"></span><div>取货人</div>
-					<input v-model="userName" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名" v-on:keyup.13="loginEvent()">
+					<input v-model="submitData.consignee" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名" v-on:keyup.13="loginEvent()">
 				</div>
 				<div class="jk_d_user flexCon">
 					<span class="mui-icon iconfont icon-gongsiyuangong"></span><div>手机</div>
-					<input v-model="userName" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机" v-on:keyup.13="loginEvent()">
+					<input v-model="submitData.mobilephone" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机" v-on:keyup.13="loginEvent()">
 				</div>
 			</div>
 			<div class="jk_d_ht flexCon">
@@ -111,21 +112,22 @@
 				<div class="renttime" >
 					<div class="flexCon hasbomborder" style="padding-bottom: 6px ;">
 						<div class="renttimelabel">出国日期</div>
-						<button data-options='{"type":"date","beginYear":2000,"endYear":2030}' class="btn mui-btn mui-btn-block flexOne">选择日期</button>
+						<button  @click='optionTime(1)' class="btn mui-btn mui-btn-block flexOne">{{beginFont}}</button>
 					</div>
 					<div class="flexCon" style="padding-top: 6px ;">
 						<div class="renttimelabel">回国日期</div>
-						<button data-options='{"type":"date","beginYear":2000,"endYear":2030}' class="btn mui-btn mui-btn-block flexOne">选择日期</button>
+						<button @click='optionTime()' class="btn mui-btn mui-btn-block flexOne">{{endFont}}</button>
 					</div>
 				</div>
 			</div>
-			<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="save()">确定</button>
+			<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="createOrder()">确定</button>
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>
 	<script src="../../js/app.js"></script>
-	<script src="cashrCart.js"></script>
+	<script src="../../js/mui.picker.min.js"></script>
+	<script src="cartDetail.js"></script>
 	<script>
 	</script>
 

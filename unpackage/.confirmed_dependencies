@@ -56,7 +56,8 @@
 			"styles/styleAll.css",
 			"js/mui.min.js",
 			"pages/order/rentOrder.html",
-			"pages/order/order.html"
+			"pages/order/order.html",
+			"js/app.js"
 		],
 		"refer": [
 			"pages/order/rentOrder.html",
@@ -71,7 +72,9 @@
 			"styles/mui.css",
 			"styles/styleAll.css",
 			"images/cbd.jpg",
-			"fonts/ifont.ttf"
+			"fonts/ifont.ttf",
+			"js/app.js",
+			"js/mui.min.js"
 		],
 		"refer": [
 			"pages/cashr/cashrDetail.html",
@@ -96,7 +99,17 @@
 			"styles/mui.css",
 			"styles/styleAll.css",
 			"fonts/mui.ttf",
-			"fonts/ifont.ttf"
+			"fonts/ifont.ttf",
+			"pages/cashr/cartDetail.js",
+			"styles/mui.picker.min.css",
+			"js/mui.picker.min.js",
+			"styles/iconfont.css",
+			"js/app.js",
+			"js/vue.js",
+			"fonts/iconfont.ttf"
+		],
+		"refer": [
+			"pages/barcode/orderScan.html"
 		]
 	},
 	"pages/barcode/orderScan.html": {
@@ -112,7 +125,9 @@
 	"pages/order/rentTop.html": {
 		"resources": [
 			"pages/order/rentOrder.html",
-			"fonts/mui.ttf"
+			"fonts/mui.ttf",
+			"styles/mui.min.css",
+			"styles/styleAll.css"
 		],
 		"refer": [
 			"pages/order/rentOrder.html"

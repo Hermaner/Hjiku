@@ -259,9 +259,31 @@ var Page = {
 						unsnItems.push(this.items[i])
 					}
 				}
-				E.fireData("cashrDetail.html", 'detailShow', {
+				var snItems = this.snItems;
+				var hasMainPd = false;
+				var hasDepositPd = false;
+				if(snItems.length > 0) {
+					hasMainPd = true;
+					unsnItems.forEach((item) => {
+						hasDepositPd = hasDepositPd || item.isDeposits === '1';
+					});
+				} else {
+					unsnItems.forEach((item) => {
+						hasMainPd = hasMainPd || item.isDeposits === '0';
+						hasDepositPd = hasDepositPd || item.isDeposits === '1';
+					});
+				}
+				if(!hasMainPd) {
+					E.toast('请选择wifi商品');
+					return;
+				}
+				if(!hasDepositPd) {
+					E.toast('请选择押金商品');
+					return;
+				}
+				E.fireData("cartDetail", 'pageshow', {
 					unsnItems: unsnItems,
-					snItems: self.snItems
+					snItems: snItems
 				})
 
 			}

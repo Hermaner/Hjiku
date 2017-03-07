@@ -44,8 +44,10 @@
 				}
 			})
 			mui.back = function() {
-				document.getElementById("title").innerText = "";
-				E.firesubData('rentOrder', "reset")
+				setTimeout(function() {
+					document.getElementById("title").innerText = "";
+					E.firesubData('rentOrder', "reset")
+				}, 250)
 				plus.webview.currentWebview().hide("pop-out");
 			}
 		})

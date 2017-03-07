@@ -27,14 +27,14 @@
 						<span class="mui-icon mui-icon-list" style="margin-right: 5px;"></span>
 					</a>
 					<div class="flexOne">
-						<input type="search" v-model="searchtext" class="" placeholder="请输入要搜索的{{searchType}}" v-on:keyup.13="searchItem()" />
+						<input type="search" v-model="searchtext" class="" placeholder="请输入{{searchType}}" v-on:keyup.13="searchItem()" />
 						<span class="mui-icon mui-icon-search"></span>
 					</div>
 					<button class="" @click="searchItem()">搜索</button>
 				</div>
 			</div>
 		</div>
-		<div class="mui-content mui-scroll-wrapper paddingtop41" id="tochange">
+		<div class="mui-content mui-scroll-wrapper paddingtop41" id="tochange" v-show="!showData">
 			<div class="mui-scroll fontsize12">
 				<ul class="mui-table-view" id='orderList'>
 					<li class="mui-table-view-cell ListTag" v-for="(index, item)  in items">
@@ -100,6 +100,8 @@
 				</li>
 			</ul>
 		</div>
+		<div class="noData" v-show='noData'>没有相关数据</div>
+		<div class="noData" v-show='showData'>数据加载中</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>
 	<script src="../../js/vue.js"></script>
