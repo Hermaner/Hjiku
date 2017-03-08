@@ -20,7 +20,9 @@
 			"pages/order/orderTop.html",
 			"pages/cashr/cashrCart.html",
 			"pages/cashr/cartDetail.html",
-			"pages/order/rentTop.html"
+			"pages/order/rentTop.html",
+			"pages/order/listDetail.html",
+			"pages/cashr/mixPay.html"
 		]
 	},
 	"pages/home/home.html": {
@@ -32,7 +34,12 @@
 			"pages/home/home.js",
 			"styles/mui.css",
 			"js/vue.js",
-			"js/mui.min.js"
+			"js/mui.min.js",
+			"js/app.js"
+		],
+		"refer": [
+			"pages/cashr/cashrCart.html",
+			"pages/cashr/mixPay.html"
 		]
 	},
 	"pages/order/rentOrder.html": {
@@ -80,7 +87,9 @@
 		],
 		"refer": [
 			"pages/cashr/cashrDetail.html",
-			"pages/barcode/orderScan.html"
+			"pages/barcode/orderScan.html",
+			"pages/cashr/mixPay.html",
+			"pages/cashr/cartDetail.html"
 		]
 	},
 	"pages/cashr/cashrDetail.html": {
@@ -148,6 +157,39 @@
 			"js/mui.min.js",
 			"fonts/mui.ttf",
 			"fonts/ifont.ttf"
+		]
+	},
+	"pages/order/listDetail.html": {
+		"resources": [
+			"pages/order/listDetail.js",
+			"js/app.js",
+			"js/mui.picker.min.js",
+			"js/vue.js",
+			"styles/jiku.css",
+			"js/mui.min.js",
+			"styles/mui.css",
+			"styles/styleAll.css",
+			"styles/iconfont.css",
+			"fonts/mui.ttf",
+			"styles/mui.picker.min.css",
+			"fonts/ifont.ttf",
+			"fonts/iconfont.ttf"
+		],
+		"refer": [
+			"pages/barcode/orderScan.html"
+		]
+	},
+	"pages/cashr/mixPay.html": {
+		"resources": [
+			"js/vue.js",
+			"js/mui.min.js",
+			"pages/cashr/mixPay.js",
+			"styles/mui.css",
+			"styles/styleAll.css",
+			"styles/iconfont.css",
+			"js/app.js",
+			"styles/jiku.css",
+			"fonts/mui.ttf"
 		]
 	}
 }

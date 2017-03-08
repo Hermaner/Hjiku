@@ -6,6 +6,14 @@ var Page = {
 		var self = this;
 		mui.plusReady(function() {
 			mui('.mui-scroll-wrapper').scroll();
+			mui.preload({
+				id: 'cartDetail',
+				url: 'cartDetail.html',
+			});
+			mui.preload({
+				id: 'mixPay',
+				url: 'mixPay.html',
+			});
 		})
 		mui("#listPopover").on("tap", "li", function() {
 			var pid = this.getAttribute("pid");
@@ -56,7 +64,7 @@ var Page = {
 		methods: {
 			loadData: function(val, d) {
 				var self = this;
-				if(self.type == 'productSN'||d) {
+				if(self.type == 'productSN' || d) {
 					for(var i = 0; i < self.snAr.length; i++) {
 						if(val == self.snAr[i]) {
 							E.alert('搜索的SN码商品已存在');
@@ -84,7 +92,7 @@ var Page = {
 					var unsnItems = 0;
 					if(products.length == 1) {
 						var barcode = products[0].productItemId;
-						if(self.type == 'productSN'||d) {
+						if(self.type == 'productSN' || d) {
 							for(var i = 0; i < self.unsnItems.length; i++) {
 								if(barcode == self.unsnItems[i].productItemId) {
 									E.alert("购物车中存在普通商品");
@@ -251,14 +259,14 @@ var Page = {
 				var hasDepositPd = false;
 				if(snItems.length > 0) {
 					hasMainPd = true;
-					unsnItems.forEach((item) => {
+					unsnItems.forEach(function(item) {
 						hasDepositPd = hasDepositPd || item.isDeposits === '1';
-					});
+					})
 				} else {
-					unsnItems.forEach((item) => {
+					unsnItems.forEach(function(item) {
 						hasMainPd = hasMainPd || item.isDeposits === '0';
 						hasDepositPd = hasDepositPd || item.isDeposits === '1';
-					});
+					})
 				}
 				if(!hasMainPd) {
 					E.toast('请选择wifi商品');

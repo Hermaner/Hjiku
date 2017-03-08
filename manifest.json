@@ -324,7 +324,9 @@
 					"pages/order/orderTop.html",
 					"pages/cashr/cashrCart.html",
 					"pages/cashr/cartDetail.html",
-					"pages/order/rentTop.html"
+					"pages/order/rentTop.html",
+					"pages/order/listDetail.html",
+					"pages/cashr/mixPay.html"
 				],
 				"priority": 0
 			},
@@ -929,7 +931,8 @@
 					"pages/wxsame/wshop.html",
 					"pages/wxsame/home.html",
 					"pages/barcode/hexiao.html",
-					"pages/build/index.html"
+					"pages/build/index.html",
+					"pages/cashr/mixPay.html"
 				],
 				"priority": 0
 			},
@@ -1293,7 +1296,9 @@
 				],
 				"refer": [
 					"pages/cashr/cashrDetail.html",
-					"pages/barcode/orderScan.html"
+					"pages/barcode/orderScan.html",
+					"pages/cashr/mixPay.html",
+					"pages/cashr/cartDetail.html"
 				],
 				"priority": 0
 			},
@@ -1378,7 +1383,8 @@
 					"images/xianjin.png",
 					"styles/iconfont.css",
 					"images/perzhifubao.png",
-					"images/perweixin.png"
+					"images/perweixin.png",
+					"styles/jiku.css"
 				],
 				"refer": [
 					"pages/barcode/payment.html"
@@ -2338,6 +2344,27 @@
 					"styles/styleAll.css"
 				],
 				"refer": [],
+				"priority": 0
+			},
+			"pages/order/listDetail.html": {
+				"resources": [
+					"pages/order/listDetail.js",
+					"js/app.js",
+					"js/mui.picker.min.js",
+					"js/vue.js",
+					"styles/jiku.css",
+					"js/mui.min.js",
+					"styles/mui.css",
+					"styles/styleAll.css",
+					"styles/iconfont.css",
+					"fonts/mui.ttf",
+					"styles/mui.picker.min.css",
+					"fonts/ifont.ttf",
+					"fonts/iconfont.ttf"
+				],
+				"refer": [
+					"pages/barcode/orderScan.html"
+				],
 				"priority": 0
 			}
 		},

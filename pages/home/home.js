@@ -78,7 +78,9 @@ var Page = {
 			goPage: function(type) {
 				switch(type) {
 					case '4':
-						E.fireData('cashrCart')
+					
+//					E.openWindow('../cashr/mixPay.html')
+						E.openWindow('../cashr/cashrCart.html')
 						break;
 					case '5':
 						E.fireData('rentTop', "", {

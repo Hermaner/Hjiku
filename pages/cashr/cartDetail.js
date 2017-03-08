@@ -12,7 +12,8 @@ var Page = {
 				var snItems = event.detail.snItems;
 				var mainPd = ''; // 主商品
 				var depositPd = ''; // 押金商品
-				unsnItems.forEach((item) => {
+				
+				unsnItems.forEach(function(item){
 					if(!mainPd && item.isDeposits === '0') {
 						mainPd = item;
 					}
@@ -44,9 +45,10 @@ var Page = {
 					];
 					if(mainPd.snAr && mainPd.snAr.length > 0) {
 						self.vue.hasSNsearch = true;
-						mainPd.snAr.forEach((sn) => {
-							self.vue.checkSN(sn);
-						});
+						self.vue.sndata=mainPd.snAr;
+//						mainPd.snAr.forEach((sn) => {
+//							self.vue.checkSN(sn);
+//						});
 					}
 				}
 			})

@@ -12,7 +12,7 @@
 		<link href="../../styles/mui.css" rel="stylesheet" />
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
 		<link href="../../styles/styleAll.css" rel="stylesheet" />
-
+		<link href="../../styles/jiku.css" rel="stylesheet" />
 	</head>
 
 	<body class="mix-bc" id="vue">
@@ -20,134 +20,34 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">订单支付</h1>
 		</header>
-		<div class="mem-keep-out" v-if="showCardpay">
-			<div class="mem-con">
-				<h3>请输入卡号和密码</h3>
-				<button class="layermend" @click="closeMask()"></button>
-				<div class="mem-text">
-					<ul class="mui-table mui-table-view">
-						<li class="mui-table-view-cell">
-							<div class="mui-input-row">
-								<label>会员卡</label>
-								<input type="number" v-model="memberCardNumber" placeholder="请输入会员卡号">
-							</div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="mui-input-row">
-								<label>密码</label>
-								<input type="password" v-model="password" placeholder="请输入密码">
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="mem-btn flexCon">
-					<button class="flexOne" @click="closeMask()">取消</button>
-					<button class="flexOne" @click="cardPay()">保存</button>
-				</div>
-			</div>
-		</div>
 		<div class="mui-content">
-			<div class="flexCon mix-headCon">
-				<div class="flexOne">
-					<span>订单总计</span>
-					<span class="mix-fontCor">{{totalPrice}}</span>
+			<div class="jk_payTab flexCon">
+				<button @click="payTabClick(0)" class="flexOne" v-bind:class="tabAr[0].checked?'cur':''" v-bind:disabled="zAmount.y>0||yAmount>0" style="border:none">合并支付</button>
+				<button @click="payTabClick(1)" class="flexOne" v-bind:class="tabAr[1].checked?'cur':''" v-bind:disabled="aAmount.y>0">付租金</button>
+				<button @click="payTabClick(2)" class="flexOne" v-bind:class="tabAr[2].checked?'cur':''" v-bind:disabled="aAmount.y>0">付押金</button>
+			</div>
+			<div class="jk_payTab_mx">
+				<div v-show="tabAr[0].checked">
+					总金额<span class="mix-fontCor">￥{{aAmount.z}}</span>，已付金额<span class="mix-fontCor">￥{{aAmount.y}}</span>，未付金额<span class="mix-fontCor mix-red">￥{{aAmount.w}}</span>
 				</div>
-				<div class="flexOne">
-					<span>已付金额</span>
-					<span class="mix-fontCor">{{prePrice}}</span>
+				<div v-show="tabAr[1].checked">
+					总租金<span class="mix-fontCor">￥{{zAmount.z}}</span>，已付租金<span class="mix-fontCor">￥{{zAmount.y}}</span>，未付租金<span class="mix-fontCor mix-red">￥{{zAmount.w}}</span>
 				</div>
-				<div class="flexOne">
-					<span>待付金额</span>
-					<span class="mix-fontCor mix-red">{{waitPrice}}</span>
+				<div v-show="tabAr[2].checked">
+					总押金<span class="mix-fontCor">￥{{yAmount.z}}</span>，已付押金<span class="mix-fontCor">￥{{yAmount.y}}</span>，未付押金<span class="mix-fontCor mix-red">￥{{yAmount.w}}</span>
 				</div>
 			</div>
-			<ul class="mui-table-view" id="payList">
-				<li class="mui-table-view-cell flexCon" v-if="exit6">
-					<img src="../../images/zhifubao.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number"  class="flexOne" payid="6" placeholder="输入金额"   onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini" pid="6">收款</button>
-				</li>
-				<li class="mui-table-view-cell flexCon" v-if="exit19">
-					<img src="../../images/perzhifubao.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number"  class="flexOne" payid="19" placeholder="输入金额"   onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini" pid="19">收款</button>
-				</li>
-				<li class="mui-table-view-cell flexCon" v-if="exit15">
-					<img src="../../images/weixin2.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number" class="flexOne" payid="15" placeholder="输入金额"  onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini " pid="15">收款</button>
-				</li>
-				<li class="mui-table-view-cell flexCon" v-if="exit20">
-					<img src="../../images/perweixin.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number" class="flexOne" payid="20" placeholder="输入金额"  onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini " pid="20">收款</button>
-				</li>
-				<li class="mui-table-view-cell flexCon" v-if="exit16">
-					<img src="../../images/huiyuanka.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number"  class="flexOne" payid="16" placeholder="输入金额"  onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini" pid="16">收款</button>
-				</li>
-				<li class="mui-table-view-cell flexCon" v-if="exit13">
-					<img src="../../images/xianjin.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number" class="flexOne" payid="13" placeholder="输入金额"  onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini" pid="13">收款</button>
-				</li>
-				<li class="mui-table-view-cell flexCon" v-if="exit14">
-					<img src="../../images/shuaka.png" />
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number" class="flexOne" payid="14" placeholder="输入金额"  onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini" pid="14">收款</button>
-				</li>
-				<!-- <li class="mui-table-view-cell flexCon" v-for="payment in payments">
-					<span class="lineheight41">{{payment.paymentName}}</span>
-					<span class="lineheight41">{{payment.paymentName}}</span>
-					<div class="payStatus">
-						<span>未收</span>
-					</div>
-					<input type="number" class="flexOne" placeholder="输入金额"  onchange="E.IsNum(this)"/>
-					<button class="mui-btn mui-btn-mini" pid="{{payment.paymentType}}">收款</button>
-				</li> -->
-			</ul>
-		</div>
-		<div class="personPay-content" v-show="showPersonpay" transition="expand">
-			<header class="mui-bar mui-bar-nav">
-				<a class="mui-icon mui-icon-left-nav mui-pull-left" @click='closePersonpay()'></a>
-				<h1 class="mui-title">{{paymentType=="19"?"支付宝":"微信"}}支付</h1>
-			</header>
-
-			<div class="mui-content whiteBackground">
-				<div class="caserin-content">
-					<div class="caserin-payamount">￥{{amount}}</div>
-					<div class="caserIn-perImg">
-						<img :src="payimg" />
-						<p>扫描{{paymentType=="19"?"支付宝":"微信"}}二维码向我付钱</p>
-					</div>
-					<div class="mui-margin-20"><button type="button" class="mui-btn mui-btn-primary mui-btn-full" @click="personPay()">
-					确认收款
-				</button></div>
-
-				</div>
-			</div>
+            <div class="jk_payput">
+            	 <input type="text" placeholder="输入金额" v-model="amount">
+            </div>
+            <div style="font-size:16px;color:#555;line-height:30px;margin:0;padding-left:10px;">支付方式</div>
+            <div class="jk_payitems">
+              	 <button v-for="(index,payment) in payments" @click="payType(index)" v-bind:class="payment.checked?'cur':''" v-bind:disabled="payment.isPay&&(payment.tabIndex[0]==tabIndex||payment.tabIndex[1]==tabIndex)">{{payment.paymentName}}</button>
+            </div>
+            <div style="position:fixed;left:0;bottom:0">
+            	
+            </div>
+            <button class="mui-btn-block mui-btn-primary jk_full_btn" @click="pay()">支付</button>
 		</div>
 	</body>
 	<script src="../../js/mui.min.js"></script>

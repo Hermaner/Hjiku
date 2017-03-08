@@ -5,6 +5,7 @@ var Page = {
 	initConfig: function() {
 		var self = this;
 		mui.init({
+			preloadLimit: 10,
 			preloadPages: [{
 				"id": "home",
 				"url": "pages/home/home.html",
@@ -14,12 +15,6 @@ var Page = {
 			}, {
 				"id": "rentTop",
 				"url": "pages/order/rentTop.html",
-			}, {
-				"id": "cashrCart",
-				"url": "pages/cashr/cashrCart.html",
-			}, {
-				"id": "cartDetail",
-				"url": "pages/cashr/cartDetail.html",
 			}, {
 				"id": "listDetail",
 				"url": "pages/order/listDetail.html",

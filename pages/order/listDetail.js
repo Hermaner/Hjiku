@@ -9,6 +9,7 @@ var Page = {
 			self.ws = plus.webview.currentWebview();
 			window.addEventListener('pageshow', function(event) {
 				self.vue.orderNumber = event.detail.orderNumber;
+				self.vue.loadData();
 			})
 		})
 		mui.back = function() {
@@ -23,28 +24,76 @@ var Page = {
 		data: {
 			sndata: [],
 			order: {},
-			orderNumber:''
+			products: [],
+			orderNumber: '',
+			showData: true,
+			status: 0,
+			Ztcode: "",
+			sectext: '获取验证码',
+			dissecBtn: false,
 		},
 		methods: {
-			loadData: function(c) {
+			loadData: function() {
 				var self = this;
 				var params = E.systemParam('V5.mobile.project.jiku.order.get');
-				params.orderNumber = c;
-				E.showLoading()
+				params.orderNumber = this.orderNumber;
+				//				E.showLoading()
 				E.getData('jikuOrderGet', params, function(data) {
-					E.closeLoading();
+					//					E.closeLoading();
 					console.log(data);
 					if(!data.isSuccess) {
 						E.alert(data.map.errorMsg)
 						return
 					}
+					data.order.products.sort(function(a, b) { return a.isDeposits - b.isDeposits });
 					self.order = data.order;
+					switch(self.order.status) {
+						case '待付款':
+							self.status = 0;
+							break;
+						case '待提货':
+							self.status = 1;
+							break;
+						case '待返货':
+							self.status = 2;
+							break;
+						case '待退押金':
+							self.status = 3;
+							break;
+						case '押金打款中':
+							self.status = 4;
+							break;
+						case '订单完成':
+							self.status = 5;
+							break;
+						default:
+							break;
+					}
+					self.showData = false;
 				})
+			},
+			updateOrder: function() {
+				this.resetData();
+				this.loadData();
 			},
 			deliverOrder: function() {
 				var self = this;
-				var orderData = { orderNumber: this.orderNumber };
-				orderData.items=[];
+				var item0 = this.order.products[0];
+				if(this.sndata.length == 0) {
+					E.alert("下单失败，请录入设备SN码");
+					return;
+				}
+				if(this.sndata.length != item0.quantity) {
+					E.alert("下单失败，SN码个数不匹配");
+					return;
+				}
+				var orderData = {
+					orderNumber: this.orderNumber,
+					items: [{
+						productItemId: item0.productItemId,
+						sn: this.sndata.join(',')
+					}]
+				};
 				var params = E.systemParam('V5.mobile.project.jiku.order.update');
 				params.orderData = JSON.stringify(orderData);
 				E.showLoading()
@@ -55,14 +104,20 @@ var Page = {
 						E.alert(data.map.errorMsg)
 						return
 					}
-					self.loadData()
+					self.updateOrder()
+				})
+			},
+			gopayPage: function() {
+				E.fireData("mixPay", "", {
+					orderNumber: this.orderNumber,
 				})
 			},
 			checkSN: function(sncode) {
 				var self = this;
+				var item0 = this.order.products[0];
 				var params = E.systemParam('V5.mobile.project.jiku.items.get');
 				params = mui.extend(params, {
-					condition: sncode + ',' + this.submitData.items[0].productItemId,
+					condition: sncode + ',' + item0.productItemId,
 					type: 'productSN',
 				})
 				E.showLoading()
@@ -79,8 +134,6 @@ var Page = {
 						return
 					}
 					self.sndata.push(sncode);
-					self.submitData.items[0].sn = self.sndata.join(',');
-					self.submitData.items[0].quantity = self.sndata.length;
 				})
 			},
 			gosnScan: function() {
@@ -97,8 +150,79 @@ var Page = {
 			deleteSn: function(index) {
 				this.sndata.splice(index, 1);
 			},
+			mandZt:function(){
+				E.confirm('选择强制自提?',function(){
+					alert(1)
+				})
+			},
+			getZtcode: function() {
+				this.dissecBtn = true;
+				var self = this;
+				var sec = 60;
+				tn();
+				var t = setInterval(function() {
+					tn()
+				}, 1000)
+//				var params = E.systemParam('V5.mobile.project.jiku.return.product.create');
+//				E.showLoading()
+//				E.getData('jikuReturnProductCreate', params, function(data) {
+//					E.closeLoading()
+//					if(!data.isSuccess) {
+//						E.alert(data.map.errorMsg)
+//						return
+//					}
+//					self.Ztcode = '222';
+//				})
+				function tn() {
+					if(sec <= 0) {
+						self.sectext = "发送验证码";
+						self.dissecBtn = false;
+						clearInterval(t)
+						sec = 60
+					} else {
+						self.sectext = sec + "秒后可重新发送";
+						sec--;
+					}
+				}
+			},
+			createReturnOrder: function() {
+				var deposits;
+				if(this.order.products.length > 1) {
+					deposits = [{
+						depositsId: '',
+						amount: this.order.products[1].price,
+					}]
+				}
+				var orderData = {
+					orderNumber: this.orderNumber,
+					items: [{
+						salesOrderItemId: this.order.products[0].itemId,
+						snCode: this.sndata.join(','),
+					}],
+					deposits: deposits,
+				}
+				var params = E.systemParam('V5.mobile.project.jiku.return.product.create');
+				params.orderData = JSON.stringify(orderData);
+				E.showLoading()
+				E.getData('jikuReturnProductCreate', params, function(data) {
+					E.closeLoading()
+					if(!data.isSuccess) {
+						E.alert(data.map.errorMsg)
+						return
+					}
+					self.sndata.push(sncode);
+				})
+			},
 			resetData: function() {
 				this.sndata = [];
+				this.showData = true;
+				this.order = {};
+				this.products = [];
+				this.showData = true;
+				this.status = 0;
+				this.Ztcode = "";
+				this.sectext = '获取验证码';
+				this.dissecBtn = false;
 			}
 		}
 	}

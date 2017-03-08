@@ -224,9 +224,11 @@
 .padding10 {
 	padding: 10px;
 }
+
 .padding0 {
 	padding: 0px;
 }
+
 .padding15 {
 	padding: 15px;
 }
@@ -433,95 +435,300 @@
 .rentDetail .rentchild {
 	margin-left: 10px
 }
-.jkdetailtop{
+
+.jkdetailtop {
 	background: #485ea0;
 	border-radius: 10px;
-	margin:10px 10px 0px 10px;
+	margin: 10px 10px 0px 10px;
 	overflow: hidden;
-	color:#fff;
+	color: #fff;
 	font-size: 14px;
 }
-.jkdetailstatus{
-	border-bottom:1px dashed #fff;padding: 5px 10px
+
+.jkdetailstatus {
+	border-bottom: 1px dashed #fff;
+	padding: 5px 10px
 }
-.jk_ds_text{
-	line-height:30px;
+
+.jk_ds_text {
+	line-height: 30px;
 }
-.jk_ds_status{
-	line-height:30px;
+
+.jk_ds_status {
+	line-height: 30px;
 	text-align: right;
 }
-.jk_ds_status span{
-	font-size:20px;
+
+.jk_ds_status span,
+.jk_ds_text span {
+	font-size: 20px;
 }
-.jkdetailcontent{
-	color:#fff;
-	padding:10px 10px 5px;
+
+.jkdetailcontent {
+	color: #fff;
+	padding: 10px 10px 5px;
 	font-size: 14px;
-	line-height:22px;
+	line-height: 22px;
 }
-.jk_dc_c{
+
+.jk_dc_c {
 	font-size: 16px;
 	text-align: center;
 }
-.jk_dc_text{
-	width:30%;
+
+.jk_dc_text {
+	width: 30%;
 }
-.jk_dc_r{
-	width:30%;
+
+.jk_dc_r {
+	width: 30%;
 	text-align: right;
 }
-.jkdetailtbom{
-	font-size:24px;
+
+.jkdetailtbom {
+	font-size: 24px;
 	padding-top: 10px;
 	display: block;
 	text-align: right;
 	padding: 5px 10px 10px 0;
 }
-.jk_d_ht{
-	line-height: 30px;padding: 2px 10px 2px 10px;
-	font-size:16px;color:#666;
+
+.jk_d_ht {
+	line-height: 30px;
+	padding: 2px 10px 2px 10px;
+	font-size: 16px;
+	color: #666;
 	border-bottom: 1px solid #ddd;
 }
-.jk_d_ht_i{
-	line-height: 30px;color:#108ee9;width:24px;font-size:18px;
+
+.jk_d_ht_i {
+	line-height: 30px;
+	color: #108ee9;
+	width: 24px;
+	font-size: 18px;
 }
-.jk_d_bgc{
+
+.jk_d_bgc {
 	background: #fff;
 	border-bottom: 1px solid #ddd;
-	padding:6px 10px;
+	padding: 6px 10px;
 }
-.jk_d_snc{line-height:30px;font-size:14px;color:#666}
-.jk_d_sncdata{
-	color:#333;font-size:14px;line-height:36px;
+
+.jk_d_snc {
+	line-height: 30px;
+	font-size: 14px;
+	color: #666
 }
-.jk_sn_div{border-bottom: 1px solid #ddd}
-.afterNoborder:after{background: none;}
-.jk_sn_btn{padding-top:6px;text-align: right;}
-.jk_sn_btn button{
+
+.jk_d_sncdata {
+	color: #333;
+	font-size: 14px;
+	line-height: 36px;
+}
+
+.jk_sn_div {
+	border-bottom: 1px solid #ddd
+}
+
+.afterNoborder:after {
+	background: none;
+}
+
+.jk_sn_btn {
+	padding-top: 6px;
+	text-align: right;
+}
+
+.jk_sn_btn button {
 	margin-left: 10px;
 }
-.jk_d_user{line-height:40px;color:#333}
-.jk_d_user .mui-icon{width:20px;font-size:20px;margin-top: 8px;}
-.jk_d_user div{width:50px;font-size:16px;}
-.jk_d_user input{border:none;background: none;margin: 0;}
-.hasbomborder{border-bottom: 1px solid #ddd}
-.renttime button{margin:0;border:none}
-.renttimelabel{
-	line-height:40px;color: #333;font-size: 16px;padding-right: 10px;
+
+.jk_d_user {
+	line-height: 40px;
+	color: #333
 }
-.jk_full_btn{
+
+.jk_d_user .mui-icon {
+	width: 20px;
+	font-size: 20px;
+	margin-top: 8px;
+}
+
+.jk_d_user div {
+	width: 50px;
+	font-size: 16px;
+}
+
+.jk_d_user input {
+	border: none;
+	background: none;
+	margin: 0;
+}
+
+.hasbomborder {
+	border-bottom: 1px solid #ddd
+}
+
+.renttime button {
+	margin: 0;
+	border: none
+}
+
+.renttimelabel {
+	line-height: 40px;
+	color: #333;
+	font-size: 16px;
+	padding-right: 10px;
+}
+
+.jk_full_btn {
 	width: 90%;
-    margin-left: 5%;
-    padding: 0px;
-    font-size: 17px;
-    height: 40px;
-    line-height: 40px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+	margin-left: 5%;
+	padding: 0px;
+	font-size: 17px;
+	height: 40px;
+	line-height: 40px;
+	margin-top: 12px;
+	margin-bottom: 12px;
 }
-.js_detial_con{line-height:20px;color:#fff;font-size:12px;padding:10px 10px 0}
-.jk_sn_nodata{text-align: center;color:#888;font-size:16px;line-height:30px}
+
+.js_detial_con {
+	line-height: 20px;
+	color: #fff;
+	font-size: 12px;
+	padding: 10px 10px 0
+}
+
+.jk_sn_nodata {
+	text-align: center;
+	color: #888;
+	font-size: 16px;
+	line-height: 30px
+}
+
+.ellisDIv {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: block;
+}
+
+.mui-table-view-cell>a.jk_pay_btn_a:not(.mui-btn) {
+	color: #000;
+	font-size: 16px;
+	padding-left: 20px
+}
+
+.jk_payTab {
+	margin: 30px 30px 10px;
+	border: 1px solid #d9002f;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.jk_payTab button {
+	border: none;
+	border-radius: 0;
+	border-left: 1px solid #d9002f;
+}
+
+.jk_payTab button.cur {
+	background: #d9002f;
+	color: #fff;
+}
+
+.jk_payTab_mx {
+	line-height: 20px;
+	color: #444;
+	font-size: 14px;
+	padding-left: 30px;
+	margin-top: 20px;
+}
+
+.jk_payTab_mx .mix-fontCor {
+	color: #008000
+}
+
+.jk_payTab_mx .mix-red {
+	color: #CF2D28
+}
+
+.jk_payput {
+	width: 70%;
+	margin: 20px auto;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.jk_payput input {
+	height: 80px;
+	line-height: 80px;
+	font-size: 40px;
+	color: #555;
+	text-align: center;
+	width: 200px;
+	border: none;
+	background: #fff;
+	margin: 0;
+	width: 100%
+}
+
+.jk_payitems {
+	background: #fff;
+}
+
+.jk_payitems button {
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	text-align: left;
+	padding: 12px 10px 12px 20px;
+	color:#666;
+	border-bottom: 1px solid #ddd;
+}
+
+input[type='button']:enabled:active,
+input[type='button'].mui-active:enabled,
+input[type='submit']:enabled:active,
+input[type='submit'].mui-active:enabled,
+input[type='reset']:enabled:active,
+input[type='reset'].mui-active:enabled,
+button:enabled:active,
+button.mui-active:enabled,
+.mui-btn:enabled:active,
+.mui-btn.mui-active:enabled {
+	color: #444;
+	background-color: #eee;
+}
+
+.jk_payitems button.cur:after {
+	content: '\e472';
+	font-size: 30px;
+	font-weight: 600;
+	right: 15px;
+	color: #d9002f;
+	font-family: Muiicons;
+    line-height: 1;
+    position: absolute;
+    top: 3px;
+    display: inline-block;
+}
+.jk_zt_yzm{
+	margin:15px 0;border:1px solid #ddd;
+	border-radius: 5px;overflow: hidden;
+}
+.jk_zt_yzm input{
+	border-radius: 0;
+	border:none;margin:0;
+    background: none;height:35px;
+	border-right:1px solid #ddd;
+	font-size: 14px;color:#444;
+}
+.jk_zt_yzm button{
+	border:none;background: none;height:35px;border-left: none;
+}
+.jk_mand_btn{border:1px solid #d9002f;background:#fff;padding:3px 10px;margin-top:2px}
 @media screen and (min-width:480px) {
 	body,
 	h5,
@@ -559,10 +766,10 @@
 	.homeOneList li {
 		height: 120px
 	}
-	.jkdetailtop{
+	.jkdetailtop {
 		font-size: 16px;
 	}
-	.js_detial_con{
-		line-height:32px;
+	.js_detial_con {
+		line-height: 32px;
 	}
 }
