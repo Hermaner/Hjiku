@@ -1572,7 +1572,8 @@
 					"styles/styleAll.css",
 					"images/xianjin.png",
 					"images/perzhifubao.png",
-					"images/perweixin.png"
+					"images/perweixin.png",
+					"styles/jiku.css"
 				],
 				"refer": [
 					"pages/barcode/payment.html"
@@ -2363,7 +2364,8 @@
 					"fonts/iconfont.ttf"
 				],
 				"refer": [
-					"pages/barcode/orderScan.html"
+					"pages/barcode/orderScan.html",
+					"pages/order/mixPay.html"
 				],
 				"priority": 0
 			}

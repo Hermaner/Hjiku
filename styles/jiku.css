@@ -673,7 +673,24 @@
 	margin: 0;
 	width: 100%
 }
-
+.jk_yj_payput {
+	width: 70%;
+	margin: 10px auto;
+	border: 1px solid #d9002f;
+	border-radius: 10px;
+	overflow: hidden;
+}
+.jk_yj_payput input {
+	height: 40px;
+	line-height: 40px;
+	font-size: 20px;
+	color: #555;
+	text-align: center;
+	border: none;
+	background: #fff;
+	margin: 0;
+	width: 100%
+}
 .jk_payitems {
 	background: #fff;
 }
@@ -728,7 +745,7 @@ button.mui-active:enabled,
 .jk_zt_yzm button{
 	border:none;background: none;height:35px;border-left: none;
 }
-.jk_mand_btn{border:1px solid #d9002f;background:#fff;padding:3px 10px;margin-top:2px}
+.jk_mand_btn{border:1px solid #d9002f;background:#fff;padding:3px 10px;margin-top:2px;color:#d9002f}
 @media screen and (min-width:480px) {
 	body,
 	h5,

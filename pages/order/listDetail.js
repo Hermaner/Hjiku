@@ -31,6 +31,10 @@ var Page = {
 			Ztcode: "",
 			sectext: '获取验证码',
 			dissecBtn: false,
+			depositsTypes:[],
+			depositsTypesShow:false,
+			depositsIndex:null,
+			yj_amount:'',
 		},
 		methods: {
 			loadData: function() {
@@ -56,9 +60,11 @@ var Page = {
 							break;
 						case '待返货':
 							self.status = 2;
+							self.depositsGet()
 							break;
 						case '待退押金':
 							self.status = 3;
+							
 							break;
 						case '押金打款中':
 							self.status = 4;
@@ -108,8 +114,8 @@ var Page = {
 				})
 			},
 			gopayPage: function() {
-				E.fireData("mixPay", "", {
-					orderNumber: this.orderNumber,
+				E.openWindow('mixPay.html',{
+					orderNumber:this.orderNumber,
 				})
 			},
 			checkSN: function(sncode) {
@@ -184,6 +190,101 @@ var Page = {
 						sec--;
 					}
 				}
+			},
+			closeDeposit:function(){
+				this.depositsTypesShow=false;
+			},
+			showDeposit:function(){
+				this.depositsTypesShow=true;
+				setTimeout(function() {
+							E.showLayer(0)
+						}, 0)
+			},
+			clickDeposit:function(index){
+				if(this.depositsIndex!=null){
+					this.depositsTypes[this.depositsIndex].checked=false;
+				}
+				this.depositsTypes[index].checked=true;
+				this.depositsIndex=index;
+			},
+			addDeposit:function(){
+				if(this.yj_amount == 0 || this.yj_amount == '') {
+					E.toast('请输入金额');
+					return;
+				}
+				if(this.depositsIndex==null){
+					E.alert("请选择押金类型")
+					return;
+				}
+				var reg = /^(0|[1-9][0-9]{0,9})(\.[0-9]{1,2})?$/;
+				if(!reg.test(this.yj_amount)) {
+					E.toast('请输入正确金额');
+					return;
+				}
+				this.closeDeposit()
+				this.depositId=this.depositsTypes[this.depositsIndex].depositId;
+				this.depositsTypes[this.depositsIndex].checked=false;
+				this.depositsIndex=null;
+				var orderData={
+					depositsId: this.depositsId,
+					amount: this.yj_amount,
+					orderNumber:this.orderNumber,
+				}
+				var params = E.systemParam('V5.mobile.project.jiku.deposits.create');
+				params.orderData=JSON.stringify(orderData);
+				E.showLoading()
+				E.getData('jikuDepositsCreate', params, function(data) {
+					E.closeLoading()
+					if(!data.isSuccess) {
+						E.alert(data.map.errorMsg)
+						return
+					}
+					data.deposits.forEach(function(item){
+						item.checked=false;
+					})
+					self.depositsTypes=data.deposits;
+				},"post")
+			},
+			createReimburseOrder:function(){
+				var self=this;
+				var orderData={
+					sn:'',
+					days:'2',
+					price:'2',
+					amount:'2',
+					orderNumber:this.orderNumber,
+					depositsId:"1"
+				}
+				var params = E.systemParam('V5.mobile.project.jiku.return.create');
+				params.orderData=JSON.stringify(orderData);
+				E.getData('jikuReturnCreate', params, function(data) {
+					E.closeLoading()
+					console.log(data)
+					if(!data.isSuccess) {
+						E.alert(data.map.errorMsg)
+						return
+					}
+					data.deposits.forEach(function(item){
+						item.checked=false;
+					})
+					self.depositsTypes=data.deposits;
+				})
+			},
+			depositsGet:function(){
+				var self=this;
+				var params = E.systemParam('V5.mobile.project.jiku.deposits.get');
+				E.getData('jikuDepositsGet', params, function(data) {
+					E.closeLoading()
+					console.log(data)
+					if(!data.isSuccess) {
+						E.alert(data.map.errorMsg)
+						return
+					}
+					data.deposits.forEach(function(item){
+						item.checked=false;
+					})
+					self.depositsTypes=data.deposits;
+				})
 			},
 			createReturnOrder: function() {
 				var deposits;

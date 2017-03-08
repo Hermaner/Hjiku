@@ -7,36 +7,26 @@ var Page = {
 		mui.init();
 		mui.plusReady(function() {
 			self.ws = plus.webview.currentWebview();
-			self.vue.orderNumber = self.ws.orderNumber;
-			self.vue.totalPrice = self.ws.totalPrice;
-			self.vue.prePrice = self.ws.prePrice
-			self.vue.loadData()
+			self.vue.orderNumber = 'SO-170308-92185';
+			self.vue.zAmount.z = '40';
+			self.vue.yAmount.z = '200';
+			self.vue.aAmount.z = '240';
+			self.vue.zAmount.w = '40';
+			self.vue.yAmount.w = '200';
+			self.vue.aAmount.w = '240';
+			self.vue.loadData();
 			E.getStorage("vendor") == 0 && (self.vue.registerCashierReceiver())
 		})
-		var old_back = mui.back;
-		mui.back = function() {
-			if(self.vue.prePrice > 0) {
-				E.alert("支付中不能退出")
-			} else {
-				old_back()
-			}
-
-		}
-		mui("#payList").on('tap', "button", function() {
-			E.IsNum(this.parentNode.querySelector("input"));
-			self.vue.pid = this.getAttribute("pid");
-			self.vue.paymentType = this.getAttribute("pid");
-			self.vue.amount = this.parentNode.querySelector("input").value;
-			if(!self.vue.amount || self.vue.amount == 0) {
-				E.toast("请输入金额")
-				return
-			}
-			if(parseFloat(self.vue.amount) > parseFloat(self.vue.waitPrice)) {
-				E.toast("输入金额不能大于待付金额")
-				return
-			}
-			self.vue.paySwitch()
-		})
+		//		var old_back = mui.back;
+		//		mui.back = function() {
+		//			if(self.vue.prePrice == 0) {
+		//				E.confirm("确认不支付进入订单详情？", function() {
+		//					self.vue.goOrderDetail()
+		//				})
+		//			} else {
+		//				E.alert("支付中不能退出")
+		//			}
+		//		}
 	},
 	vueObj: {
 		el: '#vue',
@@ -44,94 +34,65 @@ var Page = {
 			totalPrice: 0,
 			orderNumber: "",
 			prePrice: 0,
-			showCardpay: false,
 			amount: 0,
-			pid: "",
-			paymentType: "",
+			zAmount: {
+				z: 0,
+				y: 0,
+				w: 0,
+			},
+			yAmount: {
+				z: 0,
+				y: 0,
+				w: 0,
+			},
+			aAmount: {
+				z: 0,
+				y: 0,
+				w: 0,
+			},
+			tabAr: [{
+				checked: true,
+			}, {
+				checked: false,
+			}, {
+				checked: false,
+			}],
+			tabIndex: 0,
+			paymentTypeId: null,
+			paymentIndex: null,
 			payments: [],
-			password: "",
-			memberCardNumber: "",
-			exit6: false,
-			exit13: false,
-			exit14: false,
-			exit15: false,
-			exit16: false,
-			exit19: false,
-			exit20: false,
-			showPersonpay: false,
-			payimg: "",
 		},
 		methods: {
 			loadData: function() {
 				var self = this;
-				var params = E.systemParam("V5.mobile.paymentType.search");
-				E.showLoading()
-				E.getData('paymentTypeSearch', params, function(data) {
+				var params = E.systemParam("V5.mobile.project.jiku.payment.get");
+				E.getData('jikuPaymentGet', params, function(data) {
 					E.closeLoading()
+					console.log(data)
 					if(!data.isSuccess) {
 						E.alert(data.map.errorMsg)
 						return
 					}
-					console.log(JSON.stringify(data))
-					var payments = data.payments;
-					for(var i = 0; i < payments.length; i++) {
-						switch(payments[i].paymentType) {
-							case "6":
-								self.exit6 = true
-								break;
-							case "13":
-								self.exit13 = true
-								break;
-							case "14":
-								self.exit14 = true
-								break;
-							case "15":
-								self.exit15 = true
-								break;
-							case "16":
-								self.exit16 = true
-								break;
-							case "19":
-								self.exit19 = true
-								break;
-							case "20":
-								self.exit20 = true
-								break;
-							default:
-								break;
-						}
-						if(payments[i].paymentType != "6" && payments[i].paymentType != "13" && payments[i].paymentType != "14" && payments[i].paymentType != "15" && payments[i].paymentType != "16" && payments[i].paymentType != "17") {
-							self.payments.push(payments[i]);
-						}
+					for(var i = 0; i < data.payments.length; i++) {
+						self.payments.push({
+							paymentName: data.payments[i].paymentName,
+							paymentTypeId: data.payments[i].paymentTypeId,
+							isPay: false,
+							checked: false,
+							tabIndex: [],
+						})
 					}
-				}, "get")
+				})
 			},
-			paySwitch: function() {
-				if(this.paymentType == "19" || this.paymentType == "20") {
-					this.openPersonpay()
-					return
+			payType: function(index) {
+				console.log(this.paymentIndex)
+				if(this.paymentIndex != null) {
+					this.payments[this.paymentIndex].checked = false;
+					this.payments[0].checked = false;
 				}
-				switch(this.pid) {
-					case "6":
-						this.barcodePay()
-						break;
-					case "14":
-						if(E.getStorage("vendor") == 0) {
-							this.doPosCashier();
-						} else {
-							this.payMent()
-						}
-						break;
-					case "15":
-						this.barcodePay()
-						break;
-					case "16":
-						this.cardShow()
-						break;
-					default:
-						this.payMent()
-						break;
-				}
+				this.payments[index].checked = true;
+				this.paymentTypeId = this.payments[index].paymentTypeId;
+				this.paymentIndex = index;
 			},
 			barcodePay: function() {
 				E.openWindow("../barcode/payment.html", {
@@ -141,79 +102,111 @@ var Page = {
 					type: "mix"
 				})
 			},
-			openPersonpay: function() {
-				this.showPersonpay = true;
-				this.payimg = this.paymentType == "19" ? E.getStorage("perzfb") : E.getStorage("perwx")
-			},
-			closePersonpay: function() {
-				this.showPersonpay = false
-			},
-			personPay: function() {
-				this.payMent()
-			},
-			closeMask: function() {
-				this.showCardpay = false;
-			},
-			cardShow: function() {
-				this.showCardpay = true;
-				setTimeout(function() {
-					E.showLayer(0)
-				}, 0)
-			},
-			cardPay: function() {
-				var self = this;
-				if(!this.password || !this.memberCardNumber) {
-					E.toast("信息不全");
-					return
+			payTabClick: function(index) {
+				for(var i = 0; i < this.tabAr.length; i++) {
+					this.tabAr[i].checked = false;
 				}
-				var params = E.systemParam("V5.mobile.order.mixture.pay");
+				this.tabIndex = index;
+				this.tabAr[index].checked = true;
+			},
+			pay: function() {
+				var self=this;
+				if(this.amount == 0 || this.amount == '') {
+					E.toast('请输入金额');
+					return;
+				}
+				if(!this.paymentTypeId) {
+					E.toast('请选择支付方式');
+					return;
+				}
+				var reg = /^(0|[1-9][0-9]{0,9})(\.[0-9]{1,2})?$/;
+				if(!reg.test(this.amount)) {
+					E.toast('请输入正确金额');
+					return;
+				}
+
+				switch(self.tabIndex) {
+					case 0:
+						if(parseFloat(self.aAmount.w) < parseFloat(self.amount)) {
+							E.toast('支付金额不能超过未支付金额');
+							return;
+						}
+						break;
+					case 1:
+						if(parseFloat(self.zAmount.w) < parseFloat(self.amount)) {
+							E.toast('支付金额不能超过未支付金额');
+							return;
+						}
+						break;
+					case 2:
+						if(parseFloat(self.yAmount.w) < parseFloat(self.amount)) {
+							E.toast('支付金额不能超过未支付金额');
+							return;
+						}
+						break;
+					default:
+						break;
+				}
+				this.payMent();
+			},
+			payMent: function() {
+				var self = this;
+				var params = E.systemParam("V5.mobile.project.jiku.order.mixture.pay");
 				params = mui.extend(params, {
-					orderNumber: this.orderNumber,
-					memberCardNumber: this.memberCardNumber,
-					password: this.password,
+					orderNumber: self.orderNumber,
 					authCode: "",
-					amount: this.amount,
-					paymentType: 16,
-					type: "mixture"
+					amount: self.amount,
+					paymentTypeId: self.paymentTypeId,
 				})
-				this.showCardpay = false;
 				E.showLoading()
-				E.getData('orderMixturePay', params, function(data) {
+				E.getData('jikuOrderMixturePay', params, function(data) {
 					E.closeLoading()
+					console.log(data)
 					if(!data.isSuccess) {
 						E.alert(data.map.errorMsg)
 						return
 					}
-					self.completePay(self.amount)
-
-				})
+					self.completePay()
+				}, 'post')
 			},
-			payMent: function() {
+			completePay: function() {
 				var self = this;
-				E.confirm("确认付款？", function() {
-					var params = E.systemParam("V5.mobile.order.mixture.pay");
-					params = mui.extend(params, {
-						orderNumber: self.orderNumber,
-						memberCardNumber: "",
-						password: "",
-						authCode: "",
-						amount: self.amount,
-						paymentType: self.pid,
-						type: "mixture"
-					})
-					E.showLoading()
-					E.getData('orderMixturePay', params, function(data) {
-						if(self.pid=="19"||self.pid=="20"){
-						self.closePersonpay()
+				E.alert("支付成功", function() {
+					self.payments[self.paymentIndex].checked = false;
+					self.payments[self.paymentIndex].tabIndex.push(self.tabIndex);
+					self.payments[self.paymentIndex].isPay = true;
+					self.paymentIndex = null;
+					self.paymentTypeId = null;
+					switch(self.tabIndex) {
+						case 0:
+							self.aAmount.y += parseFloat(self.amount);
+							self.aAmount.w = parseFloat(self.aAmount.z) - parseFloat(self.aAmount.y);
+							if(self.aAmount.w==0){
+								alert('支付完成')
+								return;
+							}
+							break;
+						case 1:
+							self.zAmount.y += parseFloat(self.amount);
+							self.zAmount.w = parseFloat(self.zAmount.z) - parseFloat(self.zAmount.y);
+							if(self.zAmount.w==0&&self.yAmount.w==0){
+								alert('支付完成')
+								return;
+							}
+							break;
+						case 2:
+							self.yAmount.y += parseFloat(self.amount);
+							self.yAmount.w = parseFloat(self.yAmount.z) - parseFloat(self.yAmount.y);
+							if(self.zAmount.w==0&&self.yAmount.w==0){
+								alert('支付完成')
+								return;
+							}
+							break;
+						default:
+							break;
 					}
-						E.closeLoading()
-						if(!data.isSuccess) {
-							E.alert(data.map.errorMsg)
-							return
-						}
-						self.completePay(self.amount)
-					})
-				})
+					self.amount=0;
+				});
 			},
 			registerCashierReceiver: function() {
 				var self = this;
@@ -225,7 +218,15 @@ var Page = {
 							plus.android.importClass(intent); //通过intent实例引入intent类，方便以后的‘.’操作
 							var isSuccess = intent.getExtra("isSuccess");
 							var msg = intent.getExtra("msg");
-							self.payMent()
+							if(isSuccess || 'msg' == '支付成功') {
+								self.cardpayMent()
+							} else {
+								alert(msg);
+							}
+
+							//							alert(self.cardType)
+							//							alert("Cashier isSuccess = " + isSuccess + " , msg = " +
+							//								msg);
 						}
 					});
 
@@ -265,30 +266,15 @@ var Page = {
 				return d.getHours() + d.getMinutes() + d.getSeconds() +
 					d.getMilliseconds() + "";
 			},
-			completePay: function(c) {
-				var self = this;
-				E.alert("支付成功", function() {
-					mui("#payList button").each(function() {
-						var pid = this.getAttribute("pid");
-						if(pid == self.pid) {
-							this.parentNode.querySelector("input").value = ""
-							this.parentNode.querySelector(".payStatus").classList.add("success");
-							this.parentNode.querySelector(".payStatus").innerHTML = "<span>已收</span>";
-							this.classList.add("success")
-							this.setAttribute("disabled", "disabled")
-							this.parentNode.querySelector("input").setAttribute("disabled", "disabled")
-						}
-					})
-					self.prePrice = (parseFloat(self.prePrice) + parseFloat(c)).toFixed(2);
-					if(self.waitPrice == 0) {
-						self.goOrderDetail()
-					}
-				});
 
-			},
 			goOrderDetail: function() {
-				Page.ws.opener().evalJS("Page.vue.loadData('" + this.orderNumber + "')");
-				plus.webview.close("mixPay.html", "pop-out");
+				E.fireData(E.preloadPages[0], "detailShow", {
+					orderNumber: this.orderNumber
+				})
+				setTimeout(function() {
+					plus.webview.close("../cashr/cashrCart.html", 'none', 0)
+					plus.webview.close(Page.ws, 'none', 0)
+				}, 1000)
 			}
 		},
 		computed: {

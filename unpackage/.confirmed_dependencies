@@ -176,7 +176,8 @@
 			"fonts/iconfont.ttf"
 		],
 		"refer": [
-			"pages/barcode/orderScan.html"
+			"pages/barcode/orderScan.html",
+			"pages/order/mixPay.html"
 		]
 	},
 	"pages/cashr/mixPay.html": {
@@ -190,6 +191,19 @@
 			"js/app.js",
 			"styles/jiku.css",
 			"fonts/mui.ttf"
+		]
+	},
+	"pages/order/mixPay.html": {
+		"resources": [
+			"pages/order/mixPay.js",
+			"styles/iconfont.css",
+			"js/app.js",
+			"js/vue.js",
+			"styles/jiku.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"styles/mui.css",
+			"styles/styleAll.css"
 		]
 	}
 }
