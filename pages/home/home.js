@@ -81,8 +81,6 @@ var Page = {
 			goPage: function(type) {
 				switch(type) {
 					case '4':
-
-						//					E.openWindow('../cashr/mixPay.html')
 						E.openWindow('../cashr/cashrCart.html')
 						break;
 					case '5':
@@ -129,7 +127,6 @@ var Page = {
 					this.printer4n()
 				}
 				this.printerEnd()
-
 			},
 			printerHead: function(txt) {
 				var main_act = plus.android.runtimeMainActivity();
