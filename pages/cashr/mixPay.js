@@ -14,7 +14,7 @@ var Page = {
 			self.vue.zAmount.w = '40';
 			self.vue.yAmount.w = '200';
 			self.vue.aAmount.w = '240';
-			self.vue.loadData();
+//			self.vue.loadData();
 			window.addEventListener('pageshow', function(event) {
 				self.vue.loadData();
 			})

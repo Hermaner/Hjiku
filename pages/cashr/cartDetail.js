@@ -12,43 +12,42 @@ var Page = {
 				var snItems = event.detail.snItems;
 				var mainPd = ''; // 主商品
 				var depositPd = ''; // 押金商品
-				
-				unsnItems.forEach(function(item){
-					if(!mainPd && item.isDeposits === '0') {
+				console.log(unsnItems)
+				unsnItems.forEach(function(item) {
+					if(!mainPd && item.isDeposits == '0') {
 						mainPd = item;
 					}
-					if(!depositPd && item.isDeposits === '1') {
+					if(!depositPd && item.isDeposits == '1') {
 						depositPd = item;
 					}
 				});
+				
 				if(snItems.length > 0) {
 					mainPd = snItems[0];
 				}
 				if(mainPd && depositPd) {
-					self.vue.submitData.items = [{
+					var item0={
 							pdname: mainPd.productName,
 							isDeposits: 0,
-							quantity: mainPd.snAr.length || mainPd.count,
+							quantity: mainPd.snAr ? mainPd.snAr.length : mainPd.count,
 							price: mainPd.price,
 							productItemId: mainPd.productItemId,
 							sn: mainPd.snAr ? mainPd.snAr.toString() : '',
-							days: self.vue.defaultdays, //默认租用天数，此数据在修改leaveHomeTime，returnHomeTime时实时算出
-						},
-						{
+							days: self.vue.defaultdays, 
+					};
+					var item1={
 							pdname: depositPd.productName,
 							isDeposits: 1,
 							quantity: depositPd.count,
 							price: depositPd.price,
 							productItemId: depositPd.productItemId,
 							days: 1,
-						}
-					];
+					};
+					self.vue.submitData.items.push(item0);
+					self.vue.submitData.items.push(item1);
 					if(mainPd.snAr && mainPd.snAr.length > 0) {
 						self.vue.hasSNsearch = true;
-						self.vue.sndata=mainPd.snAr;
-//						mainPd.snAr.forEach((sn) => {
-//							self.vue.checkSN(sn);
-//						});
+						self.vue.sndata = mainPd.snAr;
 					}
 				}
 			})
@@ -63,12 +62,13 @@ var Page = {
 	vueObj: {
 		el: '#vue',
 		data: {
-			defaultdays: 3,
-			hiredays: 3,
+			defaultdays: 1,
+			hiredays: 1,
 			sndata: [],
 			spAmount: 0,
 			yjAmount: 0,
 			hasSNsearch: false,
+			createStore:"",
 			submitData: {
 				consignee: '',
 				mobilePhone: '',
@@ -82,15 +82,25 @@ var Page = {
 			beginFont: "",
 			endText: "",
 			endFont: "",
+			sendFont: "",
+			backFont: "",
 		},
 		ready: function() {
 			var date1 = new Date();
 			var date2 = new Date(date1);
 			date2.setDate(date1.getDate() + this.defaultdays);
-			this.beginText = date1.getTime();
-			this.endText = date2.getTime();
-			this.beginFont = date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate()
-			this.endFont = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate()
+			var data1Y = date1.getFullYear();
+			var data2Y = date2.getFullYear();
+			var data1M = date1.getMonth() + 1;
+			var data2M = date2.getMonth() + 1;
+			var data1D = date1.getDate();
+			var data2D = date2.getDate();
+			this.beginText = new Date(data1Y + "/" + data1M + "/" + data1D).getTime();
+			this.endText = new Date(data2Y + "/" + data2M + "/" + data2D).getTime();
+			this.beginFont = data1Y + "-" + (data1M < 10 ? ("0" + data1M) : data1M) + "-" + (data1D < 10 ? ("0" + data1D) : data1D)
+			this.endFont = data2Y + "-" + (data2M < 10 ? ("0" + data2M) : data2M) + "-" + (data2D < 10 ? ("0" + data2D) : data2D)
+			this.sendFont = this.beginFont;
+			this.backFont = this.endFont;
 		},
 		methods: {
 			loadData: function(c) {
@@ -106,6 +116,7 @@ var Page = {
 				E.showLoading()
 				E.getData('jikuItemsGet', params, function(data) {
 					E.closeLoading()
+					console.log(data)
 					if(!data.isSuccess) {
 						if(data.map.errorMsg.match('状态为售出')) {
 							E.alert('SN码' + sncode + "已售出，不能使用")
@@ -118,7 +129,6 @@ var Page = {
 					}
 					self.sndata.push(sncode);
 					self.submitData.items[0].sn = self.sndata.join(',');
-					self.submitData.items[0].quantity= self.sndata.length;
 				})
 			},
 			gosnScan: function() {
@@ -136,7 +146,7 @@ var Page = {
 				this.sndata.splice(index, 1);
 			},
 			createOrder: function() {
-				if(!this.submitData.mobilephone || !this.submitData.consignee || this.beginFont == '选择日期' || this.endFont == '选择日期') {
+				if(!this.submitData.mobilePhone || !this.submitData.consignee || this.beginFont == '选择日期' || this.endFont == '选择日期') {
 					E.toast("信息不全");
 					return;
 				}
@@ -144,7 +154,7 @@ var Page = {
 					E.toast("姓名长度不能少于2位");
 					return;
 				}
-				var telReg = !!(this.submitData.mobilephone).match(/^1[34578]\d{9}$/);
+				var telReg = !!(this.submitData.mobilePhone).match(/^1[34578]\d{9}$/);
 				if(telReg == false) {
 					E.toast("请输入正确的手机号");
 					return
@@ -153,6 +163,7 @@ var Page = {
 				this.submitData.returnHomeTime = this.endFont;
 				this.submitData.actualAmount = this.totalAmount;
 				var mainProduct = this.submitData.items[0];
+				
 				if(mainProduct.sn == '') {
 					alert('下单失败，请录入设备SN码');
 					return;
@@ -164,24 +175,43 @@ var Page = {
 				params.orderData = JSON.stringify(this.submitData);
 				E.showLoading()
 				E.getData('jikuOrderCreate', params, function(data) {
+					console.log(data)
+					E.closeLoading()
 					if(!data.isSuccess) {
-						alert(data.map.errorMsg);
+						E.alert(data.map.errorMsg);
 						return;
 					}
-					//					e.fireData('pay', {
-					//						orderId: json.orderNumber,
-					//						orderData,
-					//					});
+					E.alert("创建成功", function() {
+						E.fireData('listDetail', "", {
+							orderNumber: data.orderNumber,
+						});
+						var curw = plus.webview.currentWebview()
+						setTimeout(function() {
+							plus.webview.close(curw.opener(), 'none', 0)
+							plus.webview.close(curw, 'none', 0)
+						}, 1000)
+					})
 				}, "post")
 
 			},
 			optionTime: function(c) {
-				var self = this
-				var picker = new mui.DtPicker({ "type": "date", "beginYear": 2000, "endYear": 2030 });
+				var self = this;
+				var options = { "type": "date", "beginYear": 2000, "endYear": 2030 }
+				switch(c) {
+					case 0:
+						options.value = this.endFont;
+						break;
+					case 1:
+						options.value = this.beginFont;
+						break;
+					default:
+						break;
+				}
+				var picker = new mui.DtPicker(options);
 				picker.show(function(rs) {
 					var rsTime = new Date(rs.text.replace(/-/g, "/")).getTime();
 					var beginText, endText;
-					if(c) {
+					if(c == 1) {
 						beginText = rsTime;
 						if(self.endText < (beginText + self.defaultdays * 86400000)) {
 							alert('回国日期应大于出国时间' + self.defaultdays + '天')
@@ -203,7 +233,27 @@ var Page = {
 						return
 					}
 					self.hiredays = (self.endText - self.beginText) / 86400000;
-					c ? self.beginFont = rs.text : self.endFont = rs.text
+					c == 1 ? self.beginFont = rs.text : self.endFont = rs.text
+					picker.dispose();
+				});
+			},
+			optionTime2: function(c) {
+				var self = this;
+				var options = { "type": "date", "beginYear": 2000, "endYear": 2030 }
+				switch(c) {
+					case 2:
+						options.value = this.sendFont;
+						break;
+					case 3:
+						options.value = this.backFont;
+						break;
+					default:
+						break;
+				}
+				var picker = new mui.DtPicker(options);
+				picker.show(function(rs) {
+					var rsTime = new Date(rs.text.replace(/-/g, "/")).getTime();
+					c == 2 ? self.sendFont = rs.text : self.backFont = rs.text
 					picker.dispose();
 				});
 			},

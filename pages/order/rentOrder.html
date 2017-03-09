@@ -11,8 +11,9 @@
 		<title>租金订单</title>
 		<link href="../../styles/mui.css" rel="stylesheet" />
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
-		<link href="../../styles/styleAll.css" rel="stylesheet" />
 		<link href="../../styles/jiku.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+		
 	</head>
 
 	<body id="vue">
@@ -20,7 +21,7 @@
 			<div class="switchBox">
 				<div class="flexCon">
 					<div class="flexOne">
-						<input type="search" v-model="searchtext" class="" placeholder="" v-on:keyup.13="searchItem()" />
+						<input type="search" v-model="searchtext" class="" placeholder="请输入退{{type=='5'?'押':'租'}}金单单号" v-on:keyup.13="searchItem()" />
 						<span class="mui-icon mui-icon-search"></span>
 					</div>
 					<button class="" @click="searchItem()">搜索</button>
@@ -64,7 +65,7 @@
 						<div class="flexOne rentchildright">{{item.memo}}</div>
 					</div>
 					<div class="rentDetail">
-						<div class="rentNumber">{{type=="5"?"押":"租"}}金明细</div>
+						<div class="flexCon" style="padding-right: 10px;"><div class="rentNumber flexOne">{{type=="5"?"押":"租"}}金明细</div><div style="line-height:30px;" v-show="item.items.length==0">无</div></div>
 						<div v-for="rentdetail in item.items" v-show="item.items.length>0">
 							<div class="rentchild flexCon" v-if="rentdetail.snCode.length>0">
 								<div class="rentchildleft">SN码:</div>
@@ -97,9 +98,6 @@
 								<div class="rentchildleft">原因:</div>
 								<div class="flexOne rentchildright">{{rentdetail.memo}}</div>
 							</div>
-						</div>
-						<div  v-show="item.items.length==0" style="text-align: center;color:#888.font-size:16px;padding-top:10px">
-							没有租金明细
 						</div>
 					</div>
 				</div>

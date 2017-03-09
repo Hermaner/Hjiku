@@ -29,7 +29,7 @@
 					<ul class="mui-table-view">
 						<li class="fuzzyTag" v-for="(index,item) in fuzzyData" dex="{{index}}" barcode="{{item.productItemId}}">
 							<div class="mui-input-group">
-								<div class="flexCon">
+								<div class="">
 									<div class="mui-checkbox mui-left">
 										<label style="padding:0 0 0 38px"><div class="flexCon">
 
@@ -45,8 +45,8 @@
 												{{item.skuName}}
 											</span>
 											</div>
-											<div class="flex-width90 lineheight7 mui-text-right">
-												<span>价格：¥{{item.price}}</span>
+											<div class="flex-width90 lineheight7 mui-text-right" style="width:60px">
+												<span>¥{{item.price}}</span>
 											</div>
 									</div></label>
 										<input style="left:0" name="checkbox" class="changeinput" type="checkbox" barcode="{{item.productItemId}}">
@@ -101,7 +101,7 @@
 											</span>
 										</div>
 										<div class="flex-width90 lineheight7">
-											<span class="mui-text-right">价格：¥{{item.price}}</span>
+											<span class="mui-text-right">¥{{item.price}}</span>
 											<div class="mui-numbox mui-flex-numbox" data-numbox-min="0" v-show="!item.sn">
 												<button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
 												<input class="mui-numbox-input" type="number" value="{{item.count||1}}">
@@ -146,7 +146,7 @@
 			</ul>
 		</div>
 		<nav class="mui-bar mui-bar-tab dis-nav-bar">
-			<button type="button" class="mui-btn" @click="cancleCreate()">
+			<button type="button" class="mui-btn" @click="goBack()">
 					取消
 				</button>
 			<button type="button" class="mui-btn mui-btn-primary" @click='readyPay()'>

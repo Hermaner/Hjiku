@@ -18,7 +18,7 @@
 		<div class="search-con sub-con">
 			<div class="switchBox">
 				<div class="flexCon">
-					<select class="mui-btn" style="width:65px;margin-right: 5px;" v-model="deliveryStatus" v-show="type==2" v-on:change="loadData('',1)">
+					<select class="mui-btn" style="width:75px;margin-right: 5px;" v-model="deliveryStatus" v-show="type==2" v-on:change="loadData('',1)">
 						<option value="">全部</option>
 						<option value="1">已提货</option>
 						<option value="2">未提货</option>
@@ -73,7 +73,7 @@
 							<div class="mui-text-right">
 								<span v-cloak>
 									<!--共{{item.productNum}}件商品&nbsp;&nbsp;-->
-									<span class="fontOrange" v-cloak>
+									<span class="fontOrange" style="font-size: 14px;">
 										应付￥{{item.totalAmount}}&nbsp;&nbsp;实付￥{{item.initialTotalAmount||0}}
 									</span>
 								</span>

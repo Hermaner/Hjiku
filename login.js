@@ -22,6 +22,7 @@ var Page = {
 		});
 		mui.plusReady(function() {
 			self.ws = plus.webview.currentWebview();
+			plus.device.vendor == 'basewin' ? E.setStorage("vendor", "1") : E.setStorage("vendor", "0");
 			if(E.getStorage("store")) {
 				self.vue.store = E.getStorage("store")
 				self.vue.userName = E.getStorage("userName")
@@ -52,10 +53,13 @@ var Page = {
 				E.showLoading();
 				var self = this;
 				E.getData('jikuUserLogin', params, function(data) {
+					console.log(data)
 					if(!data.isSuccess) {
 						E.alert(data.map.errorMsg), E.closeLoading()
 						return
 					}
+//					E.setStorage("loginstore", self.store);
+//					E.setStorage("store", data.useRole.shopNames);
 					E.setStorage("store", self.store);
 					E.setStorage("userName", self.userName);
 					E.setStorage("password", self.password);

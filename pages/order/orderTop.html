@@ -21,22 +21,19 @@
 	<script src="../../js/app.js"></script>
 	<script type="text/javascript">
 		mui.plusReady(function() {
-			//			var topx = E.getStorage('vendor') == 0 ? '71px' : '45px'
+			var topx = E.getStorage('vendor') == 1 ? '61px' : '45px'
 			mui.init({
 				subpages: [{
 					id: 'order',
 					url: 'order.html',
 					styles: {
-						top: '45px',
+						top: topx,
 						bottom: '0px',
 					}
 				}]
 			});
 			window.addEventListener('pageshow', function(event) {
 				var type = event.detail.type;
-//				E.firesubData('order', "", {
-//					type: type
-//				})
 				var title = document.getElementById("title");
 				switch(type) {
 					case "1":
@@ -53,12 +50,14 @@
 				}
 
 			})
+			var old_back=mui.back;
 			mui.back = function() {
+				old_back();
 				setTimeout(function() {
 					document.getElementById("title").innerText = "";
-					E.firesubData('order', "reset")
+					E.firesubData('order', "reset");
+					E.getWebview('order').evalJS('Page.vue.hidePoper()');
 				}, 250)
-				plus.webview.currentWebview().hide("pop-out");
 			}
 		})
 	</script>

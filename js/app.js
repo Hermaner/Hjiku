@@ -1,8 +1,8 @@
 window.E = {
 		nick: "V5mobile",
-		apiUrl: 'http://sandbox.o2o.swapi.hongware.com/openApi/dyncHongware/project/',
-		//		 apiUrl: 'http://192.168.50.215:8089/openApi/dyncHongware/mobile/',
-		//		nick: "欧少辉", 
+		apiUrl: 'http://sandbox.o2o.swapi.hongware.com/openApi/dyncHongware/project/',x
+//				 apiUrl: 'http://192.168.50.249:8089/openApi/dyncHongware/project/',
+//				nick: "欧少辉", 
 	},
 	function(a, b) {
 		a.extend(b, {

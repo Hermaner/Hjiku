@@ -136,6 +136,9 @@ var Page = {
 					(orders.length < 15) && (mui('#tochange').pullRefresh().endPullupToRefresh(true))
 				}, "get")
 			},
+			hidePoper:function(){
+				mui('#listPopover').popover('hide');
+			},
 			searchItem: function() {
 				var val = this.searchtext;
 				E.showLoading()

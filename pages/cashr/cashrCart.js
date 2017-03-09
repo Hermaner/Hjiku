@@ -237,6 +237,9 @@ var Page = {
 					type: "cart"
 				})
 			},
+			goBack:function(){
+				mui.back()
+			},
 			readyPay: function() {
 				var self = this;
 				var unsnItems = [];

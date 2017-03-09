@@ -2342,7 +2342,9 @@
 					"pages/order/rentOrder.html",
 					"fonts/mui.ttf",
 					"styles/mui.min.css",
-					"styles/styleAll.css"
+					"styles/styleAll.css",
+					"js/app.js",
+					"js/mui.min.js"
 				],
 				"refer": [],
 				"priority": 0

@@ -140,7 +140,9 @@
 			"pages/order/rentOrder.html",
 			"fonts/mui.ttf",
 			"styles/mui.min.css",
-			"styles/styleAll.css"
+			"styles/styleAll.css",
+			"js/app.js",
+			"js/mui.min.js"
 		],
 		"refer": [
 			"pages/order/rentOrder.html"
@@ -156,7 +158,8 @@
 			"js/vue.js",
 			"js/mui.min.js",
 			"fonts/mui.ttf",
-			"fonts/ifont.ttf"
+			"fonts/ifont.ttf",
+			"styles/iconfont.css"
 		]
 	},
 	"pages/order/listDetail.html": {
@@ -200,6 +203,21 @@
 			"js/app.js",
 			"js/vue.js",
 			"styles/jiku.css",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"styles/mui.css",
+			"styles/styleAll.css"
+		],
+		"refer": [
+			"pages/barcode/payment.html"
+		]
+	},
+	"pages/barcode/payment.html": {
+		"resources": [
+			"pages/barcode/payment.js",
+			"styles/iconfont.css",
+			"js/app.js",
+			"js/vue.js",
 			"js/mui.min.js",
 			"fonts/mui.ttf",
 			"styles/mui.css",

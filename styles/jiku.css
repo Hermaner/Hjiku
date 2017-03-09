@@ -203,7 +203,7 @@
 
 .homeOneList h6 {
 	color: #666;
-	font-size: 12px;
+	font-size: 14px;
 	text-align: center;
 }
 
@@ -541,6 +541,7 @@
 
 .jk_sn_btn button {
 	margin-left: 10px;
+	padding: 3px 10px;
 }
 
 .jk_d_user {
@@ -646,11 +647,13 @@
 }
 
 .jk_payTab_mx .mix-fontCor {
-	color: #008000
+	color: #008000;
+	font-size: 16px;
 }
 
 .jk_payTab_mx .mix-red {
-	color: #CF2D28
+	color: #CF2D28;
+	font-size: 16px;
 }
 
 .jk_payput {
@@ -746,7 +749,10 @@ button.mui-active:enabled,
 	border:none;background: none;height:35px;border-left: none;
 }
 .jk_mand_btn{border:1px solid #d9002f;background:#fff;padding:3px 10px;margin-top:2px;color:#d9002f}
-@media screen and (min-width:480px) {
+.jk_zj_layerlabel{width:80px;line-height:45px;padding-left:12px;color:#444;font-size:14px}
+.jk_zj_layer input{border:none;height:45px;line-height: 35px;margin:0;color:#444;font-size: 14px;padding:10px}
+.jk_zj_layer>div{border-bottom:1px solid #ddd}
+@media screen and (min-width:1160px) {
 	body,
 	h5,
 	.mui-h5,
@@ -760,16 +766,7 @@ button.mui-active:enabled,
 	input[type='reset'],
 	button,
 	.mui-btn {
-		font-size: 18px
-	}
-	.logoCon {
-		padding-top: 100px;
-		padding-bottom: 40px;
-	}
-	.homeLogo img {
-		max-width: 120px;
-		height: 120px;
-		width: 120px;
+		font-size: 16px
 	}
 	.home-text p {
 		line-height: 35px
@@ -777,16 +774,11 @@ button.mui-active:enabled,
 	.home-esc {
 		padding: 4px 14px;
 	}
-	.home_maincontent {
-		padding-top: 150px;
-	}
-	.homeOneList li {
-		height: 120px
-	}
-	.jkdetailtop {
+	.jkdetailtop,.homeOneList h6 {
 		font-size: 16px;
 	}
 	.js_detial_con {
 		line-height: 32px;
 	}
+	
 }

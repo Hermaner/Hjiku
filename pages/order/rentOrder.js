@@ -70,6 +70,7 @@ var Page = {
 				E.getData(urlPath, params, function(data) {
 					console.log(data)
 					E.closeLoading();
+					self.showData = false;
 					c && (self.items = [])
 					if(!data.isSuccess) {
 						mui('#tochange').pullRefresh().endPullupToRefresh(true);
@@ -77,7 +78,6 @@ var Page = {
 						E.alert(data.map.errorMsg);
 						return
 					}
-					self.showData = false;
 					c && (plus.os.name == "Android" ? (window.scrollTo(0, 0)) : (mui('#tochange').pullRefresh().scrollTo(0, 0)));
 					var orders = data.orders;
 					Page.ItemId == null && (self.items = [])
@@ -104,6 +104,7 @@ var Page = {
 					self.searchtext = "";
 					self.showData=true;
 					Page.ItemId = null
+					mui('#tochange').pullRefresh().enablePullupToRefresh();
 				}, 250)
 			}
 		}

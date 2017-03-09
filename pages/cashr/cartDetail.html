@@ -11,9 +11,10 @@
 		<title>创建订单</title>
 		<link href="../../styles/mui.css" rel="stylesheet" />
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
-		<link href="../../styles/styleAll.css" rel="stylesheet" />
 		<link href="../../styles/jiku.css" rel="stylesheet" />
 		<link href="../../styles/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
+		
 	</head>
 
 	<body class="detail-bc" id="vue">
@@ -25,19 +26,31 @@
 			<div class="jkdetailtop">
 				<div class="jkdetailstatus flexCon">
 					<div class="jk_ds_text">订单</div>
-					<div class="flexOne jk_ds_status">状态<br><span>下单中</span></div>
+					<div class="flexOne"><select class="mui-btn" style="width:60%;margin:0 auto;display: block;text-align: center;" v-model="createStore">
+						<option value="">选择仓库</option>
+						<option value="1">已提货</option>
+						<option value="2">未提货</option>
+					</select></div>
+					<div class="jk_ds_status">状态<br><span>下单中</span></div>
 				</div>
-				<div class="jkdetailcontent flexCon">
-					<div class="jk_dc_text">{{submitData.items[0].pdname}}<br>{{submitData.items[1].pdname}}</div>
-					<div class="flexOne jk_dc_c">{{submitData.items[0].quantity}} x {{hiredays}}天<br>{{submitData.items[1].quantity}} x {{hiredays}}天</div>
-					<div class="jk_dc_r">￥{{spAmount}}<br>￥{{yjAmount}}</div>
+				<div class="jkdetailcontent">
+					<div class="flexCon">
+						<div class="jk_dc_text  ellisDIv">{{submitData.items[0].pdname}}</div>
+						<div class="flexOne jk_dc_c">{{submitData.items[0].quantity}} x {{hiredays}}天</div>
+						<div class="jk_dc_r">￥{{spAmount}}</div>
+					</div>
+					<div class="flexCon">
+						<div class="jk_dc_text  ellisDIv">{{submitData.items[1].pdname}}</div>
+						<div class="flexOne jk_dc_c">{{submitData.items[1].quantity}} x {{hiredays}}天</div>
+						<div class="jk_dc_r">￥{{yjAmount}}</div>
+					</div>
 				</div>
 				<div class="jkdetailtbom">￥{{totalAmount}}</div>
 			</div>
 			<div class="jk_d_ht flexCon">
 				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
 				<div class="flexOne jk_d_ht_c">设置SN码</div>
-				<div class="jk_d_ht_r">0</div>
+				<div class="jk_d_ht_r">{{sndata.length}}</div>
 			</div>
 			<div class="jk_d_bgc">
 				<div class="flexCon jk_d_snc">
@@ -54,13 +67,13 @@
 							<div class="mui-slider-handle">
 								<div class="flexCon jk_d_sncdata">
 									<div class="flexOne">{{sn}}</div>
-									<div class="jk_d_sncr" style="color:red">可使用</div>
+									<div class="jk_d_sncr" style="color:red">在仓</div>
 								</div>
 							</div>
 						</li>
 					</ul>
 				</div>
-				<div class="jk_sn_btn">
+				<div class="jk_sn_btn" v-show="!hasSNsearch">
 					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="enterSn()">直接输入</button>
 					<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="gosnScan()">扫码录入</button>
 				</div>
@@ -73,12 +86,12 @@
 				<div class="jk_d_user flexCon hasbomborder">
 					<span class="mui-icon iconfont icon-gongsiyuangong"></span>
 					<div>取货人</div>
-					<input v-model="submitData.consignee" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名" v-on:keyup.13="loginEvent()">
+					<input v-model="submitData.consignee" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人姓名">
 				</div>
 				<div class="jk_d_user flexCon">
 					<span class="mui-icon iconfont icon-gongsiyuangong"></span>
 					<div>手机</div>
-					<input v-model="submitData.mobilephone" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机" v-on:keyup.13="loginEvent()">
+					<input v-model="submitData.mobilePhone" type="text" class="mui-input-clear mui-input flexOne" placeholder="取货人手机">
 				</div>
 			</div>
 			<div class="jk_d_ht flexCon">
@@ -94,13 +107,21 @@
 			</div>
 			<div class="jk_d_bgc">
 				<div class="renttime">
-					<div class="flexCon hasbomborder" style="padding-bottom: 6px ;">
+					<div class="flexCon hasbomborder" style=";">
 						<div class="renttimelabel">出国日期</div>
 						<button @click='optionTime(1)' class="btn mui-btn mui-btn-block flexOne">{{beginFont}}</button>
 					</div>
-					<div class="flexCon" style="padding-top: 6px ;">
+					<div class="flexCon hasbomborder" style=";">
 						<div class="renttimelabel">回国日期</div>
-						<button @click='optionTime()' class="btn mui-btn mui-btn-block flexOne">{{endFont}}</button>
+						<button @click='optionTime(0)' class="btn mui-btn mui-btn-block flexOne">{{endFont}}</button>
+					</div>
+					<div class="flexCon hasbomborder" style=";">
+						<div class="renttimelabel">发货日期</div>
+						<button @click='optionTime2(2)' class="btn mui-btn mui-btn-block flexOne">{{sendFont}}</button>
+					</div>
+					<div class="flexCon" style="">
+						<div class="renttimelabel">返货日期</div>
+						<button @click='optionTime2(3)' class="btn mui-btn mui-btn-block flexOne">{{backFont}}</button>
 					</div>
 				</div>
 			</div>

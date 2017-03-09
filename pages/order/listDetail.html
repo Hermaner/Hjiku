@@ -23,19 +23,46 @@
 		</header>
 		<div class="mem-keep-out" style="position:fixed" v-show="depositsTypesShow">
 			<div class="mem-con">
-				<h3>请选择商品</h3>
+				<h3>添加押金扣款</h3>
 				<button class="layermend" @click="closeDeposit()"></button>
 				<div class="mem-text">
-					<div class="jk_yj_payput">
-						<input type="text" placeholder="输入金额" v-model="yj_amount">
-					</div>
 					<div class="jk_payitems">
-						<button v-for="(index,type) in depositsTypes" @click="clickDeposit(index)" v-bind:class="type.checked?'cur':''" >{{type.depositName}}</button>
+						<button class="flexCon" v-for="(index,type) in depositsTypes" @click="clickDeposit(index)" v-bind:class="type.checked?'cur':''"><div class="flexOne">{{type.depositName}}</div><div style="padding-right: 40px;">{{type.amount}}</div></button>
 					</div>
 				</div>
 				<div class="mem-btn flexCon">
 					<button class="flexOne" @click="closeDeposit()">取消</button>
 					<button class="flexOne" @click="addDeposit()">保存</button>
+				</div>
+			</div>
+		</div>
+		<div class="mem-keep-out" style="position:fixed" v-show="rentTypesShow">
+			<div class="mem-con">
+				<h3>新建租金单</h3>
+				<button class="layermend" @click="closerentLayer()"></button>
+				<div class="mem-text">
+					<div class="jk_zj_layer">
+						<div class="flexCon">
+							<div class="jk_zj_layerlabel">SN码</div>
+							<input class="flexOne" type="text" placeholder="输入SN码" v-model="rentLayer.zj_lsn">
+						</div>
+						<div class="flexCon">
+							<div class="jk_zj_layerlabel">天数</div>
+							<input class="flexOne" type="text" placeholder="输入天数" v-model="rentLayer.zj_ldays">
+						</div>
+						<div class="flexCon">
+							<div class="jk_zj_layerlabel">单价</div>
+							<input class="flexOne" type="text" placeholder="输入单价" v-model="rentLayer.zj_lprice">
+						</div>
+						<div class="flexCon">
+							<div class="jk_zj_layerlabel">扣款金额</div>
+							<input class="flexOne" type="text" placeholder="输入扣款金额" v-model="rentLayer.zj_lamount">
+						</div>
+					</div>
+				</div>
+				<div class="mem-btn flexCon">
+					<button class="flexOne" @click="closerentLayer()">取消</button>
+					<button class="flexOne" @click="createReimburseOrder()">保存</button>
 				</div>
 			</div>
 		</div>
@@ -125,7 +152,7 @@
 				<div class="jk_d_ht flexCon">
 					<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
 					<div class="flexOne jk_d_ht_c">订单全部设备SN码</div>
-					<div class="jk_d_ht_r">0</div>
+					<div class="jk_d_ht_r">{{order.sns.length}}</div>
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
@@ -148,8 +175,8 @@
 				</div>
 				<div class="jk_d_ht flexCon">
 					<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
-					<div class="flexOne jk_d_ht_c">设置SN码</div>
-					<div class="jk_d_ht_r">0</div>
+					<div class="flexOne jk_d_ht_c">返货SN码</div>
+					<div class="jk_d_ht_r">{{sndata.length}}</div>
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
@@ -166,22 +193,22 @@
 								<div class="mui-slider-handle">
 									<div class="flexCon jk_d_sncdata">
 										<div class="flexOne">{{sn}}</div>
-										<div class="jk_d_sncr" style="color:red">可使用</div>
+										<div class="jk_d_sncr">待返货</div>
 									</div>
 								</div>
 							</li>
 						</ul>
 					</div>
 					<div class="jk_sn_btn">
-						<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="enterSn()">直接输入</button>
-						<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="gosnScan()">扫码录入</button>
+						<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="enterfhSn()">直接输入</button>
+						<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="gofhsnScan()">扫码录入</button>
 					</div>
 				</div>
 
 				<div class="jk_d_ht flexCon">
 					<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
 					<div class="flexOne jk_d_ht_c">押金扣款</div>
-					<div class="jk_d_ht_r"><button class="jk_mand_btn" @click="showDeposit()">添加扣款类型</button></div>
+					<div class="jk_d_ht_r">{{depositsAr.length}}</div>
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
@@ -189,33 +216,32 @@
 						<div>金额</div>
 					</div>
 					<div class="jk_sn_div">
-						<div class="jk_sn_nodata" v-show="sndata.length==0">无数据</div>
-						<ul class="mui-table-view afterNoborder" v-show="sndata.length>0">
-							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, sn) in sndata">
+						<div class="jk_sn_nodata" v-show="depositsAr.length==0">无数据</div>
+						<ul class="mui-table-view afterNoborder" v-show="depositsAr.length>0">
+							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, item) in depositsAr">
 								<div class="mui-slider-right mui-disabled">
-									<a class="mui-btn mui-btn-red" @click="deleteSn(index)">删除</a>
+									<a class="mui-btn mui-btn-red" @click="deleteDepositsAr(index)">删除</a>
 								</div>
 								<div class="mui-slider-handle">
 									<div class="flexCon jk_d_sncdata">
-										<div class="flexOne">{{sn}}</div>
-										<div class="jk_d_sncr">1.0</div>
+										<div class="flexOne">{{item.depositName}}</div>
+										<div class="jk_d_sncr">￥{{item.amount}}</div>
 									</div>
 								</div>
 							</li>
 						</ul>
 					</div>
+					<div class="jk_sn_btn">
+						<button type="button" class="mui-btn mui-btn-danger mui-btn-outlined" @click="showDeposit()">添加扣款类型</button>
+					</div>
 				</div>
 				<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="createReturnOrder()">确认返货</button>
 			</div>
-
-			<div v-if="status==0">
-				<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="gopayPage()">支付</button>
-			</div>
-			<div v-if="status==3">
+			<div v-if="status==4">
 				<div class="jk_d_ht flexCon">
 					<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
-					<div class="flexOne jk_d_ht_c">订单全部设备SN码</div>
-					<div class="jk_d_ht_r">0</div>
+					<div class="flexOne jk_d_ht_c">订单返货SN码</div>
+					<div class="jk_d_ht_r">{{order.sns.length}}</div>
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
@@ -223,16 +249,13 @@
 						<div>状态</div>
 					</div>
 					<div class="jk_sn_div">
-						<div class="jk_sn_nodata" v-show="sndata.length==0">无数据</div>
-						<ul class="mui-table-view afterNoborder" v-show="sndata.length>0">
-							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, sn) in sndata">
-								<div class="mui-slider-right mui-disabled">
-									<a class="mui-btn mui-btn-red" @click="deleteSn(index)">删除</a>
-								</div>
-								<div class="mui-slider-handle">
-									<div class="flexCon jk_d_sncdata">
-										<div class="flexOne">{{sn}}</div>
-										<div class="jk_d_sncr">售出</div>
+						<div class="jk_sn_nodata" v-show="order.sns.length==0">无数据</div>
+						<ul class="mui-table-view afterNoborder" v-show="order.sns.length>0">
+							<li class="mui-table-view-cell afterNoborder padding0">
+								<div class="">
+									<div class="flexCon jk_d_sncdata" v-for="sn in order.sns">
+										<div class="flexOne">{{sn.snCode}}</div>
+										<div class="jk_d_sncr">{{sn.status}}</div>
 									</div>
 								</div>
 							</li>
@@ -242,7 +265,7 @@
 				<div class="jk_d_ht flexCon">
 					<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
 					<div class="flexOne jk_d_ht_c">押金扣款</div>
-					<div class="jk_d_ht_r">0</div>
+					<div class="jk_d_ht_r">{{depositsAr.length}}</div>
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
@@ -250,25 +273,27 @@
 						<div>金额</div>
 					</div>
 					<div class="jk_sn_div">
-						<div class="jk_sn_nodata" v-show="sndata.length==0">无数据</div>
-						<ul class="mui-table-view afterNoborder" v-show="sndata.length>0">
-							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, sn) in sndata">
+						<div class="jk_sn_nodata" v-show="depositsAr.length==0">无数据</div>
+						<ul class="mui-table-view afterNoborder" v-show="depositsAr.length>0">
+							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, item) in depositsAr">
 								<div class="mui-slider-right mui-disabled">
-									<a class="mui-btn mui-btn-red" @click="deleteSn(index)">删除</a>
+									<a class="mui-btn mui-btn-red" @click="deleteDepositsAr(index)">删除</a>
 								</div>
 								<div class="mui-slider-handle">
 									<div class="flexCon jk_d_sncdata">
-										<div class="flexOne">{{sn}}</div>
-										<div class="jk_d_sncr">1.0</div>
+										<div class="flexOne">{{item.depositName}}</div>
+										<div class="jk_d_sncr">￥{{item.amount}}</div>
 									</div>
 								</div>
 							</li>
 						</ul>
 					</div>
 				</div>
-				<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="deliverOrder()">添加扣款</button>
 			</div>
-			<div v-if="status==4||status==5">
+			<div v-if="status==0">
+				<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="gopayPage()">支付</button>
+			</div>
+			<div v-if="status==3">
 				<div class="jk_d_ht flexCon">
 					<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
 					<div class="flexOne jk_d_ht_c">订单全部设备SN码</div>
@@ -323,27 +348,27 @@
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
-						<div class="flexOne">退款原因</div>
+						<div class="flexOne">租金单号</div>
 						<div>金额</div>
 					</div>
 					<div class="jk_sn_div">
-						<div class="jk_sn_nodata" v-show="sndata.length==0">无数据</div>
+						<div class="jk_sn_nodata" v-show="order.returnRecords.length==0">无数据</div>
 						<ul class="mui-table-view afterNoborder">
-							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, sn) in sndata">
+							<li class="mui-table-view-cell afterNoborder padding0" v-for="(index, returnRecord) in order.returnRecords">
 								<div class="mui-slider-right mui-disabled">
 									<a class="mui-btn mui-btn-red" @click="deleteSn(index)">删除</a>
 								</div>
 								<div class="mui-slider-handle">
 									<div class="flexCon jk_d_sncdata">
-										<div class="flexOne">测试1111</div>
-										<div class="jk_d_sncr">1.0</div>
+										<div class="flexOne">{{returnRecord.depositNumber}}</div>
+										<div class="jk_d_sncr">￥{{returnRecord.amount}}</div>
 									</div>
 								</div>
 							</li>
 						</ul>
 					</div>
 				</div>
-				<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="createReimburseOrder()">新建退租金单</button>
+				<button class="mui-btn-block mui-btn-primary jk_full_btn" @click="showrentLayer()">新建退租金单</button>
 
 			</div>
 		</div>
