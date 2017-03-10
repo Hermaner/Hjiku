@@ -587,8 +587,8 @@
 	margin-left: 5%;
 	padding: 0px;
 	font-size: 17px;
-	height: 40px;
-	line-height: 40px;
+	height: 50px;
+	line-height: 50px;
 	margin-top: 12px;
 	margin-bottom: 12px;
 }
@@ -648,7 +648,7 @@
 
 .jk_payTab_mx .mix-fontCor {
 	color: #008000;
-	font-size: 16px;
+	font-size: 16px;\n
 }
 
 .jk_payTab_mx .mix-red {
@@ -703,9 +703,11 @@
 	border: none;
 	border-radius: 0;
 	text-align: left;
-	padding: 12px 10px 12px 20px;
+	padding: 12px 10px 12px 35px;
 	color:#666;
 	border-bottom: 1px solid #ddd;
+	font-size: 16px;
+	color:#333;
 }
 
 input[type='button']:enabled:active,
@@ -752,6 +754,10 @@ button.mui-active:enabled,
 .jk_zj_layerlabel{width:80px;line-height:45px;padding-left:12px;color:#444;font-size:14px}
 .jk_zj_layer input{border:none;height:45px;line-height: 35px;margin:0;color:#444;font-size: 14px;padding:10px}
 .jk_zj_layer>div{border-bottom:1px solid #ddd}
+.zj_sn_ar{padding-top: 5px;}
+.zj_sn_ar button{padding:2px 4px;border:1px solid #d9002f;margin-top:5px;margin-right: 2px;}
+.zj_sn_ar select{border: 1px solid #008000 !important;width:auto;padding:1px 4px;margin-top:5px;}
+.zj_maskreson select{border: 1px solid #008000 !important;width:auto;padding:5px 8px;margin-top:5px;}
 @media screen and (min-width:1160px) {
 	body,
 	h5,

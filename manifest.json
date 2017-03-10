@@ -1573,7 +1573,8 @@
 					"images/xianjin.png",
 					"images/perzhifubao.png",
 					"images/perweixin.png",
-					"styles/jiku.css"
+					"styles/jiku.css",
+					"fonts/ifont.ttf"
 				],
 				"refer": [
 					"pages/barcode/payment.html"

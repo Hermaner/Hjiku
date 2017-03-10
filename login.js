@@ -23,8 +23,8 @@ var Page = {
 		mui.plusReady(function() {
 			self.ws = plus.webview.currentWebview();
 			plus.device.vendor == 'basewin' ? E.setStorage("vendor", "1") : E.setStorage("vendor", "0");
-			if(E.getStorage("store")) {
-				self.vue.store = E.getStorage("store")
+			if(E.getStorage("loginstore")) {
+				self.vue.store = E.getStorage("loginstore")
 				self.vue.userName = E.getStorage("userName")
 				self.vue.password = E.getStorage("password")
 			}
@@ -58,9 +58,9 @@ var Page = {
 						E.alert(data.map.errorMsg), E.closeLoading()
 						return
 					}
-//					E.setStorage("loginstore", self.store);
-//					E.setStorage("store", data.useRole.shopNames);
-					E.setStorage("store", self.store);
+					E.setStorage("loginstore", self.store);
+					E.setStorage("store", data.useRole.shopNames);
+					E.setStorage("warehouseIds", data.useRole.warehouseIds);
 					E.setStorage("userName", self.userName);
 					E.setStorage("password", self.password);
 					E.setStorage("op", self.userName);

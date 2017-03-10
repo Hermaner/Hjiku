@@ -7,29 +7,45 @@ var Page = {
 		mui.init();
 		mui.plusReady(function() {
 			self.ws = plus.webview.currentWebview();
-			self.vue.orderNumber = 'SO-170308-92185';
-			self.vue.zAmount.z = '40';
-			self.vue.yAmount.z = '200';
-			self.vue.aAmount.z = '240';
-			self.vue.zAmount.w = '40';
-			self.vue.yAmount.w = '200';
-			self.vue.aAmount.w = '240';
+			var products = self.ws.products;
+			var zPrice = (products[0].quantity * products[0].days * products[0].price).toFixed(2);
+			var yPrice = (products[1].quantity * products[1].days * products[1].price).toFixed(2);
+			self.vue.orderNumber = self.ws.orderNumber;
+			self.vue.orderId = self.ws.orderId;
+			self.vue.zAmount.z = zPrice;
+			self.vue.yAmount.z = yPrice;
+			self.vue.aAmount.z = parseFloat(zPrice) + parseFloat(yPrice);
+			self.vue.zAmount.w = zPrice;
+			self.vue.yAmount.w = yPrice;
+			self.vue.aAmount.w = self.vue.aAmount.z;
+			self.vue.products = products;
+			//			self.vue.orderNumber = 'SO-170308-92185';
+			//			self.vue.zAmount.z = '40';
+			//			self.vue.yAmount.z = '200';
+			//			self.vue.aAmount.z = '240';
+			//			self.vue.zAmount.w = '40';
+			//			self.vue.yAmount.w = '200';
+			//			self.vue.aAmount.w = '240';
 			self.vue.loadData();
-			E.getStorage("vendor") == 1 && (self.vue.registerCashierReceiver())
 		})
 		var old_back = mui.back;
 		mui.back = function() {
-			E.confirm("订单未支付，确定退出?",function(){
+			if(!self.vue.completePay) {
+				E.confirm("订单未支付，确定退出?", function() {
+					old_back()
+				})
+			} else {
 				old_back()
-			})
+			}
+
 		}
 	},
 	vueObj: {
 		el: '#vue',
 		data: {
-			totalPrice: 0,
+			orderId: '',
+			products: [],
 			orderNumber: "",
-			prePrice: 0,
 			amount: 0,
 			zAmount: {
 				z: 0,
@@ -56,9 +72,95 @@ var Page = {
 			tabIndex: 0,
 			paymentTypeId: null,
 			paymentIndex: null,
-			payments: [],
+			payments: [[],[],[]],
+			completePay: false,
 		},
 		methods: {
+			loadPayDetail: function() {
+				var self = this;
+				var params = E.systemParam("V5.mobile.project.jiku.order.mixture.pay.get");
+				params.orderId = this.orderId;
+				E.getData('jikuOrderMixturePayGet', params, function(data) {
+					E.closeLoading()
+					console.log(data) 
+					if(!data.isSuccess) {
+						if(data.map.errorMsg == "没有支付明细") {
+
+						} else {
+							E.alert(data.map.errorMsg);
+						}
+						return;
+					}
+					var mixturePays = data.mixturePays;
+					var payAr1 = [],
+						payAr2 = [],
+						payAr3 = [];
+					for(var i = 0; i < mixturePays.length; i++) {
+						var payType = mixturePays[i].payType;
+						var payWay = mixturePays[i].payWay;
+						var id = mixturePays[i].id;
+						var amount = mixturePays[i].amount;
+						switch(payType) {
+							case "1":
+								payAr1.push({
+									id: id,
+									payWay: payWay,
+									amount: amount,
+								})
+								break;
+							case "2":
+								payAr2.push({
+									id: id,
+									payWay: payWay,
+									amount: amount,
+								})
+								break;
+							case "3":
+								payAr3.push({
+									id: id,
+									payWay: payWay,
+									amount: amount,
+								})
+								break;
+							default:
+								break;
+						}
+					}
+					if(payAr1.length > 0) {
+						for(var i = 0; i < self.payments[0].length; i++) {
+							for(var j = 0; j < payAr1.length; j++) {
+								if(self.payments[0][i].id == payAr1[j].id) {
+									self.aAmount.y += parseFloat(payAr1[j].amount);
+									self.payments[0][i].isPay = true;
+								}
+							}
+						}
+						self.aAmount.w = parseFloat(self.aAmount.z) - parseFloat(self.aAmount.y);
+					}
+					if(payAr2.length > 0) {
+						for(var i = 0; i < self.payments[1].length; i++) {
+							for(var j = 0; j < payAr2.length; j++) {
+								if(self.payments[1][i].id == payAr2[j].id) {
+									self.zAmount.y += parseFloat(payAr2[j].amount);
+									self.payments[1][i].isPay = true;
+								}
+							}
+						}
+						self.zAmount.w = parseFloat(self.zAmount.z) - parseFloat(self.zAmount.y);
+					}
+					if(payAr3.length > 0) {
+						for(var i = 0; i < self.payments[2].length; i++) {
+							for(var j = 0; j < payAr3.length; j++) {
+								if(self.payments[i].id == payAr3[j].id) {
+									self.yAmount.y += parseFloat(payAr3[j].amount);
+									self.payments[i].isPay = true;
+								}
+							}
+						}
+						self.yAmount.w = parseFloat(self.yAmount.z) - parseFloat(self.yAmount.y);
+					}
+				})
+			},
 			loadData: function() {
 				var self = this;
 				var params = E.systemParam("V5.mobile.project.jiku.payment.get");
@@ -69,32 +171,57 @@ var Page = {
 						E.alert(data.map.errorMsg)
 						return
 					}
-					for(var i = 0; i < data.payments.length; i++) {
-						self.payments.push({
-							paymentName: data.payments[i].paymentName,
-							paymentTypeId: data.payments[i].paymentTypeId,
+					var payments = data.payments;
+					for(var i = 0; i < payments.length; i++) {
+						var payType = payments[i].payType;
+						var payWay = payments[i].payWay;
+						var id = payments[i].id;
+						var obj = {
+							id: id,
+							payWay: payWay,
 							isPay: false,
 							checked: false,
-							tabIndex: [],
-						})
+						}
+						switch(payType) {
+							case "1":
+								self.payments[0].push(obj)
+								break;
+							case "Rent":
+								self.payments[1].push(obj)
+								break;
+							case "Deposit":
+								self.payments[2].push(obj)
+								break;
+							default:
+								break;
+						}
 					}
+					self.loadPayDetail()
 				})
 			},
 			payType: function(index) {
+				var payments=this.payments[this.tabIndex];
 				if(this.paymentIndex != null) {
-					this.payments[this.paymentIndex].checked = false;
-					this.payments[0].checked = false;
+					payments[this.paymentIndex].checked = false;
 				}
-				this.payments[index].checked = true;
-				this.paymentTypeId = this.payments[index].paymentTypeId;
+				payments[index].checked = true;
 				this.paymentIndex = index;
+				this.paymentTypeId = payments[index].id;
 			},
 			payTabClick: function(index) {
-				for(var i = 0; i < this.tabAr.length; i++) {
-					this.tabAr[i].checked = false;
+				if(index == this.tabIndex) {
+					retutn;
 				}
-				this.tabIndex = index;
+				var payments=this.payments[this.tabIndex];
+				if(this.paymentIndex != null) {
+					payments[this.paymentIndex].checked = false;
+				}
+				this.tabAr[this.tabIndex].checked = false;
 				this.tabAr[index].checked = true;
+				this.tabIndex = index;
+				this.paymentIndex = null;
+				this.paymentTypeId = null;
+
 			},
 			pay: function() {
 				var self = this;
@@ -155,7 +282,7 @@ var Page = {
 			},
 			barcodePay: function() {
 				E.openWindow("../barcode/payment.html", {
-					type:"order"
+					type: "order"
 				})
 			},
 			payMent: function(c) {
@@ -163,9 +290,9 @@ var Page = {
 				var params = E.systemParam("V5.mobile.project.jiku.order.mixture.pay");
 				params = mui.extend(params, {
 					orderNumber: self.orderNumber,
-					authCode: c||"",
+					authCode: c || "",
 					amount: self.amount,
-					paymentTypeId: self.paymentTypeId,
+					paymentType: self.paymentTypeId,
 				})
 				E.showLoading()
 				E.getData('jikuOrderMixturePay', params, function(data) {
@@ -175,15 +302,15 @@ var Page = {
 						E.alert(data.map.errorMsg)
 						return
 					}
-					self.completePay()
+					self.completePay();
 				}, 'post')
 			},
 			completePay: function() {
 				var self = this;
+				var payments=this.payments[this.tabIndex];
 				E.alert("支付成功", function() {
-					self.payments[self.paymentIndex].checked = false;
-					self.payments[self.paymentIndex].tabIndex.push(self.tabIndex);
-					self.payments[self.paymentIndex].isPay = true;
+					payments[self.paymentIndex].checked = false;
+					payments[self.paymentIndex].isPay = true;
 					self.paymentIndex = null;
 					self.paymentTypeId = null;
 					switch(self.tabIndex) {
@@ -191,6 +318,7 @@ var Page = {
 							self.aAmount.y += parseFloat(self.amount);
 							self.aAmount.w = parseFloat(self.aAmount.z) - parseFloat(self.aAmount.y);
 							if(self.aAmount.w == 0) {
+								self.payPrinter();
 								alert('支付完成')
 								return;
 							}
@@ -199,6 +327,7 @@ var Page = {
 							self.zAmount.y += parseFloat(self.amount);
 							self.zAmount.w = parseFloat(self.zAmount.z) - parseFloat(self.zAmount.y);
 							if(self.zAmount.w == 0 && self.yAmount.w == 0) {
+								self.payPrinter();
 								alert('支付完成')
 								return;
 							}
@@ -207,6 +336,7 @@ var Page = {
 							self.yAmount.y += parseFloat(self.amount);
 							self.yAmount.w = parseFloat(self.yAmount.z) - parseFloat(self.yAmount.y);
 							if(self.zAmount.w == 0 && self.yAmount.w == 0) {
+								self.payPrinter();
 								alert('支付完成')
 								return;
 							}
@@ -217,56 +347,21 @@ var Page = {
 					self.amount = 0;
 				});
 			},
-			payPrinter: function() {
-				if(E.getStorage("vendor") == 1) {
-					var pageDetail = E.getWebview(E.preloadPages[0]);
-					var printAr0 = "收款编号:" + this.orderNumber;
-					var printAr = [];
-					for(i in this.items) {
-						printAr.push("商品名称：" + this.items[i].productName);
-						printAr.push("商品数量：" + this.items[i].count);
-						printAr.push("商品单价：" + this.items[i].price);
-						printAr.push("商品规格：" + this.items[i].skuName);
-					}
-					var printAr1 = ["应付金额：￥" + this.allPrice, "让利金额：￥" + this.coupons, "运费金额：￥" + this.fee, "实收金额：￥" + this.totalPrice, "付款方式：" + this.paymentName, "本次消费赠送积分：--", "会员卡余额：--", "会员可用/累计积分:--/--"];
-					if(this.addressObj) {
-						printAr1 = ["应付金额：￥" + this.allPrice, "让利金额：￥" + this.coupons, "运费金额：￥" + this.fee, "实收金额：￥" + this.totalPrice, "付款方式：" + this.paymentName, "收货姓名：" + this.addressObj.consignee, "收货电话：" + this.addressObj.mobilePhone, "收货地址：" + this.addressObj.address, "本次消费赠送积分：--", "会员卡余额：--", "会员可用/累计积分:--/--"];
-
-					}
-					printAr1 = printAr.concat(printAr1)
-					printAr1 = printAr1.join(",");
-					var printAr2 = ["收款时间：" + (new Date()).Format("yyyy-MM-dd hh:mm:ss"), "操作人  ：" + E.getStorage("op"), "门店地址：" + E.getStorage("address"), "门店电话：" + E.getStorage("tel")];
-					printAr2 = printAr2.join(",");
-					pageDetail.evalJS("Page.vue.printerAll('" + E.getStorage("storeName") + "','" + printAr0 + "','" + printAr1 + "','" + printAr2 + "')");
-				}
+			completeOrder: function() {
+				this.payPrinter();
+				this.completePay = true;
+				E.alert('支付完成', function() {
+					plus.webview.currentWebview().opener().evalJS("Page.vue.updateOrder()");
+					mui.back();
+				})
 			},
-			
-			
-			registerCashierReceiver: function() {
-				var self = this;
-				var main = plus.android.runtimeMainActivity(); //获取activity
-				//创建自定义广播实例
-				var receiver = plus.android.implements(
-					'io.dcloud.feature.internal.reflect.BroadcastReceiver', {
-						onReceive: function(context, intent) { //实现onReceiver回调函数
-							plus.android.importClass(intent); //通过intent实例引入intent类，方便以后的‘.’操作
-							var isSuccess = intent.getExtra("isSuccess");
-							var msg = intent.getExtra("msg");
-							if(isSuccess || 'msg' == '支付成功') {
-								self.payMent()
-							} else {
-								alert(msg);
-							}
-						}
-					});
-
-				var IntentFilter = plus.android
-					.importClass('android.content.IntentFilter');
-				var filter = new IntentFilter();
-
-				filter.addAction("io.dcloud.pospay.cashiercallback"); //监听收银结果回调，自定义字符串
-
-				main.registerReceiver(receiver, filter); //注册监听
+			payPrinter: function() {
+				var printAr0 = "订单编号：" + this.orderNumber;
+				var printAr1 = ["普通商品：" + this.products[0].productName, "商品参数：" + this.products[0].quantity + "x" + this.products[0].days + "天x单价￥" + this.products[0].price, "押金商品：" + this.products[1].productName, "商品参数：" + this.products[1].quantity + "x" + this.products[1].days + "天x单价￥" + this.products[1].price];
+				var printAr2 = ["收款金额：" + this.aAmount.z, "收款时间：" + (new Date()).Format("yyyy-MM-dd hh:mm:ss")];
+				printAr1 = printAr1.join(",");
+				printAr2 = printAr2.join(",");
+				E.getWebview("home").evalJS("Page.vue.printerAll('" + E.getStorage("shopName") + "','" + printAr0 + "','" + printAr1 + "','" + printAr2 + "')");
 			},
 			doPosCashier: function() {
 				var main_act = plus.android.runtimeMainActivity();
@@ -282,7 +377,6 @@ var Page = {
 				intent.putExtra("seqNo", seqNo); //订单序列号
 				intent.putExtra("totalFee", (this.amount * 100).toString()); //订单金额，单位为分
 				//intent.putExtra("pay_type", "1001");//付款方式 收银apk暂时不支持，等待开放, 1001	现金,1003	微信支付,1004	支付宝,1005	百度钱包,1006	银行卡,1007	易付宝,1008	点评闪惠,1009	京东钱包
-
 				main_act.startService(intent);
 
 			},
@@ -296,22 +390,7 @@ var Page = {
 				return d.getHours() + d.getMinutes() + d.getSeconds() +
 					d.getMilliseconds() + "";
 			},
-
-			goOrderDetail: function() {
-				E.fireData(E.preloadPages[0], "detailShow", {
-					orderNumber: this.orderNumber
-				})
-				setTimeout(function() {
-					plus.webview.close("../cashr/cashrCart.html", 'none', 0)
-					plus.webview.close(Page.ws, 'none', 0)
-				}, 1000)
-			}
 		},
-		computed: {
-			waitPrice: function() {
-				return(parseFloat(this.totalPrice) - parseFloat(this.prePrice)).toFixed(2)
-			}
-		}
 	}
 }
 Page.init()

@@ -75,36 +75,38 @@ var Page = {
 				var self = this;
 				var type = this.type;
 				var condition = {};
-
-				switch(type) {
-					case "1":
-						condition.mobilePhone = val;
-						break;
-					case "3":
-						condition.mobilePhone = val;
-						break;
-					case "2":
-						condition.deliveryStatus = this.deliveryStatus;
-						if(val) {
-							switch(this.sincepup) {
-								case "1":
-									condition.mobilePhone = val;
-									break;
-								case "2":
-									condition.consignee = val;
-									break;
-								case "3":
-									condition.orderNumber = val;
-									break;
-								default:
-									break;
-							}
-						}
-						break;
-					default:
-						break;
+				if(type=="2"){
+					condition.deliveryStatus = this.deliveryStatus;
 				}
-
+				if(val) {
+					switch(type) {
+						case "1":
+							condition.mobilePhone = val;
+							break;
+						case "3":
+							condition.mobilePhone = val;
+							break;
+						case "2":
+							if(val) {
+								switch(this.sincepup) {
+									case "1":
+										condition.mobilePhone = val;
+										break;
+									case "2":
+										condition.consignee = val;
+										break;
+									case "3":
+										condition.orderNumber = val;
+										break;
+									default:
+										break;
+								}
+							}
+							break;
+						default:
+							break;
+					}
+				}
 				c && (Page.ItemId = null)
 				console.log(JSON.stringify(condition))
 				var params = E.systemParam('V5.mobile.project.jiku.orders.get');
@@ -136,7 +138,7 @@ var Page = {
 					(orders.length < 15) && (mui('#tochange').pullRefresh().endPullupToRefresh(true))
 				}, "get")
 			},
-			hidePoper:function(){
+			hidePoper: function() {
 				mui('#listPopover').popover('hide');
 			},
 			searchItem: function() {

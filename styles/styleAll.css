@@ -3137,7 +3137,7 @@ a.mui-tel-btn .mui-icon {
 	color: #555
 }
 
-@media screen and (min-width:1160px) {
+@media screen and (min-width:480px) {
 	body,
 	h5,
 	.mui-h5,
@@ -3828,3 +3828,4 @@ a.mui-tel-btn .mui-icon {
 	.mui-dtpicker-header button{padding:10px 20px}
 }
 .padding0{padding:0}
+.flex-width70{width:70px}

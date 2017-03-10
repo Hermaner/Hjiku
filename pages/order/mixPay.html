@@ -40,12 +40,21 @@
             <div class="jk_payput">
             	 <input type="text" placeholder="输入金额" v-model="amount">
             </div>
-            <div style="font-size:16px;color:#555;line-height:30px;margin:0;padding-left:10px;">支付方式</div>
-            <div class="jk_payitems">
+            <div class="jk_d_ht flexCon"> 
+				<span class="mui-icon ifont icon-accept jk_d_ht_i"></span>
+				<div class="flexOne jk_d_ht_c">支付方式</div>
+			</div>
+            <!--<div class="jk_payitems">
               	 <button v-for="(index,payment) in payments" @click="payType(index)" v-bind:class="payment.checked?'cur':''" v-bind:disabled="payment.isPay&&(payment.tabIndex[0]==tabIndex||payment.tabIndex[1]==tabIndex)">{{payment.paymentName}}</button>
+            </div>-->
+            <div class="jk_payitems" v-show="tabIndex==0">
+              	 <button v-for="(index,payment) in payments[0]" @click="payType(index)" v-bind:class="payment.checked?'cur':''" v-bind:disabled="payment.isPay">{{payment.payWay}}</button>
             </div>
-            <div style="position:fixed;left:0;bottom:0">
-            	
+            <div class="jk_payitems" v-show="tabIndex==1">
+              	 <button v-for="(index,payment) in payments[1]" @click="payType(index)" v-bind:class="payment.checked?'cur':''" v-bind:disabled="payment.isPay">{{payment.payWay}}</button>
+            </div>
+            <div class="jk_payitems" v-show="tabIndex==2">
+              	 <button v-for="(index,payment) in payments[2]" @click="payType(index)" v-bind:class="payment.checked?'cur':''" v-bind:disabled="payment.isPay">{{payment.payWay}}</button>
             </div>
             <button class="mui-btn-block mui-btn-primary jk_full_btn" @click="pay()">支付</button>
 		</div>

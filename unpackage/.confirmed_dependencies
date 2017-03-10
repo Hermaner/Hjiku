@@ -206,7 +206,8 @@
 			"js/mui.min.js",
 			"fonts/mui.ttf",
 			"styles/mui.css",
-			"styles/styleAll.css"
+			"styles/styleAll.css",
+			"fonts/ifont.ttf"
 		],
 		"refer": [
 			"pages/barcode/payment.html"

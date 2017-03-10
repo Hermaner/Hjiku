@@ -76,6 +76,7 @@ var Page = {
 					self.listData[4].count = data.statistics.depositCount;
 					self.listData[5].count = data.statistics.rentCount;
 					self.shop = data.shop;
+					E.setStorage("shopName", self.shop.shopName);
 				});
 			},
 			goPage: function(type) {
@@ -142,6 +143,20 @@ var Page = {
 				main_act.startService(intent);
 
 			},
+			printerOne: function(txt) {
+				var main_act = plus.android.runtimeMainActivity();
+				var Intent = plus.android.importClass('android.content.Intent');
+				var intent = new Intent();
+				intent.setClassName(main_act, "io.dcloud.printer.PrintService");
+				var printContent = txt;
+				intent.putExtra("printContent", printContent); //打印内容，可用\n表示换行
+				intent.putExtra("fontSize", 1); //字体大小，0：小号，1：中号，2：大号  默认1中号
+				intent.putExtra("gravity", 1); //布局方式，0：居左，1：居中，2：居右 默认0居左
+				intent.putExtra("type", 0); //打印类型，0:文本内容；1：二维码；2：条码（content必须为数字字符串）
+				intent.putExtra("isLast", false); //是否是最后一条打印
+				main_act.startService(intent);
+
+			},
 			printer1n: function() {
 				var main_act = plus.android.runtimeMainActivity();
 				var Intent = plus.android.importClass('android.content.Intent');
@@ -199,57 +214,44 @@ var Page = {
 
 			},
 			printerCon: function(txt, c) {
-				if('Android' == plus.os.name) {
-					if(typeof(txt) == "string") {
-						txt = txt.split(",")
-						txt = txt.join("\n")
-					}
-					var main_act = plus.android.runtimeMainActivity();
-					var Intent = plus.android.importClass('android.content.Intent');
-					var intent = new Intent();
-					intent.setClassName(main_act, "io.dcloud.printer.PrintService");
-					var printContent = txt;
-					intent.putExtra("printContent", printContent); //打印内容，可用\n表示换行
-					intent.putExtra("fontSize", 1); //字体大小，0：小号，1：中号，2：大号  默认1中号
-					intent.putExtra("gravity", 0); //布局方式，0：居左，1：居中，2：居右 默认0居左
-					intent.putExtra("type", 0); //打印类型，0:文本内容；1：二维码；2：条码（content必须为数字字符串）
-					intent.putExtra("isLast", true); //是否是最后一条打印
-					main_act.startService(intent);
-					if(c) {
-						c != 1 && c();
-						return
-					}
-					var params = E.systemParam("V5.mobile.order.print");
-					params.orderNumber = self.orderNumber;
-					E.getData('orderPrint', params, function(data) {
-						E.closeLoading();
-						if(!data.isSuccess) {
-							E.alert(data.map.errorMsg)
-							return
-						}
-
-					}, "get")
-
-				} else {
-					plus.nativeUI.alert("此平台不支持！");
-				}
+				txt = txt.split(",")
+				txt = txt.join("\n")
+				var main_act = plus.android.runtimeMainActivity();
+				var Intent = plus.android.importClass('android.content.Intent');
+				var intent = new Intent();
+				intent.setClassName(main_act, "io.dcloud.printer.PrintService");
+				var printContent = txt;
+				intent.putExtra("printContent", printContent); //打印内容，可用\n表示换行
+				intent.putExtra("fontSize", 1); //字体大小，0：小号，1：中号，2：大号  默认1中号
+				intent.putExtra("gravity", 0); //布局方式，0：居左，1：居中，2：居右 默认0居左
+				intent.putExtra("type", 0); //打印类型，0:文本内容；1：二维码；2：条码（content必须为数字字符串）
+				intent.putExtra("isLast", true); //是否是最后一条打印
+				main_act.startService(intent);
 			},
 			registerReceiver: function() {
-
 				var main = plus.android.runtimeMainActivity(); //获取activity
-				//创建关闭示例
-				var receiver = plus.android.implements('io.dcloud.feature.internal.reflect.BroadcastReceiver', {
-					onReceive: function(context, intent) { //实现onReceiver回调函数
-						plus.android.importClass(intent); //通过intent实例引入intent类，方便以后的‘.’操作
-						var isSuccess = intent.getExtra("isSuccess");
-						var msg = intent.getExtra("msg");
-						//						alert("isSuccess = " + isSuccess + " , msg = " + msg);
-					}
-				});
+				//创建自定义广播实例
+				var receiver = plus.android.implements(
+					'io.dcloud.feature.internal.reflect.BroadcastReceiver', {
+						onReceive: function(context, intent) { //实现onReceiver回调函数
+							plus.android.importClass(intent); //通过intent实例引入intent类，方便以后的‘.’操作
+							var isSuccess = intent.getExtra("isSuccess");
+							var msg = intent.getExtra("msg");
+							if(isSuccess && msg == '支付成功') {
+								E.getWebview('mixPay.html').evalJS("Page.vue.payMent()");
+							}
+							if(!isSuccess) {
+								alert(msg)
+							}
 
-				var IntentFilter = plus.android.importClass('android.content.IntentFilter');
+						}
+					});
+
+				var IntentFilter = plus.android
+					.importClass('android.content.IntentFilter');
 				var filter = new IntentFilter();
 
+				filter.addAction("io.dcloud.pospay.cashiercallback"); //监听收银结果回调，自定义字符串
 				filter.addAction("io.dcloud.printer.printcallback"); //监听打印回调
 
 				main.registerReceiver(receiver, filter); //注册监听

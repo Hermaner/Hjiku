@@ -11,8 +11,8 @@
 		<title>创建订单</title>
 		<link href="../../styles/mui.css" rel="stylesheet" />
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
-		<link href="../../styles/jiku.css" rel="stylesheet" />
 		<link href="../../styles/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../styles/jiku.css" rel="stylesheet" />
 		<link href="../../styles/styleAll.css" rel="stylesheet" />
 		
 	</head>
@@ -26,10 +26,8 @@
 			<div class="jkdetailtop">
 				<div class="jkdetailstatus flexCon">
 					<div class="jk_ds_text">订单</div>
-					<div class="flexOne"><select class="mui-btn" style="width:60%;margin:0 auto;display: block;text-align: center;" v-model="createStore">
-						<option value="">选择仓库</option>
-						<option value="1">已提货</option>
-						<option value="2">未提货</option>
+					<div class="flexOne"><select class="mui-btn" style="width:60%;margin:0 auto;display: block;text-align: center;" v-model="warehouseName">
+						<option value="{{warehouse.warehouseName}}" v-for="warehouse in warehouses">{{warehouse.warehouseName}}</option>
 					</select></div>
 					<div class="jk_ds_status">状态<br><span>下单中</span></div>
 				</div>

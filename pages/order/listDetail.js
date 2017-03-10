@@ -12,8 +12,9 @@ var Page = {
 				self.vue.loadData();
 			})
 		})
+		var old_back = mui.back;
 		mui.back = function() {
-			plus.webview.currentWebview().hide("pop-out");
+			old_back();
 			setTimeout(function() {
 				self.vue.resetData()
 			}, 250)
@@ -25,6 +26,7 @@ var Page = {
 			sndata: [],
 			order: {},
 			products: [],
+			maskzjSn: "",
 			orderNumber: '',
 			showData: true,
 			status: 0,
@@ -35,12 +37,13 @@ var Page = {
 			depositsTypesShow: false,
 			rentTypesShow: false,
 			rentLayer: {
-				zj_lsn: "",
+				zj_lsn: [],
 				zj_ldays: "",
 				zj_lprice: "",
 				zj_lamount: "",
+				zj_lreson: '',
 			},
-			yzCode:'',
+			yzCode: '',
 			depositsAr: [],
 			depositsIndex: null,
 		},
@@ -94,12 +97,12 @@ var Page = {
 					E.alert("请输入自提码");
 					return;
 				}
-				if(this.yzCode!=this.Ztcode){
+				if(this.yzCode != this.Ztcode) {
 					E.alert("自提码不匹配");
 					return;
 				}
 				var params = E.systemParam('V5.mobile.project.jiku.order.update');
-				params.code =this.Ztcode;
+				params.code = this.Ztcode;
 				E.showLoading()
 				E.getData('jikuOrderUpdate', params, function(data) {
 					E.closeLoading();
@@ -110,8 +113,7 @@ var Page = {
 					}
 					self.updateOrder()
 				})
-				
-				
+
 				var self = this;
 				var item0 = this.order.products[0];
 				if(this.sndata.length == 0) {
@@ -144,8 +146,25 @@ var Page = {
 			},
 			gopayPage: function() {
 				E.openWindow('mixPay.html', {
+					orderId: this.order.orderId,
 					orderNumber: this.orderNumber,
+					products: this.order.products,
 				})
+			},
+			maskchangeSn: function() {
+				var thisSn = true;
+				for(var i = 0; i < this.rentLayer.zj_lsn.length; i++) {
+					if(this.rentLayer.zj_lsn[i] == this.maskzjSn) {
+						thisSn = false;
+					}
+				}
+				if(thisSn) {
+					this.rentLayer.zj_lsn.push(this.maskzjSn);
+				}
+				this.maskzjSn = "";
+			},
+			deleteMaskSns: function(index) {
+				this.rentLayer.zj_lsn.splice(index, 1);
 			},
 			checkSN: function(sncode) {
 				var self = this;
@@ -282,7 +301,7 @@ var Page = {
 				}
 				this.closeDeposit()
 				this.depositId = this.depositsTypes[this.depositsIndex].depositId;
-				this.depositsAr.push({amount:this.depositsTypes[this.depositsIndex].amount,depositId: this.depositId, depositName: this.depositsTypes[this.depositsIndex].depositName });
+				this.depositsAr.push({ amount: this.depositsTypes[this.depositsIndex].amount, depositId: this.depositId, depositName: this.depositsTypes[this.depositsIndex].depositName });
 				this.depositsTypes[this.depositsIndex].checked = false;
 				this.depositsIndex = null;
 			},
@@ -291,7 +310,7 @@ var Page = {
 			},
 			createReimburseOrder: function() {
 				var self = this;
-				if(!this.rentLayer.zj_lsn || !this.rentLayer.zj_ldays || !this.rentLayer.zj_lprice || !this.rentLayer.zj_lamount) {
+				if(this.rentLayer.zj_lsn.length == 0 || !this.rentLayer.zj_ldays || !this.rentLayer.zj_lprice || !this.rentLayer.zj_lamount) {
 					E.toast('信息不全');
 					return;
 				}
@@ -307,7 +326,7 @@ var Page = {
 				}
 				this.closerentLayer()
 				var orderData = {
-					sn: this.rentLayer.zj_lsn,
+					sn: this.rentLayer.zj_lsn.join(','),
 					days: this.rentLayer.zj_ldays,
 					price: this.rentLayer.zj_lprice,
 					amount: this.rentLayer.zj_lamount,
@@ -347,7 +366,7 @@ var Page = {
 				})
 			},
 			createReturnOrder: function() {
-				var self=this;
+				var self = this;
 				if(this.sndata.length == 0) {
 					E.alert("请录入返货SN");
 					return;
@@ -356,9 +375,9 @@ var Page = {
 					E.alert("录入的SN数量不匹配");
 					return;
 				}
-				var deposits=[];
+				var deposits = [];
 				if(this.depositsAr.length > 0) {
-					for(var i=0;i<this.depositsAr.length;i++){
+					for(var i = 0; i < this.depositsAr.length; i++) {
 						deposits.push({
 							depositsId: this.depositsAr[i].depositId,
 							amount: this.depositsAr[i].amount,
@@ -371,7 +390,7 @@ var Page = {
 						salesOrderItemId: this.order.products[0].itemId,
 						snCode: this.sndata.join(','),
 					}],
-					deposits: deposits||"",
+					deposits: deposits || "",
 				}
 				var params = E.systemParam('V5.mobile.project.jiku.return.product.create');
 				params.orderData = JSON.stringify(orderData);
@@ -384,18 +403,32 @@ var Page = {
 						return
 					}
 					self.updateOrder();
-				},"post")
+				}, "post")
 			},
 			resetData: function() {
 				this.sndata = [];
-				this.showData = true;
 				this.order = {};
 				this.products = [];
+				this.maskzjSn = "";
+				this.orderNumber = '';
 				this.showData = true;
 				this.status = 0;
 				this.Ztcode = "";
 				this.sectext = '获取验证码';
 				this.dissecBtn = false;
+				this.depositsTypes = [];
+				this.depositsTypesShow = false;
+				this.rentTypesShow = false;
+				this.rentLayer = {
+					zj_lsn: [],
+					zj_ldays: "",
+					zj_lprice: "",
+					zj_lamount: "",
+					zj_lreson: '',
+				};
+				this.yzCode = '';
+				this.depositsAr = [];
+				this.depositsIndex = null;
 			}
 		}
 	}

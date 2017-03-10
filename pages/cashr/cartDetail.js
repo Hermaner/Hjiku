@@ -7,6 +7,7 @@ var Page = {
 		mui.init();
 		mui.plusReady(function() {
 			self.ws = plus.webview.currentWebview();
+//			self.vue.loadWarehouse();
 			window.addEventListener('pageshow', function(event) {
 				var unsnItems = event.detail.unsnItems;
 				var snItems = event.detail.snItems;
@@ -21,27 +22,27 @@ var Page = {
 						depositPd = item;
 					}
 				});
-				
+
 				if(snItems.length > 0) {
 					mainPd = snItems[0];
 				}
 				if(mainPd && depositPd) {
-					var item0={
-							pdname: mainPd.productName,
-							isDeposits: 0,
-							quantity: mainPd.snAr ? mainPd.snAr.length : mainPd.count,
-							price: mainPd.price,
-							productItemId: mainPd.productItemId,
-							sn: mainPd.snAr ? mainPd.snAr.toString() : '',
-							days: self.vue.defaultdays, 
+					var item0 = {
+						pdname: mainPd.productName,
+						isDeposits: 0,
+						quantity: mainPd.snAr ? mainPd.snAr.length : mainPd.count,
+						price: mainPd.price,
+						productItemId: mainPd.productItemId,
+						sn: mainPd.snAr ? mainPd.snAr.toString() : '',
+						days: self.vue.defaultdays,
 					};
-					var item1={
-							pdname: depositPd.productName,
-							isDeposits: 1,
-							quantity: depositPd.count,
-							price: depositPd.price,
-							productItemId: depositPd.productItemId,
-							days: 1,
+					var item1 = {
+						pdname: depositPd.productName,
+						isDeposits: 1,
+						quantity: depositPd.count,
+						price: depositPd.price,
+						productItemId: depositPd.productItemId,
+						days: 1,
 					};
 					self.vue.submitData.items.push(item0);
 					self.vue.submitData.items.push(item1);
@@ -68,7 +69,7 @@ var Page = {
 			spAmount: 0,
 			yjAmount: 0,
 			hasSNsearch: false,
-			createStore:"",
+			warehouseName: "",
 			submitData: {
 				consignee: '',
 				mobilePhone: '',
@@ -78,6 +79,7 @@ var Page = {
 				memo: '',
 				items: [],
 			},
+			warehouses:[],
 			beginText: "",
 			beginFont: "",
 			endText: "",
@@ -103,8 +105,19 @@ var Page = {
 			this.backFont = this.endFont;
 		},
 		methods: {
-			loadData: function(c) {
-
+			loadWarehouse: function() {
+				var params = E.systemParam('V5.mobile.project.jiku.warehouse.get');
+				params.warehouseIds=E.getStorage("warehouseIds");
+				E.getData('jikuWarehouseGet', params, function(data) {
+					E.closeLoading()
+					console.log(data)
+					if(!data.isSuccess) {
+						E.alert(data.map.errorMsg)
+						return
+					}
+					self.warehouses=data.warehouses;
+					self.warehouseName=self.warehouses[0].warehouseName;
+				})
 			},
 			checkSN: function(sncode) {
 				var self = this;
@@ -163,7 +176,7 @@ var Page = {
 				this.submitData.returnHomeTime = this.endFont;
 				this.submitData.actualAmount = this.totalAmount;
 				var mainProduct = this.submitData.items[0];
-				
+
 				if(mainProduct.sn == '') {
 					alert('下单失败，请录入设备SN码');
 					return;
@@ -172,6 +185,7 @@ var Page = {
 					return;
 				}
 				var params = E.systemParam('V5.mobile.project.jiku.order.create');
+//				params.store=this.warehouseName;
 				params.orderData = JSON.stringify(this.submitData);
 				E.showLoading()
 				E.getData('jikuOrderCreate', params, function(data) {

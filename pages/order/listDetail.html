@@ -11,9 +11,9 @@
 		<title>订单详情</title>
 		<link href="../../styles/mui.css" rel="stylesheet" />
 		<link href="../../styles/iconfont.css" rel="stylesheet" />
-		<link href="../../styles/styleAll.css" rel="stylesheet" />
-		<link href="../../styles/jiku.css" rel="stylesheet" />
 		<link href="../../styles/mui.picker.min.css" rel="stylesheet" />
+		<link href="../../styles/jiku.css" rel="stylesheet" />
+		<link href="../../styles/styleAll.css" rel="stylesheet" />
 	</head>
 
 	<body class="detail-bc" id="vue">
@@ -44,7 +44,13 @@
 					<div class="jk_zj_layer">
 						<div class="flexCon">
 							<div class="jk_zj_layerlabel">SN码</div>
-							<input class="flexOne" type="text" placeholder="输入SN码" v-model="rentLayer.zj_lsn">
+							<div class="flexOne zj_sn_ar">
+								<button v-for="(index,sn) in rentLayer.zj_lsn" @click="deleteMaskSns(index)">{{sn}}</button>
+								<select class="mui-btn" v-model="maskzjSn" v-on:change="maskchangeSn()" v-show="rentLayer.zj_lsn.length!=order.sns.length">
+									<option value="">请选择SN</option>
+									<option value="{{sns.snCode}}" v-for="sns in order.sns">{{sns.snCode}}</option>
+								</select>
+							</div>
 						</div>
 						<div class="flexCon">
 							<div class="jk_zj_layerlabel">天数</div>
@@ -57,6 +63,15 @@
 						<div class="flexCon">
 							<div class="jk_zj_layerlabel">扣款金额</div>
 							<input class="flexOne" type="text" placeholder="输入扣款金额" v-model="rentLayer.zj_lamount">
+						</div>
+						<div class="flexCon">
+							<div class="jk_zj_layerlabel">扣款原因</div>
+							<div class="flexOne zj_maskreson">
+								<select class="mui-btn" v-model="rentLayer.zj_lreson">
+									<option value="">选择扣款原因</option>
+									<option value="{{sns.snCode}}" v-for="sns in order.sns">{{sns.snCode}}</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -90,7 +105,7 @@
 				</div>
 				<div class="jkdetailcontent">
 					<div class="flexCon" v-for="product in order.products">
-						<div class="jk_dc_text flexellipsis ellisDIv">{{product.productName}}</div>
+						<div class="jk_dc_text ellisDIv">{{product.productName}}</div>
 						<div class="flexOne jk_dc_c">{{product.quantity}} x {{product.days}}天</div>
 						<div class="jk_dc_r">￥{{product.price}}</div>
 					</div>
@@ -348,7 +363,7 @@
 				</div>
 				<div class="jk_d_bgc">
 					<div class="flexCon jk_d_snc">
-						<div class="flexOne">租金单号</div>
+						<div class="flexOne">退款原因</div>
 						<div>金额</div>
 					</div>
 					<div class="jk_sn_div">
